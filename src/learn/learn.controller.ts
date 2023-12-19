@@ -1,13 +1,18 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { LearnService } from "./learn.service";
 
 
-@Controller('learn')
+@Controller('learn/courses')
 export class LearnController {
     constructor(private authService: LearnService) { }
 
-    @Get('courses')
+    @Get('')
     async getLearn() {
         return this.authService.getLearn();
+    }
+
+    @Get('/:id')
+    async getLearnById(@Param('id') courseId: string) {
+        return this.authService.getCourseById(courseId);
     }
 }
