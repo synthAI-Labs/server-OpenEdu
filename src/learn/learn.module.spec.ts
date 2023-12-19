@@ -8,23 +8,24 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '@nestjs/config';
 
 describe('LearnModule', () => {
-    let module: TestingModule;
+  let module: TestingModule;
 
-    beforeEach(async () => {
-        module = await Test.createTestingModule({
-            imports: [LearnModule, PrismaModule, ConfigModule],
-            controllers: [LearnController],
-            providers: [LearnService, PrismaService, ConfigService],
-        }).compile();
-    });
+  beforeEach(async () => {
+    module = await Test.createTestingModule({
+      imports: [LearnModule, PrismaModule, ConfigModule],
+      controllers: [LearnController],
+      providers: [LearnService, PrismaService, ConfigService],
+    }).compile();
+  });
 
-    it('should be defined', () => {
-        const controller: LearnController = module.get<LearnController>(LearnController);
-        expect(controller).toBeDefined();
-    });
+  it('should be defined', () => {
+    const controller: LearnController =
+      module.get<LearnController>(LearnController);
+    expect(controller).toBeDefined();
+  });
 
-    it('should have a valid service', () => {
-        const service: LearnService = module.get<LearnService>(LearnService);
-        expect(service).toBeDefined();
-    });
+  it('should have a valid service', () => {
+    const service: LearnService = module.get<LearnService>(LearnService);
+    expect(service).toBeDefined();
+  });
 });

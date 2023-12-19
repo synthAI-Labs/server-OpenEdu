@@ -11,7 +11,12 @@ import { LearnService } from './learn/learn.service';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [AppController, AuthController, DashboardController, LearnController],
+  controllers: [
+    AppController,
+    AuthController,
+    DashboardController,
+    LearnController,
+  ],
   providers: [AppService, AuthService, DashboardService, LearnService],
 })
-export class AppModule { }
+export class AppModule {}

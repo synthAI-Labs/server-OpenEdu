@@ -8,23 +8,25 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '@nestjs/config';
 
 describe('DashboardModule', () => {
-    let module: TestingModule;
+  let module: TestingModule;
 
-    beforeEach(async () => {
-        module = await Test.createTestingModule({
-            imports: [DashboardModule, PrismaModule, ConfigModule],
-            controllers: [DashboardController],
-            providers: [DashboardService, PrismaService, ConfigService],
-        }).compile();
-    });
+  beforeEach(async () => {
+    module = await Test.createTestingModule({
+      imports: [DashboardModule, PrismaModule, ConfigModule],
+      controllers: [DashboardController],
+      providers: [DashboardService, PrismaService, ConfigService],
+    }).compile();
+  });
 
-    it('should be defined', () => {
-        const controller: DashboardController = module.get<DashboardController>(DashboardController);
-        expect(controller).toBeDefined();
-    });
+  it('should be defined', () => {
+    const controller: DashboardController =
+      module.get<DashboardController>(DashboardController);
+    expect(controller).toBeDefined();
+  });
 
-    it('should have a valid service', () => {
-        const service: DashboardService = module.get<DashboardService>(DashboardService);
-        expect(service).toBeDefined();
-    });
+  it('should have a valid service', () => {
+    const service: DashboardService =
+      module.get<DashboardService>(DashboardService);
+    expect(service).toBeDefined();
+  });
 });
