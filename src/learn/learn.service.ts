@@ -3,7 +3,6 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class LearnService {
-
     constructor(private prisma: PrismaService) { }
 
     async getLearn() {
@@ -84,6 +83,36 @@ export class LearnService {
         return course.subtopics;
     }
 
+    async getModule(courseId: string, topicId: string, moduleId: string) {
+        const course = await this.prisma.course.findUnique({
+            where: { id: parseInt(courseId) },
+            include: {
+                subtopics: {
+                    include: {
+                        modules: true,
+                    },
+                },
+            },
+        });
+
+        if (!course) {
+            throw new ForbiddenException('Course not found');
+        }
+
+        const topic = course.subtopics.find((topic) => topic.id === parseInt(topicId));
+
+        if (!topic) {
+            throw new ForbiddenException('Topic not found');
+        }
+
+        const module = topic.modules.find((module) => module.id === parseInt(moduleId));
+
+        if (!module) {
+            throw new ForbiddenException('Module not found');
+        }
+
+        return module;
+    }
 }
 
 
