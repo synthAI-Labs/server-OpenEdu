@@ -56,4 +56,30 @@ export class DashboardService {
 
         return updatedUser;
     }
+
+    async getAchievements(token: string, userId: string) {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: parseInt(userId),
+                token: token as string,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException('User not found, invalid token');
+        }
+
+        const userAchievements = await this.prisma.user.findMany({
+            where: {
+                id: parseInt(userId),
+            },
+            include: {
+                achievements: {
+                    include: {},
+                },
+            }
+        });
+
+        return userAchievements;
+    }
 }

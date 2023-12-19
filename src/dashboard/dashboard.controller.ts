@@ -17,4 +17,9 @@ export class DashboardController {
     updateProfile(@Headers('authorization') token: string, @Headers('user_id') userId: string, @Body() dto: DashboardDto) {
         return this.dashboardService.updateProfile(token, userId, dto);
     }
+
+    @Post('achievements')
+    getAchievements(@Headers('authorization') token: string, @Headers('user_id') userId: string) {
+        return this.dashboardService.getAchievements(token, userId);
+    }
 }
