@@ -22,4 +22,27 @@ export class LearnService {
         return course;
     }
 
+
+    async enroll(courseId: string, userId: string, authToken: string) {
+        const course = await this.prisma.course.findUnique({
+            where: { id: parseInt(courseId) },
+        });
+
+        if (!course) {
+            throw new ForbiddenException('Course not found');
+        }
+
+        const updatedUser = await this.prisma.user.update({
+            where: { id: parseInt(userId) },
+            data: {
+                coursesEnrolled: {
+                    push: courseId,
+                },
+            },
+        });
+
+        return updatedUser;
+    }
 }
+
+
