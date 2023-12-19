@@ -6,4 +6,4 @@ import { DashboardService } from "./dashboard.service";
     controllers: [DashboardController],
     providers: [DashboardService],
 })
-export class AuthModule { }
+export class DashboardModule { }

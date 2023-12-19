@@ -1,20 +1,55 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
+import { Injectable, NotFoundException, BadRequestException, ConflictException, UnauthorizedException } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 import { DashboardDto } from "./dto";
 
 @Injectable()
 export class DashboardService {
     constructor(private prisma: PrismaService) { }
 
+    /**
+     * Validates the token and user ID.
+     * @param token - The token to validate.
+     * @param userId - The user ID to validate.
+     * @throws BadRequestException if the token or user ID is invalid.
+     */
+    private validateTokenAndUserId(token: string, userId: string): void {
+        if (!token || token.trim() === '' || userId === 'undefined' || userId === 'null' || userId.trim() === '') {
+            throw new BadRequestException('Invalid token or user ID');
+        }
+    }
+
+    /**
+     * Validates the ID format.
+     * @param id - The ID to validate.
+     * @param field - The field name associated with the ID.
+     * @returns The parsed ID.
+     * @throws BadRequestException if the ID format is invalid.
+     */
+    private validateIdFormat(id: string, field: string): number {
+        const parsedId = parseInt(id);
+        if (isNaN(parsedId)) {
+            throw new BadRequestException(`Invalid ${field} format`);
+        }
+        return parsedId;
+    }
+
+    /**
+     * Retrieves the user profile.
+     * @param token - The user token.
+     * @param userId - The user ID.
+     * @returns The user profile.
+     * @throws NotFoundException if the user is not found.
+     */
     async getProfile(token: string, userId: string) {
+        this.validateTokenAndUserId(token, userId);
+
         const user = await this.prisma.user.findUnique({
             where: {
                 token: token,
-                id: parseInt(userId),
+                id: this.validateIdFormat(userId, 'user ID'),
             },
             include: {
                 achievements: true,
-                // Include other related entities as needed
             },
         });
 
@@ -25,11 +60,21 @@ export class DashboardService {
         return user;
     }
 
-    async updateProfile(token: String, userId: string, dto: DashboardDto) {
+    /**
+     * Updates the user profile.
+     * @param token - The user token.
+     * @param userId - The user ID.
+     * @param dto - The dashboard DTO containing the updated profile information.
+     * @returns The updated user profile.
+     * @throws NotFoundException if the user is not found.
+     */
+    async updateProfile(token: string, userId: string, dto: DashboardDto) {
+        this.validateTokenAndUserId(token, userId);
+
         const user = await this.prisma.user.findUnique({
             where: {
-                id: parseInt(userId),
-                token: token as string,
+                id: this.validateIdFormat(userId, 'user ID'),
+                token: token,
             },
         });
 
@@ -50,18 +95,26 @@ export class DashboardService {
             },
             include: {
                 achievements: true,
-                // Include other related entities as needed
             },
         });
 
         return updatedUser;
     }
 
+    /**
+     * Retrieves the user achievements.
+     * @param token - The user token.
+     * @param userId - The user ID.
+     * @returns The user achievements.
+     * @throws NotFoundException if the user is not found.
+     */
     async getAchievements(token: string, userId: string) {
+        this.validateTokenAndUserId(token, userId);
+
         const user = await this.prisma.user.findUnique({
             where: {
-                id: parseInt(userId),
-                token: token as string,
+                id: this.validateIdFormat(userId, 'user ID'),
+                token: token,
             },
         });
 
@@ -71,7 +124,7 @@ export class DashboardService {
 
         const userAchievements = await this.prisma.user.findMany({
             where: {
-                id: parseInt(userId),
+                id: this.validateIdFormat(userId, 'user ID'),
             },
             include: {
                 achievements: {
@@ -83,11 +136,22 @@ export class DashboardService {
         return userAchievements;
     }
 
+    /**
+     * Claims an achievement for the user.
+     * @param token - The user token.
+     * @param userId - The user ID.
+     * @param achievementId - The ID of the achievement to claim.
+     * @returns The updated user profile.
+     * @throws NotFoundException if the user or achievement is not found.
+     * @throws ConflictException if the achievement is already claimed by the user.
+     */
     async claimAchievement(token: string, userId: string, achievementId: string) {
+        this.validateTokenAndUserId(token, userId);
+
         const user = await this.prisma.user.findUnique({
             where: {
-                id: parseInt(userId),
-                token: token as string,
+                id: this.validateIdFormat(userId, 'user ID'),
+                token: token,
             },
         });
 
@@ -97,7 +161,7 @@ export class DashboardService {
 
         const achievement = await this.prisma.achievement.findUnique({
             where: {
-                id: parseInt(achievementId),
+                id: this.validateIdFormat(achievementId, 'achievement ID'),
             },
         });
 
@@ -106,22 +170,22 @@ export class DashboardService {
         }
 
         const alreadyClaimed = await this.prisma.user.findUnique({
-            where: { id: parseInt(userId) },
+            where: { id: this.validateIdFormat(userId, 'user ID') },
             select: { achievements: true },
         });
 
-        if (alreadyClaimed.achievements.some(ach => ach.id === parseInt(achievementId))) {
-            return "Already claimed";
+        if (alreadyClaimed.achievements.some(ach => ach.id === this.validateIdFormat(achievementId, 'achievement ID'))) {
+            throw new ConflictException('Achievement already claimed');
         }
 
         const updatedUser = await this.prisma.user.update({
             where: {
-                id: parseInt(userId),
+                id: this.validateIdFormat(userId, 'user ID'),
             },
             data: {
                 achievements: {
                     connect: {
-                        id: parseInt(achievementId),
+                        id: this.validateIdFormat(achievementId, 'achievement ID'),
                     },
                 },
             },
@@ -132,7 +196,4 @@ export class DashboardService {
 
         return updatedUser;
     }
-
-
-
 }
