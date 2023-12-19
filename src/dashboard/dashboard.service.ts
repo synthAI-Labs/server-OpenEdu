@@ -29,11 +29,12 @@ export class DashboardService {
         const user = await this.prisma.user.findUnique({
             where: {
                 id: parseInt(userId),
+                token: token as string,
             },
         });
 
         if (!user) {
-            throw new NotFoundException('User not found');
+            throw new NotFoundException('User not found, invalid token');
         }
 
         const updatedUser = await this.prisma.user.update({
