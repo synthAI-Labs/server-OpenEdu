@@ -24,4 +24,5 @@ export class LearnController {
     async getTopics(@Param('id') courseId: string) {
         return this.learnService.getTopics(courseId);
     }
+
 }

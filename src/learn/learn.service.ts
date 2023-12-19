@@ -68,7 +68,13 @@ export class LearnService {
     async getTopics(courseId: string) {
         const course = await this.prisma.course.findUnique({
             where: { id: parseInt(courseId) },
-            include: { subtopics: true },
+            include: {
+                subtopics: {
+                    include: {
+                        modules: true,
+                    },
+                },
+            },
         });
 
         if (!course) {
@@ -77,6 +83,7 @@ export class LearnService {
 
         return course.subtopics;
     }
+
 }
 
 
