@@ -3,16 +3,30 @@ import { PrismaService } from "../prisma/prisma.service";
 import { AuthDto } from "./dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
+/**
+ * Service responsible for handling authentication-related operations.
+ */
 @Injectable()
 export class AuthService {
     constructor(private prisma: PrismaService) { }
 
+    /**
+     * Generates a random token by combining a random string and a timestamp.
+     * @returns The generated random token.
+     */
     generateRandomToken(): string {
         const randomString = Math.random().toString(36).substring(2);
         const timestamp = Date.now();
         return `${randomString}${timestamp}`;
     }
 
+    /**
+     * Signs up a new user with the provided authentication data.
+     * @param dto - The authentication data for the new user.
+     * @returns The created user object.
+     * @throws ForbiddenException if the username is already taken, password is less than 8 characters,
+     * name or username is less than 1 character, or if the email already exists.
+     */
     async signup(dto: AuthDto) {
         try {
             const sameUserName = await this.prisma.user.findUnique({
@@ -64,6 +78,12 @@ export class AuthService {
         }
     }
 
+    /**
+     * Signs in a user with the provided authentication data.
+     * @param dto - The authentication data for the user.
+     * @returns The signed-in user object.
+     * @throws ForbiddenException if no user with the provided email is found or if the password is invalid.
+     */
     async signin(dto: AuthDto) {
         const user = await this.prisma.user.findUnique({
             where: {
