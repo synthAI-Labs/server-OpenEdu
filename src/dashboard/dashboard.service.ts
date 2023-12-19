@@ -56,4 +56,83 @@ export class DashboardService {
 
         return updatedUser;
     }
+
+    async getAchievements(token: string, userId: string) {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: parseInt(userId),
+                token: token as string,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException('User not found, invalid token');
+        }
+
+        const userAchievements = await this.prisma.user.findMany({
+            where: {
+                id: parseInt(userId),
+            },
+            include: {
+                achievements: {
+                    include: {},
+                },
+            }
+        });
+
+        return userAchievements;
+    }
+
+    async claimAchievement(token: string, userId: string, achievementId: string) {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: parseInt(userId),
+                token: token as string,
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException('User not found, invalid token');
+        }
+
+        const achievement = await this.prisma.achievement.findUnique({
+            where: {
+                id: parseInt(achievementId),
+            },
+        });
+
+        if (!achievement) {
+            throw new NotFoundException('Achievement not found');
+        }
+
+        const alreadyClaimed = await this.prisma.user.findUnique({
+            where: { id: parseInt(userId) },
+            select: { achievements: true },
+        });
+
+        if (alreadyClaimed.achievements.some(ach => ach.id === parseInt(achievementId))) {
+            return "Already claimed";
+        }
+
+        const updatedUser = await this.prisma.user.update({
+            where: {
+                id: parseInt(userId),
+            },
+            data: {
+                achievements: {
+                    connect: {
+                        id: parseInt(achievementId),
+                    },
+                },
+            },
+            include: {
+                achievements: true,
+            },
+        });
+
+        return updatedUser;
+    }
+
+
+
 }

@@ -25,4 +25,9 @@ export class LearnController {
         return this.learnService.getTopics(courseId);
     }
 
+    @Get('/:id/:topicId/:moduleId')
+    async getModule(@Param('id') courseId: string, @Param('topicId') topicId: string, @Param('moduleId') moduleId: string) {
+        return this.learnService.getModule(courseId, topicId, moduleId);
+    }
+
 }
