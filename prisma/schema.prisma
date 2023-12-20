@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,15 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id               Int                @id @default(autoincrement())
+  username         String             @unique
+  photo            String
+  name             String
+  bio              String
+  email            String             @unique
+  password         String
+  role             String             @default("USER")
+  settings         UserSettings       @relation(fields: [userSettingsId], references: [id])
+  token            String             @default("demo")
+  courses          Course[]           @relation("UserCourses") // Renamed relation
+  userCourseStatus UserCourseStatus[]
+  interests        String[]
+  achievements     Achievement[]
+  userSettingsId   Int
+}
+
+model UserSettings {
+  id            Int     @id @default(autoincrement())
+  userId        Int
+  publicProfile Boolean @default(true)
+  publicEmail   Boolean @default(false)
+  User          User[]
+}
+
+enum UserCourseStatus {
+  IN_PROGRESS
+  COMPLETED
+  NOT_STARTED
+}
+
 model Course {
   id          Int           @id @default(autoincrement())
   name        String
   description String
   image       String
   subtopics   Subtopic[]
-  user        User?         @relation(fields: [userId], references: [id])
   userId      Int?
   Achievement Achievement[]
+  tags        String[]
+  enrolledBy  User?         @relation("UserCourses", fields: [userId], references: [id])
 }
 
 model Subtopic {
@@ -42,23 +72,6 @@ model Module {
   image      String
   subtopicId Int      @map("subtopicId")
   subtopic   Subtopic @relation(fields: [subtopicId], references: [id])
-}
-
-model User {
-  id                Int           @id @default(autoincrement())
-  username          String        @unique
-  photo             String
-  name              String
-  bio               String
-  achievements      Achievement[]
-  email             String        @unique
-  password          String
-  role              String
-  token             String        @default("demo")
-  coursesCompleted  String[]
-  coursesInProgress String[]
-  coursesEnrolled   String[]
-  Course            Course[]
 }
 
 model Achievement {

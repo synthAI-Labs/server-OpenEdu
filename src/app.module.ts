@@ -8,9 +8,11 @@ import { DashboardController } from './dashboard/dashboard.controller';
 import { DashboardService } from './dashboard/dashboard.service';
 import { LearnController } from './learn/learn.controller';
 import { LearnService } from './learn/learn.service';
+import { TerminusModule } from '@nestjs/terminus';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, TerminusModule, HttpModule],
   controllers: [
     AppController,
     AuthController,

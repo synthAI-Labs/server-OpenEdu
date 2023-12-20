@@ -11,6 +11,14 @@ export class AuthService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * Retrieves the status of the authentication service.
+   * @returns A string indicating the status of the authentication service.
+   */
+  getStatus() {
+    return 'Auth service is up';
+  }
+
+  /**
    * Generates a random token by combining a random string and a timestamp.
    * @returns The generated random token.
    */

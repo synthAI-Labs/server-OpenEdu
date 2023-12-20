@@ -5,6 +5,10 @@ import { LearnService } from './learn.service';
 export class LearnController {
   constructor(private learnService: LearnService) {}
 
+  @Get('status')
+  getStatus() {
+    return this.learnService.getStatus();
+  }
   // return all courses
   @Get('')
   async getLearn() {
