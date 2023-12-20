@@ -3,7 +3,7 @@ import { LearnService } from './learn.service';
 
 @Controller('learn/courses')
 export class LearnController {
-  constructor(private learnService: LearnService) { }
+  constructor(private learnService: LearnService) {}
 
   @Get('status')
   getStatus() {

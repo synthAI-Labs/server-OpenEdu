@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  HealthCheckService,
-  HttpHealthIndicator,
-  HealthCheck,
-} from '@nestjs/terminus';
+import { HttpHealthIndicator, HealthCheck } from '@nestjs/terminus';
 
 /**
  * Service class for the application.

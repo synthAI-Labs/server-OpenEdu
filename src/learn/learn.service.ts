@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 /**
@@ -6,7 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
  */
 @Injectable()
 export class LearnService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -67,7 +71,11 @@ export class LearnService {
    * @throws {NotFoundException} If the user or course is not found.
    * @returns A Promise that resolves to void.
    */
-  async enroll(courseId: string, userId: string, token: string): Promise<string> {
+  async enroll(
+    courseId: string,
+    userId: string,
+    token: string,
+  ): Promise<string> {
     const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
 
     const course = await this.prisma.course.findUnique({
@@ -81,7 +89,7 @@ export class LearnService {
     const user = await this.prisma.user.findUnique({
       where: {
         id: parseInt(userId),
-        token: token
+        token: token,
       },
     });
 
@@ -97,10 +105,10 @@ export class LearnService {
     });
 
     if (alreadyEnrolled) {
-      return "Already enrolled";
+      return 'Already enrolled';
     }
 
-    const enrollment = await this.prisma.courseEnrollment.create({
+    await this.prisma.courseEnrollment.create({
       data: {
         userId: user.id,
         courseId: course.id,
@@ -108,12 +116,7 @@ export class LearnService {
       },
     });
 
-    const updateduser = await this.prisma.user.update({
-      where: { id: user.id },
-      data: { CourseEnrollment: { connect: { id: enrollment.id } } },
-    });
-
-    return "Enrolled";
+    return 'Enrolled';
   }
 
   /**

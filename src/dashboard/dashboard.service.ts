@@ -9,7 +9,7 @@ import { DashboardDto } from './dto';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Retrieves the status of the authentication service.
