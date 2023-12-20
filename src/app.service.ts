@@ -5,13 +5,25 @@ import {
   HealthCheck,
 } from '@nestjs/terminus';
 
+/**
+ * Service class for the application.
+ */
 @Injectable()
 export class AppService {
-  getHello() {
-    return 'Hello World!';
-  }
-  constructor(private http: HttpHealthIndicator) {}
+  constructor(private http: HttpHealthIndicator) { }
 
+  /**
+   * Returns a greeting message.
+   * @returns The greeting message.
+   */
+  getHello() {
+    return "Hello World!";
+  }
+
+  /**
+   * Performs a health check on the specified services.
+   * @returns A promise that resolves to an object containing the status and details of the services.
+   */
   @HealthCheck()
   async checkHealth(): Promise<{
     status: string;
