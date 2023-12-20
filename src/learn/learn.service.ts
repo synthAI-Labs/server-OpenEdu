@@ -9,6 +9,14 @@ export class LearnService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * Retrieves the status of the authentication service.
+   * @returns A string indicating the status of the authentication service.
+   */
+  getStatus() {
+    return 'Auth service is up';
+  }
+
+  /**
    * Validates the format of an ID.
    * @param id - The ID to validate.
    * @param field - The field name associated with the ID.

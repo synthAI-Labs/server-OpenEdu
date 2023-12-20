@@ -12,6 +12,14 @@ export class DashboardService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * Retrieves the status of the authentication service.
+   * @returns A string indicating the status of the authentication service.
+   */
+  getStatus() {
+    return 'Auth service is up';
+  }
+
+  /**
    * Validates the token and user ID.
    * @param token - The token to validate.
    * @param userId - The user ID to validate.

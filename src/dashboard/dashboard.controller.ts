@@ -1,10 +1,23 @@
-import { Body, Controller, Headers, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { DashboardDto } from './dto';
 
 @Controller('dashboard')
 export class DashboardController {
   constructor(private dashboardService: DashboardService) {}
+
+  @Get('status')
+  getStatus() {
+    return this.dashboardService.getStatus();
+  }
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Post('profile')
