@@ -10,14 +10,14 @@ import {
  */
 @Injectable()
 export class AppService {
-  constructor(private http: HttpHealthIndicator) { }
+  constructor(private http: HttpHealthIndicator) {}
 
   /**
    * Returns a greeting message.
    * @returns The greeting message.
    */
   getHello() {
-    return "Hello World!";
+    return 'Hello World!';
   }
 
   /**

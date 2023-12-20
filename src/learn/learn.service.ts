@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 /**
@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
  */
 @Injectable()
 export class LearnService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -63,52 +63,57 @@ export class LearnService {
    * Enrolls a user in a course.
    * @param courseId - The ID of the course to enroll in.
    * @param userId - The ID of the user to enroll.
-   * @param token - The user's token.
-   * @returns A promise that resolves to the updated user.
-   * @throws ForbiddenException if the course, user, or enrollment already exists.
+   * @param token - The token for user authentication.
+   * @throws {NotFoundException} If the user or course is not found.
+   * @returns A Promise that resolves to void.
    */
-  async enroll(courseId: string, userId: string, token: string) {
+  async enroll(courseId: string, userId: string, token: string): Promise<string> {
     const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-    const parsedUserId = this.validateIdFormat(userId, 'user ID');
 
     const course = await this.prisma.course.findUnique({
       where: { id: parsedCourseId },
     });
 
     if (!course) {
-      throw new ForbiddenException('Course not found');
+      throw new NotFoundException('Course not found');
     }
 
     const user = await this.prisma.user.findUnique({
       where: {
-        id: parsedUserId,
-        token: token as string,
+        id: parseInt(userId),
+        token: token
       },
     });
 
     if (!user) {
-      throw new ForbiddenException('User not found');
+      throw new NotFoundException('User not found or invalid token');
     }
 
-    const alreadyEnrolled = await this.prisma.user.findUnique({
-      where: { id: parsedUserId },
-      select: { coursesEnrolled: true },
-    });
-
-    if (alreadyEnrolled.coursesEnrolled.includes(parsedCourseId.toString())) {
-      throw new ForbiddenException('Already enrolled');
-    }
-
-    const updatedUser = await this.prisma.user.update({
-      where: { id: parsedUserId },
-      data: {
-        coursesEnrolled: {
-          push: parsedCourseId.toString(),
-        },
+    const alreadyEnrolled = await this.prisma.courseEnrollment.findFirst({
+      where: {
+        userId: user.id,
+        courseId: course.id,
       },
     });
 
-    return updatedUser;
+    if (alreadyEnrolled) {
+      return "Already enrolled";
+    }
+
+    const enrollment = await this.prisma.courseEnrollment.create({
+      data: {
+        userId: user.id,
+        courseId: course.id,
+        status: 'NOT_STARTED',
+      },
+    });
+
+    const updateduser = await this.prisma.user.update({
+      where: { id: user.id },
+      data: { CourseEnrollment: { connect: { id: enrollment.id } } },
+    });
+
+    return "Enrolled";
   }
 
   /**

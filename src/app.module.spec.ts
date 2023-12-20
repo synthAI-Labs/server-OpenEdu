@@ -3,10 +3,10 @@ import { AppController } from '../src/app.controller';
 import { AppService } from '../src/app.service';
 import { AuthController } from '../src/auth/auth.controller';
 import { AuthService } from '../src/auth/auth.service';
-import { DashboardController } from '../src/dashboard/dashboard.controller';
-import { DashboardService } from '../src/dashboard/dashboard.service';
-import { LearnController } from '../src/learn/learn.controller';
-import { LearnService } from '../src/learn/learn.service';
+import { DashboardController } from './dashboard/dashboard.controller';
+import { DashboardService } from './dashboard/dashboard.service';
+import { LearnController } from './learn/learn.controller';
+import { LearnService } from './learn/learn.service';
 import { AppModule } from '../src/app.module';
 
 describe('AppModule', () => {

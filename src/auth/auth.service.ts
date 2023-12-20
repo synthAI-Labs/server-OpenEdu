@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -51,8 +52,6 @@ export class AuthService {
         throw new ForbiddenException('Password must be at least 8 characters');
       }
 
-      // Add other password validation checks here
-
       if (dto.name.length < 1 || dto.username.length < 1) {
         throw new ForbiddenException(
           'Name and username must be at least 1 character',
@@ -71,6 +70,12 @@ export class AuthService {
           photo: '',
           bio: '',
           role: 'user',
+          settings: {
+            create: {
+              publicProfile: false,
+              publicEmail: true,
+            } as Prisma.UserSettingsCreateWithoutUserInput,
+          },
         },
       });
 

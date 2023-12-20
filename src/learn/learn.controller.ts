@@ -3,7 +3,7 @@ import { LearnService } from './learn.service';
 
 @Controller('learn/courses')
 export class LearnController {
-  constructor(private learnService: LearnService) {}
+  constructor(private learnService: LearnService) { }
 
   @Get('status')
   getStatus() {
@@ -27,6 +27,7 @@ export class LearnController {
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
     @Param('id') courseId: string,
+    // @Headers('course_id') courseId: string,
   ) {
     return this.learnService.enroll(courseId, userId, token);
   }

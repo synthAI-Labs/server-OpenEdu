@@ -18,11 +18,10 @@ model User {
   role             String             @default("USER")
   settings         UserSettings       @relation(fields: [userSettingsId], references: [id])
   token            String             @default("demo")
-  courses          Course[]           @relation("UserCourses") // Renamed relation
-  userCourseStatus UserCourseStatus[]
   interests        String[]
   achievements     Achievement[]
   userSettingsId   Int
+  CourseEnrollment CourseEnrollment[]
 }
 
 model UserSettings {
@@ -40,22 +39,22 @@ enum UserCourseStatus {
 }
 
 model Course {
-  id          Int           @id @default(autoincrement())
-  name        String
-  description String
-  image       String
-  subtopics   Subtopic[]
-  userId      Int?
-  Achievement Achievement[]
-  tags        String[]
-  enrolledBy  User?         @relation("UserCourses", fields: [userId], references: [id])
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String
+  image            String
+  subtopics        Subtopic[]
+  userId           Int?
+  Achievement      Achievement[]
+  tags             String[]
+  CourseEnrollment CourseEnrollment[]
 }
 
 model Subtopic {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  courseId    Int
+  courseId    Int      @map("courseId")
   image       String
   course      Course   @relation(fields: [courseId], references: [id])
   modules     Module[]
@@ -64,7 +63,6 @@ model Subtopic {
 model Module {
   id         Int      @id @default(autoincrement())
   name       String
-  courseId   Int
   type       String
   content    String[]
   quiz       String[]
@@ -83,4 +81,15 @@ model Achievement {
   userId      Int
   course      Course @relation(fields: [courseId], references: [id])
   user        User   @relation(fields: [userId], references: [id])
+}
+
+model CourseEnrollment {
+  id          Int              @id @default(autoincrement())
+  userId      Int
+  courseId    Int
+  status      UserCourseStatus
+  enrolledAt  DateTime         @default(now())
+  completedAt DateTime?
+  course      Course           @relation(fields: [courseId], references: [id])
+  User        User             @relation(fields: [userId], references: [id])
 }
