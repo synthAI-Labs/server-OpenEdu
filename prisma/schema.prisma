@@ -26,11 +26,15 @@ model User {
 }
 
 model UserSettings {
-  id            Int     @id @default(autoincrement())
-  userId        Int
-  publicProfile Boolean @default(true)
-  publicEmail   Boolean @default(false)
-  User          User[]
+  id              Int     @id @default(autoincrement())
+  userId          Int
+  publicProfile   Boolean @default(true)
+  publicEmail     Boolean @default(true)
+  publicBio       Boolean @default(true)
+  publicPhoto     Boolean @default(true)
+  publicName      Boolean @default(true)
+  publicInterests Boolean @default(true)
+  User            User[]
 }
 
 enum UserCourseStatus {

@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsArray, ValidateNested } from 'class-validator';
 
 export class DashboardDto {
   @IsString()
@@ -15,4 +15,12 @@ export class DashboardDto {
 
   @IsString()
   email: string;
+
+  @IsArray()
+  @ValidateNested()
+  interests: string[];
+
+  @IsArray()
+  @ValidateNested()
+  settings: string[];
 }
