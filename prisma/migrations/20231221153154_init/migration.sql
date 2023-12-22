@@ -10,6 +10,7 @@ CREATE TABLE "User" (
     "bio" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "role" TEXT NOT NULL DEFAULT 'USER',
     "token" TEXT NOT NULL DEFAULT 'demo',
     "interests" TEXT[],
@@ -23,7 +24,11 @@ CREATE TABLE "UserSettings" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "publicProfile" BOOLEAN NOT NULL DEFAULT true,
-    "publicEmail" BOOLEAN NOT NULL DEFAULT false,
+    "publicEmail" BOOLEAN NOT NULL DEFAULT true,
+    "publicBio" BOOLEAN NOT NULL DEFAULT true,
+    "publicPhoto" BOOLEAN NOT NULL DEFAULT true,
+    "publicName" BOOLEAN NOT NULL DEFAULT true,
+    "publicInterests" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "UserSettings_pkey" PRIMARY KEY ("id")
 );

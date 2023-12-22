@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 
@@ -15,8 +15,12 @@ export class AuthController {
   signup(@Body() dto: AuthDto) {
     return this.authService.signup(dto);
   }
-  // TODO: for email confirmation, 
-  // @Post('signup/confirm')
+
+  // TODO: for email confirmation,
+  @Post('signup/confirm/:userEmail')
+  confirm(@Param('userEmail') userEmail: string, @Body('code') code: string) {
+    return this.authService.confirmEmail(userEmail, code);
+  }
 
   // TODO: for token reset,
   // @Post('signout')

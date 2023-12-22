@@ -9,11 +9,11 @@ import {
 } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { DashboardDto } from './dto';
-import { UserSettingsDto } from './dto'
+import { UserSettingsDto } from './dto';
 
 @Controller('')
 export class DashboardController {
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService) {}
 
   @Get('status')
   getStatus() {
@@ -22,7 +22,7 @@ export class DashboardController {
 
   @Get('p/:profileId')
   getPublicProfile(@Param('profileId') profileId: string) {
-    return this.dashboardService.getPublicProfile(profileId)
+    return this.dashboardService.getPublicProfile(profileId);
   }
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
@@ -50,7 +50,7 @@ export class DashboardController {
     @Headers('user_id') userId: string,
     @Body() dto: UserSettingsDto,
   ) {
-    return this.dashboardService.updateSettings(token, userId, dto)
+    return this.dashboardService.updateSettings(token, userId, dto);
   }
 
   @Post('dashboard/achievements')

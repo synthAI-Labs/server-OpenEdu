@@ -10,6 +10,7 @@ async function main() {
       name: 'User One',
       photo: 'url_to_user1_photo.jpg',
       bio: 'Bio for User One',
+      emailVerified: true,
       email: 'user1@example.com',
       password: 'password1',
       settings: {
