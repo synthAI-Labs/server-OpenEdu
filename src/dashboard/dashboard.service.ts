@@ -5,19 +5,11 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DashboardDto } from './dto';
+import { DashboardDto, UserSettingsDto } from './dto';
 
 @Injectable()
 export class DashboardService {
   constructor(private prisma: PrismaService) {}
-
-  /**
-   * Retrieves the status of the authentication service.
-   * @returns A string indicating the status of the authentication service.
-   */
-  getStatus() {
-    return 'Auth service is up';
-  }
 
   /**
    * Validates the token and user ID.
@@ -25,7 +17,9 @@ export class DashboardService {
    * @param userId - The user ID to validate.
    * @throws BadRequestException if the token or user ID is invalid.
    */
-  private validateTokenAndUserId(token: string, userId: string): void {
+  private validateTokenAndUserId(token: string, userId: string) {
+    this.verifyUser(userId);
+
     if (
       !token ||
       token.trim() === '' ||
@@ -33,7 +27,7 @@ export class DashboardService {
       userId === 'null' ||
       userId.trim() === ''
     ) {
-      throw new BadRequestException('Invalid token or user ID');
+      return new BadRequestException('Invalid token or user ID');
     }
   }
 
@@ -53,6 +47,76 @@ export class DashboardService {
   }
 
   /**
+   * Verifies if a user is verified based on their user ID.
+   * @param userId - The ID of the user to verify.
+   * @throws ForbiddenException if the user is not verified.
+   */
+  async verifyUser(userId: string) {
+    const userVerified = await this.prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    if (!userVerified.emailVerified) {
+      return new NotFoundException('User not verified');
+    }
+  }
+
+  /**
+   * Retrieves the public profile of a user.
+   * @param profileId - The ID of the user's profile.
+   * @returns The public profile of the user, including their ID, name, email, bio, photo, interests, username, and settings.
+   * @throws NotFoundException if the user is not found.
+   */
+  async getPublicProfile(profileId: string) {
+    this.verifyUser(profileId);
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: parseInt(profileId),
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User not Found`);
+    }
+
+    const userSettings = await this.prisma.user.findUnique({
+      where: {
+        id: parseInt(profileId),
+      },
+      include: {
+        settings: true,
+      },
+    });
+
+    if (!userSettings.settings.publicProfile) {
+      return 'Profile is private';
+    }
+
+    const profile = {
+      id: user.id,
+      name: userSettings.settings.publicName ? user.name : null,
+      email: userSettings.settings.publicEmail ? user.email : null,
+      bio: userSettings.settings.publicBio ? user.bio : null,
+      photo: userSettings.settings.publicPhoto ? user.photo : null,
+      interests: userSettings.settings.publicInterests ? user.interests : null,
+      username: user.username,
+      settings: userSettings.settings,
+    };
+
+    return profile;
+  }
+
+  /**
+   * Retrieves the status of the authentication service.
+   * @returns A string indicating the status of the authentication service.
+   */
+  getStatus() {
+    return 'Auth service is up';
+  }
+
+  /**
    * Retrieves the user profile.
    * @param token - The user token.
    * @param userId - The user ID.
@@ -69,6 +133,8 @@ export class DashboardService {
       },
       include: {
         achievements: true,
+        CourseEnrollment: true,
+        settings: true,
       },
     });
 
@@ -89,6 +155,7 @@ export class DashboardService {
    */
   async updateProfile(token: string, userId: string, dto: DashboardDto) {
     this.validateTokenAndUserId(token, userId);
+    this.verifyUser(userId);
 
     const user = await this.prisma.user.findUnique({
       where: {
@@ -111,13 +178,44 @@ export class DashboardService {
         photo: dto.photo,
         email: dto.email,
         username: dto.username,
+        interests: dto.interests,
       },
       include: {
         achievements: true,
+        CourseEnrollment: true,
+        settings: true,
       },
     });
 
     return updatedUser;
+  }
+
+  /**
+   * Updates the user settings.
+   * @param token - The user token.
+   * @param userId - The user ID.
+   * @param dto - The user settings DTO containing the updated settings information.
+   * @returns The updated user settings.
+   * @throws NotFoundException if the user is not found.
+   */
+  async updateSettings(token: string, userId: string, dto: UserSettingsDto) {
+    this.validateTokenAndUserId(token, userId);
+
+    const updatedSettings = await this.prisma.userSettings.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data: {
+        publicProfile: dto.publicProfile,
+        publicEmail: dto.publicEmail,
+        publicBio: dto.publicBio,
+        publicPhoto: dto.publicPhoto,
+        publicName: dto.publicName,
+        publicInterests: dto.publicInterests,
+      },
+    });
+
+    return updatedSettings;
   }
 
   /**

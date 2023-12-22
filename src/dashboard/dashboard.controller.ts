@@ -9,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { DashboardDto } from './dto';
+import { UserSettingsDto } from './dto';
 
-@Controller('dashboard')
+@Controller('')
 export class DashboardController {
   constructor(private dashboardService: DashboardService) {}
 
@@ -19,8 +20,13 @@ export class DashboardController {
     return this.dashboardService.getStatus();
   }
 
+  @Get('p/:profileId')
+  getPublicProfile(@Param('profileId') profileId: string) {
+    return this.dashboardService.getPublicProfile(profileId);
+  }
+
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
-  @Post('profile')
+  @Post('dashboard/profile')
   getProfile(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -29,7 +35,7 @@ export class DashboardController {
   }
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
-  @Put('profile')
+  @Put('dashboard/profile')
   updateProfile(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -38,7 +44,16 @@ export class DashboardController {
     return this.dashboardService.updateProfile(token, userId, dto);
   }
 
-  @Post('achievements')
+  @Put('dashboard/profile/settings')
+  updateSettings(
+    @Headers('authorization') token: string,
+    @Headers('user_id') userId: string,
+    @Body() dto: UserSettingsDto,
+  ) {
+    return this.dashboardService.updateSettings(token, userId, dto);
+  }
+
+  @Post('dashboard/achievements')
   getAchievements(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -46,7 +61,7 @@ export class DashboardController {
     return this.dashboardService.getAchievements(token, userId);
   }
 
-  @Post('achievements/:achievementId/claim')
+  @Post('dashboard/achievements/:achievementId/claim')
   claimAchievement(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

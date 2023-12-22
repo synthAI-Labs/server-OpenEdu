@@ -10,6 +10,7 @@ import { LearnController } from './learn/learn.controller';
 import { LearnService } from './learn/learn.service';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
+import Redis from 'ioredis';
 
 @Module({
   imports: [PrismaModule, TerminusModule, HttpModule],
@@ -19,6 +20,18 @@ import { HttpModule } from '@nestjs/axios';
     DashboardController,
     LearnController,
   ],
-  providers: [AppService, AuthService, DashboardService, LearnService],
+  providers: [
+    AppService,
+    AuthService,
+    DashboardService,
+    LearnService,
+    {
+      provide: 'REDIS',
+      useValue: new Redis({
+        host: 'localhost', // replace with your Redis host
+        port: 6379, // replace with your Redis port
+      }),
+    },
+  ],
 })
 export class AppModule {}

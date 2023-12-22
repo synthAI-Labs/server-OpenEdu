@@ -1,23 +1,29 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { AuthModule } from './auth.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { PrismaModule } from '../prisma/prisma.module';
-import { ConfigService } from '@nestjs/config'; // import ConfigService
-import { ConfigModule } from '@nestjs/config'; // import ConfigModule
+import { AppModule } from '../app.module';
 
 describe('AuthModule', () => {
   let authModule: AuthModule;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AuthModule, PrismaModule, ConfigModule], // add ConfigModule to imports
+    const moduleRef = await Test.createTestingModule({
+      imports: [AuthModule, AppModule],
       controllers: [AuthController],
-      providers: [AuthService, PrismaService, ConfigService], // add ConfigService to providers
+      providers: [
+        AuthService,
+        {
+          provide: 'REDIS',
+          useValue: {
+            get: jest.fn(),
+            del: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
-    authModule = module.get<AuthModule>(AuthModule);
+    authModule = moduleRef.get<AuthModule>(AuthModule);
   });
 
   it('should be defined', () => {

@@ -1,23 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import {
-  HealthCheckService,
-  HttpHealthIndicator,
-  HealthCheck,
-} from '@nestjs/terminus';
+import { HttpHealthIndicator, HealthCheck } from '@nestjs/terminus';
 
 /**
  * Service class for the application.
  */
 @Injectable()
 export class AppService {
-  constructor(private http: HttpHealthIndicator) { }
+  constructor(private http: HttpHealthIndicator) {}
 
   /**
    * Returns a greeting message.
    * @returns The greeting message.
    */
   getHello() {
-    return "Hello World!";
+    return 'Hello World!';
   }
 
   /**

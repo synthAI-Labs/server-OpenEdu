@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 /**
@@ -23,10 +27,10 @@ export class LearnService {
    * @returns The parsed ID as a number.
    * @throws ForbiddenException if the ID format is invalid.
    */
-  private validateIdFormat(id: string, field: string): number {
+  private validateIdFormat(id: string, field: string) {
     const parsedId = parseInt(id);
     if (isNaN(parsedId)) {
-      throw new ForbiddenException(`Invalid ${field} format`);
+      return new ForbiddenException(`Invalid ${field} format`);
     }
     return parsedId;
   }
@@ -46,14 +50,15 @@ export class LearnService {
    * @throws ForbiddenException if the course is not found.
    */
   async getCourseById(courseId: string) {
-    const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-
     const course = await this.prisma.course.findUnique({
-      where: { id: parsedCourseId },
+      where: { id: parseInt(courseId) },
+      include: {
+        subtopics: true,
+      },
     });
 
     if (!course) {
-      throw new ForbiddenException('Course not found');
+      return new ForbiddenException('Course not found');
     }
 
     return course;
@@ -63,52 +68,55 @@ export class LearnService {
    * Enrolls a user in a course.
    * @param courseId - The ID of the course to enroll in.
    * @param userId - The ID of the user to enroll.
-   * @param token - The user's token.
-   * @returns A promise that resolves to the updated user.
-   * @throws ForbiddenException if the course, user, or enrollment already exists.
+   * @param token - The token for user authentication.
+   * @throws {NotFoundException} If the user or course is not found.
+   * @returns A Promise that resolves to void.
    */
   async enroll(courseId: string, userId: string, token: string) {
-    const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-    const parsedUserId = this.validateIdFormat(userId, 'user ID');
+    const parsedCourseId = this.validateIdFormat(
+      courseId,
+      'course ID',
+    ) as number;
 
     const course = await this.prisma.course.findUnique({
       where: { id: parsedCourseId },
     });
 
     if (!course) {
-      throw new ForbiddenException('Course not found');
+      return new NotFoundException('Course not found');
     }
 
     const user = await this.prisma.user.findUnique({
       where: {
-        id: parsedUserId,
-        token: token as string,
+        id: parseInt(userId),
+        token: token,
       },
     });
 
     if (!user) {
-      throw new ForbiddenException('User not found');
+      return new NotFoundException('User not found or invalid token');
     }
 
-    const alreadyEnrolled = await this.prisma.user.findUnique({
-      where: { id: parsedUserId },
-      select: { coursesEnrolled: true },
-    });
-
-    if (alreadyEnrolled.coursesEnrolled.includes(parsedCourseId.toString())) {
-      throw new ForbiddenException('Already enrolled');
-    }
-
-    const updatedUser = await this.prisma.user.update({
-      where: { id: parsedUserId },
-      data: {
-        coursesEnrolled: {
-          push: parsedCourseId.toString(),
-        },
+    const alreadyEnrolled = await this.prisma.courseEnrollment.findFirst({
+      where: {
+        userId: user.id,
+        courseId: course.id,
       },
     });
 
-    return updatedUser;
+    if (alreadyEnrolled) {
+      return 'Already enrolled';
+    }
+
+    await this.prisma.courseEnrollment.create({
+      data: {
+        userId: user.id,
+        courseId: course.id,
+        status: 'NOT_STARTED',
+      },
+    });
+
+    return 'Enrolled';
   }
 
   /**
@@ -118,7 +126,10 @@ export class LearnService {
    * @throws ForbiddenException if the course is not found.
    */
   async getTopics(courseId: string) {
-    const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+    const parsedCourseId = this.validateIdFormat(
+      courseId,
+      'course ID',
+    ) as number;
 
     const course = await this.prisma.course.findUnique({
       where: { id: parsedCourseId },
@@ -132,7 +143,7 @@ export class LearnService {
     });
 
     if (!course) {
-      throw new ForbiddenException('Course not found');
+      return new ForbiddenException('Course not found');
     }
 
     return course.subtopics;
@@ -147,12 +158,11 @@ export class LearnService {
    * @throws ForbiddenException if the course, topic, or module is not found.
    */
   async getModule(courseId: string, topicId: string, moduleId: string) {
-    const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
     const parsedTopicId = this.validateIdFormat(topicId, 'topic ID');
     const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
 
     const course = await this.prisma.course.findUnique({
-      where: { id: parsedCourseId },
+      where: { id: parseInt(courseId) },
       include: {
         subtopics: {
           include: {
@@ -163,19 +173,19 @@ export class LearnService {
     });
 
     if (!course) {
-      throw new ForbiddenException('Course not found');
+      return new ForbiddenException('Course not found');
     }
 
     const topic = course.subtopics.find((t) => t.id === parsedTopicId);
 
     if (!topic) {
-      throw new ForbiddenException('Topic not found');
+      return new ForbiddenException('Topic not found');
     }
 
     const module = topic.modules.find((m) => m.id === parsedModuleId);
 
     if (!module) {
-      throw new ForbiddenException('Module not found');
+      return new ForbiddenException('Module not found');
     }
 
     return module;
