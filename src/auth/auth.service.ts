@@ -1,7 +1,6 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
-import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
 
@@ -10,7 +9,10 @@ import Redis from 'ioredis';
  */
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, @Inject('REDIS') private redisClient: Redis) { }
+  constructor(
+    private prisma: PrismaService,
+    @Inject('REDIS') private redisClient: Redis,
+  ) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -38,7 +40,16 @@ export class AuthService {
    * name or username is less than 1 character, or if the email already exists.
    */
   async signup(dto: AuthDto) {
-    if (!dto.email || dto.email.length <= 1 || !dto.password || dto.password.length <= 1 || !dto.name || dto.name.length <= 1 || !dto.username || dto.username.length <= 1) {
+    if (
+      !dto.email ||
+      dto.email.length <= 1 ||
+      !dto.password ||
+      dto.password.length <= 1 ||
+      !dto.name ||
+      dto.name.length <= 1 ||
+      !dto.username ||
+      dto.username.length <= 1
+    ) {
       return new ForbiddenException('Missing required fields');
     }
     try {
@@ -56,7 +67,6 @@ export class AuthService {
         return new ForbiddenException('Password must be at least 8 characters');
       }
 
-
       if (dto.name.length < 1 || dto.username.length < 1) {
         return new ForbiddenException(
           'Name and username must be at least 1 character',
@@ -65,10 +75,7 @@ export class AuthService {
 
       const token = this.generateRandomToken();
       const verificationCode = this.generateVerificationCode();
-      const isCodeSent = await this.sendVerificationCode(
-        dto.email,
-        verificationCode,
-      )
+      await this.sendVerificationCode(dto.email, verificationCode);
 
       const user = await this.prisma.user.create({
         data: {
@@ -84,7 +91,7 @@ export class AuthService {
           settings: {
             create: {
               userId: 1,
-            }
+            },
           },
         },
         include: {
@@ -100,8 +107,8 @@ export class AuthService {
           settings: {
             update: {
               userId: user.id,
-            }
-          }
+            },
+          },
         },
         include: {
           settings: true,
@@ -111,7 +118,7 @@ export class AuthService {
       try {
         await this.redisClient.set(user.email, verificationCode);
       } catch (error) {
-        return (error)
+        return error;
       }
 
       return updatedUser;
@@ -126,6 +133,13 @@ export class AuthService {
     }
   }
 
+  /**
+   * Confirms the email of a user by comparing the verification code.
+   * @param userEmail - The email of the user.
+   * @param userGivenCode - The verification code provided by the user.
+   * @returns The updated user object if the verification code is valid.
+   * @throws ForbiddenException if no verification code is found, or if the verification code is invalid.
+   */
   async confirmEmail(userEmail: string, userGivenCode: string) {
     const verificationCode = await this.redisClient.get(userEmail);
 
@@ -148,14 +162,23 @@ export class AuthService {
     } else {
       return new ForbiddenException('Invalid verification code');
     }
-
   }
 
+  /**
+   * Generates a random verification code.
+   * @returns The generated verification code.
+   */
   generateVerificationCode(): string {
     const code = Math.floor(1000 + Math.random() * 9000).toString();
     return code;
   }
 
+  /**
+   * Sends a verification code to the provided email address.
+   * @param email - The email address to send the verification code to.
+   * @param code - The verification code to send.
+   * @returns A boolean indicating whether the code was successfully sent.
+   */
   async sendVerificationCode(email: string, code: string): Promise<boolean> {
     const isCodeVerified = await this.mockEmailService.sendVerificationCode(
       email,
