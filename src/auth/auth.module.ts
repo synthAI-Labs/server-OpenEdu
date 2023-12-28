@@ -13,4 +13,4 @@ import Redis from 'ioredis';
     },
   ],
 })
-export class AuthModule { }
+export class AuthModule {}

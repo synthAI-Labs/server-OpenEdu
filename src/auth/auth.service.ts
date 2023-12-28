@@ -13,7 +13,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) { }
+  ) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -37,23 +37,24 @@ export class AuthService {
    * Signs up a new user with the provided authentication data.
    * @param dto - The authentication data for the new user.
    * @returns The created user object.
-   * @throws ForbiddenException if the username is already taken, password is less than 8 characters,
+   * @returns ForbiddenException if the username is already taken, password is less than 8 characters,
    * name or username is less than 1 character, or if the email already exists.
    */
   async signup(dto: AuthDto) {
-    if (
-      !dto.email ||
-      dto.email.length <= 1 ||
-      !dto.password ||
-      dto.password.length <= 1 ||
-      !dto.name ||
-      dto.name.length <= 1 ||
-      !dto.username ||
-      dto.username.length <= 1
-    ) {
-      return new ForbiddenException('Missing required fields');
-    }
     try {
+      if (
+        !dto.email ||
+        dto.email.length <= 1 ||
+        !dto.password ||
+        dto.password.length <= 1 ||
+        !dto.name ||
+        dto.name.length <= 1 ||
+        !dto.username ||
+        dto.username.length <= 1
+      ) {
+        return new ForbiddenException('Missing required fields');
+      }
+
       const sameUserName = await this.prisma.user.findUnique({
         where: {
           username: dto.username,
@@ -131,7 +132,7 @@ export class AuthService {
         }
       }
 
-      throw error;
+      return error;
     }
   }
 
@@ -140,29 +141,33 @@ export class AuthService {
    * @param userEmail - The email of the user.
    * @param userGivenCode - The verification code provided by the user.
    * @returns The updated user object if the verification code is valid.
-   * @throws ForbiddenException if no verification code is found, or if the verification code is invalid.
+   * @returns ForbiddenException if no verification code is found, or if the verification code is invalid.
    */
   async confirmEmail(userEmail: string, userGivenCode: string) {
-    const verificationCode = await this.redisClient.get(userEmail);
+    try {
+      const verificationCode = await this.redisClient.get(userEmail);
 
-    if (!verificationCode) {
-      return new ForbiddenException('No verification code found');
-    }
+      if (!verificationCode) {
+        return new ForbiddenException('No verification code found');
+      }
 
-    if (verificationCode === userGivenCode) {
-      await this.redisClient.del(userEmail);
+      if (verificationCode === userGivenCode) {
+        await this.redisClient.del(userEmail);
 
-      const user = await this.prisma.user.update({
-        where: {
-          email: userEmail,
-        },
-        data: {
-          emailVerified: true,
-        },
-      });
-      return user;
-    } else {
-      return new ForbiddenException('Invalid verification code');
+        const user = await this.prisma.user.update({
+          where: {
+            email: userEmail,
+          },
+          data: {
+            emailVerified: true,
+          },
+        });
+        return user;
+      } else {
+        return new ForbiddenException('Invalid verification code');
+      }
+    } catch (error) {
+      return error;
     }
   }
 
@@ -182,37 +187,48 @@ export class AuthService {
    * @returns A boolean indicating whether the code was successfully sent.
    */
   async sendVerificationCode(email: string, code: string) {
-    const subject = 'OTP for Verification';
-    const text = 'Thankyou for registering with us. Your OTP is ' + code + '. Please enter this OTP to verify your account.';
+    try {
+      const subject = 'OTP for Verification';
+      const text =
+        'Thankyou for registering with us. Your OTP is ' +
+        code +
+        '. Please enter this OTP to verify your account.';
 
-    const res = sendEmail(email, subject, text)
-    return res;
+      const res = sendEmail(email, subject, text);
+      return res;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
    * Signs in a user with the provided authentication data.
    * @param dto - The authentication data for the user.
    * @returns The signed-in user object.
-   * @throws ForbiddenException if no user with the provided email is found or if the password is invalid.
+   * @returns ForbiddenException if no user with the provided email is found or if the password is invalid.
    */
   async signin(dto: AuthDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          email: dto.email,
+        },
+      });
 
-    if (!user) {
-      return new ForbiddenException('No user with email found');
+      if (!user) {
+        return new ForbiddenException('No user with email found');
+      }
+
+      const isPasswordValid = user.password === dto.password;
+
+      if (!isPasswordValid) {
+        return new ForbiddenException('Invalid password');
+      }
+
+      delete user.password;
+      return user;
+    } catch (error) {
+      return error;
     }
-
-    const isPasswordValid = user.password === dto.password;
-
-    if (!isPasswordValid) {
-      return new ForbiddenException('Invalid password');
-    }
-
-    delete user.password;
-    return user;
   }
 }

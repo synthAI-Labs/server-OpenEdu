@@ -15,7 +15,7 @@ export class DashboardService {
    * Validates the token and user ID.
    * @param token - The token to validate.
    * @param userId - The user ID to validate.
-   * @throws BadRequestException if the token or user ID is invalid.
+   * @returns BadRequestException if the token or user ID is invalid.
    */
   private validateTokenAndUserId(token: string, userId: string) {
     this.verifyUser(userId);
@@ -32,36 +32,25 @@ export class DashboardService {
   }
 
   /**
-   * Validates the ID format.
-   * @param id - The ID to validate.
-   * @param field - The field name associated with the ID.
-   * @returns The parsed ID.
-   * @throws BadRequestException if the ID format is invalid.
-   */
-  private validateIdFormat(id: string, field: string): number {
-    const parsedId = parseInt(id);
-    if (isNaN(parsedId)) {
-      throw new BadRequestException(`Invalid ${field} format`);
-    }
-    return parsedId;
-  }
-
-  /**
    * Verifies if a user is verified based on their user ID.
    * @param userId - The ID of the user to verify.
-   * @throws ForbiddenException if the user is not verified.
+   * @returns ForbiddenException if the user is not verified.
    */
   async verifyUser(userId: string) {
-    const userVerified = await this.prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      select: {
-        emailVerified: true,
-      },
-    });
-    if (!userVerified) {
-      return new NotFoundException('User not verified');
+    try {
+      const userVerified = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+        },
+        select: {
+          emailVerified: true,
+        },
+      });
+      if (!userVerified) {
+        return new NotFoundException('User not verified');
+      }
+    } catch (error) {
+      return error;
     }
   }
 
@@ -69,49 +58,55 @@ export class DashboardService {
    * Retrieves the public profile of a user.
    * @param profileId - The ID of the user's profile.
    * @returns The public profile of the user, including their ID, name, email, bio, photo, interests, username, and settings.
-   * @throws NotFoundException if the user is not found.
+   * @returns NotFoundException if the user is not found.
    */
   async getPublicProfile(profileId: string) {
-    // this.verifyUser(profileId);
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: parseInt(profileId),
-      },
-    });
+    try {
+      // this.verifyUser(profileId);
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(profileId),
+        },
+      });
 
-    if (!user) {
-      throw new NotFoundException(`User not Found`);
+      if (!user) {
+        return new NotFoundException(`User not Found`);
+      }
+
+      const userSettings = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(profileId),
+        },
+        include: {
+          settings: true,
+          achievements: true,
+          CourseEnrollment: true,
+        },
+      });
+
+      if (!userSettings.settings.publicProfile) {
+        return 'Profile is private';
+      }
+
+      const profile = {
+        id: user.id,
+        name: userSettings.settings.publicName ? user.name : null,
+        email: userSettings.settings.publicEmail ? user.email : null,
+        bio: userSettings.settings.publicBio ? user.bio : null,
+        photo: userSettings.settings.publicPhoto ? user.photo : null,
+        interests: userSettings.settings.publicInterests
+          ? user.interests
+          : null,
+        username: user.username,
+        settings: userSettings.settings,
+        achievements: userSettings.achievements,
+        CourseEnrollment: userSettings.CourseEnrollment,
+      };
+
+      return profile;
+    } catch (error) {
+      return error;
     }
-
-    const userSettings = await this.prisma.user.findUnique({
-      where: {
-        id: parseInt(profileId),
-      },
-      include: {
-        settings: true,
-        achievements: true,
-        CourseEnrollment: true,
-      },
-    });
-
-    if (!userSettings.settings.publicProfile) {
-      return 'Profile is private';
-    }
-
-    const profile = {
-      id: user.id,
-      name: userSettings.settings.publicName ? user.name : null,
-      email: userSettings.settings.publicEmail ? user.email : null,
-      bio: userSettings.settings.publicBio ? user.bio : null,
-      photo: userSettings.settings.publicPhoto ? user.photo : null,
-      interests: userSettings.settings.publicInterests ? user.interests : null,
-      username: user.username,
-      settings: userSettings.settings,
-      achievements: userSettings.achievements,
-      CourseEnrollment: userSettings.CourseEnrollment,
-    };
-
-    return profile;
   }
 
   /**
@@ -127,28 +122,32 @@ export class DashboardService {
    * @param token - The user token.
    * @param userId - The user ID.
    * @returns The user profile.
-   * @throws NotFoundException if the user is not found.
+   * @returns NotFoundException if the user is not found.
    */
   async getProfile(token: string, userId: string) {
-    this.validateTokenAndUserId(token, userId);
+    try {
+      this.validateTokenAndUserId(token, userId);
 
-    const user = await this.prisma.user.findUnique({
-      where: {
-        token: token,
-        id: this.validateIdFormat(userId, 'user ID'),
-      },
-      include: {
-        achievements: true,
-        CourseEnrollment: true,
-        settings: true,
-      },
-    });
+      const user = await this.prisma.user.findUnique({
+        where: {
+          token: token,
+          id: parseInt(userId),
+        },
+        include: {
+          achievements: true,
+          CourseEnrollment: true,
+          settings: true,
+        },
+      });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
+      if (!user) {
+        return new NotFoundException('User not found');
+      }
+
+      return user;
+    } catch (error) {
+      return error;
     }
-
-    return user;
   }
 
   /**
@@ -157,43 +156,47 @@ export class DashboardService {
    * @param userId - The user ID.
    * @param dto - The dashboard DTO containing the updated profile information.
    * @returns The updated user profile.
-   * @throws NotFoundException if the user is not found.
+   * @returns NotFoundException if the user is not found.
    */
   async updateProfile(token: string, userId: string, dto: DashboardDto) {
-    this.validateTokenAndUserId(token, userId);
-    this.verifyUser(userId);
+    try {
+      this.validateTokenAndUserId(token, userId);
+      this.verifyUser(userId);
 
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: this.validateIdFormat(userId, 'user ID'),
-        token: token,
-      },
-    });
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+          token: token,
+        },
+      });
 
-    if (!user) {
-      throw new NotFoundException('User not found, invalid token');
+      if (!user) {
+        return new NotFoundException('User not found, invalid token');
+      }
+
+      const updatedUser = await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          name: dto.name,
+          bio: dto.bio,
+          photo: dto.photo,
+          email: dto.email,
+          username: dto.username,
+          interests: dto.interests,
+        },
+        include: {
+          achievements: true,
+          CourseEnrollment: true,
+          settings: true,
+        },
+      });
+
+      return updatedUser;
+    } catch (error) {
+      return error;
     }
-
-    const updatedUser = await this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        name: dto.name,
-        bio: dto.bio,
-        photo: dto.photo,
-        email: dto.email,
-        username: dto.username,
-        interests: dto.interests,
-      },
-      include: {
-        achievements: true,
-        CourseEnrollment: true,
-        settings: true,
-      },
-    });
-
-    return updatedUser;
   }
 
   /**
@@ -202,26 +205,30 @@ export class DashboardService {
    * @param userId - The user ID.
    * @param dto - The user settings DTO containing the updated settings information.
    * @returns The updated user settings.
-   * @throws NotFoundException if the user is not found.
+   * @returns NotFoundException if the user is not found.
    */
   async updateSettings(token: string, userId: string, dto: UserSettingsDto) {
-    this.validateTokenAndUserId(token, userId);
+    try {
+      this.validateTokenAndUserId(token, userId);
 
-    const updatedSettings = await this.prisma.userSettings.update({
-      where: {
-        id: parseInt(userId),
-      },
-      data: {
-        publicProfile: dto.publicProfile,
-        publicEmail: dto.publicEmail,
-        publicBio: dto.publicBio,
-        publicPhoto: dto.publicPhoto,
-        publicName: dto.publicName,
-        publicInterests: dto.publicInterests,
-      },
-    });
+      const updatedSettings = await this.prisma.userSettings.update({
+        where: {
+          id: parseInt(userId),
+        },
+        data: {
+          publicProfile: dto.publicProfile,
+          publicEmail: dto.publicEmail,
+          publicBio: dto.publicBio,
+          publicPhoto: dto.publicPhoto,
+          publicName: dto.publicName,
+          publicInterests: dto.publicInterests,
+        },
+      });
 
-    return updatedSettings;
+      return updatedSettings;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
@@ -229,34 +236,38 @@ export class DashboardService {
    * @param token - The user token.
    * @param userId - The user ID.
    * @returns The user achievements.
-   * @throws NotFoundException if the user is not found.
+   * @returns NotFoundException if the user is not found.
    */
   async getAchievements(token: string, userId: string) {
-    this.validateTokenAndUserId(token, userId);
+    try {
+      this.validateTokenAndUserId(token, userId);
 
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: this.validateIdFormat(userId, 'user ID'),
-        token: token,
-      },
-    });
-
-    if (!user) {
-      throw new NotFoundException('User not found, invalid token');
-    }
-
-    const userAchievements = await this.prisma.user.findMany({
-      where: {
-        id: this.validateIdFormat(userId, 'user ID'),
-      },
-      include: {
-        achievements: {
-          include: {},
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+          token: token,
         },
-      },
-    });
+      });
 
-    return userAchievements;
+      if (!user) {
+        return new NotFoundException('User not found, invalid token');
+      }
+
+      const userAchievements = await this.prisma.user.findMany({
+        where: {
+          id: parseInt(userId),
+        },
+        include: {
+          achievements: {
+            include: {},
+          },
+        },
+      });
+
+      return userAchievements;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
@@ -265,63 +276,70 @@ export class DashboardService {
    * @param userId - The user ID.
    * @param achievementId - The ID of the achievement to claim.
    * @returns The updated user profile.
-   * @throws NotFoundException if the user or achievement is not found.
-   * @throws ConflictException if the achievement is already claimed by the user.
+   * @returns NotFoundException if the user or achievement is not found.
+   * @returns ConflictException if the achievement is already claimed by the user.
    */
   async claimAchievement(token: string, userId: string, achievementId: string) {
-    this.validateTokenAndUserId(token, userId);
+    try {
+      this.validateTokenAndUserId(token, userId);
 
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: this.validateIdFormat(userId, 'user ID'),
-        token: token,
-      },
-    });
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+          token: token,
+        },
+      });
 
-    if (!user) {
-      throw new NotFoundException('User not found, invalid token');
-    }
+      if (!user) {
+        return new NotFoundException('User not found, invalid token');
+      }
 
-    const achievement = await this.prisma.achievement.findUnique({
-      where: {
-        id: this.validateIdFormat(achievementId, 'achievement ID'),
-      },
-    });
+      const achievement = await this.prisma.achievement.findUnique({
+        where: {
+          id: parseInt(achievementId),
+        },
+      });
 
-    if (!achievement) {
-      throw new NotFoundException('Achievement not found');
-    }
+      if (!achievement) {
+        return new NotFoundException('Achievement not found');
+      }
 
-    const alreadyClaimed = await this.prisma.user.findUnique({
-      where: { id: this.validateIdFormat(userId, 'user ID') },
-      select: { achievements: true },
-    });
+      const alreadyClaimed = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+        },
+        select: {
+          achievements: true,
+        },
+      });
 
-    if (
-      alreadyClaimed.achievements.some(
-        (ach) =>
-          ach.id === this.validateIdFormat(achievementId, 'achievement ID'),
-      )
-    ) {
-      throw new ConflictException('Achievement already claimed');
-    }
+      if (
+        alreadyClaimed.achievements.some(
+          (ach) => ach.id === parseInt(achievementId),
+        )
+      ) {
+        return new ConflictException('Achievement already claimed');
+      }
 
-    const updatedUser = await this.prisma.user.update({
-      where: {
-        id: this.validateIdFormat(userId, 'user ID'),
-      },
-      data: {
-        achievements: {
-          connect: {
-            id: this.validateIdFormat(achievementId, 'achievement ID'),
+      const updatedUser = await this.prisma.user.update({
+        where: {
+          id: parseInt(userId),
+        },
+        data: {
+          achievements: {
+            connect: {
+              id: parseInt(achievementId),
+            },
           },
         },
-      },
-      include: {
-        achievements: true,
-      },
-    });
+        include: {
+          achievements: true,
+        },
+      });
 
-    return updatedUser;
+      return updatedUser;
+    } catch (error) {
+      return error;
+    }
   }
 }

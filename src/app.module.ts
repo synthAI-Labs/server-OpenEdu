@@ -31,4 +31,4 @@ import Redis from 'ioredis';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}
