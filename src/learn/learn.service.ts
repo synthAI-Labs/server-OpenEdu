@@ -10,7 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
  */
 @Injectable()
 export class LearnService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -166,7 +166,11 @@ export class LearnService {
       include: {
         subtopics: {
           include: {
-            modules: true,
+            modules: {
+              include: {
+                quiz: true,
+              }
+            }
           },
         },
       },

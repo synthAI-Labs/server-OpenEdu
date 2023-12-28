@@ -9,7 +9,7 @@ import { DashboardDto, UserSettingsDto } from './dto';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Validates the token and user ID.
@@ -56,9 +56,11 @@ export class DashboardService {
       where: {
         id: parseInt(userId),
       },
+      select: {
+        emailVerified: true,
+      },
     });
-
-    if (!userVerified.emailVerified) {
+    if (!userVerified) {
       return new NotFoundException('User not verified');
     }
   }
@@ -70,7 +72,7 @@ export class DashboardService {
    * @throws NotFoundException if the user is not found.
    */
   async getPublicProfile(profileId: string) {
-    this.verifyUser(profileId);
+    // this.verifyUser(profileId);
     const user = await this.prisma.user.findUnique({
       where: {
         id: parseInt(profileId),
@@ -87,6 +89,8 @@ export class DashboardService {
       },
       include: {
         settings: true,
+        achievements: true,
+        CourseEnrollment: true,
       },
     });
 
@@ -103,6 +107,8 @@ export class DashboardService {
       interests: userSettings.settings.publicInterests ? user.interests : null,
       username: user.username,
       settings: userSettings.settings,
+      achievements: userSettings.achievements,
+      CourseEnrollment: userSettings.CourseEnrollment,
     };
 
     return profile;

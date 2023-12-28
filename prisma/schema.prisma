@@ -71,11 +71,21 @@ model Module {
   name       String
   type       String
   content    String[]
-  quiz       String[]
+  quiz       Quiz[]
   video      String?
   image      String
   subtopicId Int      @map("subtopicId")
   subtopic   Subtopic @relation(fields: [subtopicId], references: [id])
+}
+
+model Quiz {
+  id       Int      @id @default(autoincrement())
+  Question String
+  Answer   String[]
+  Options  String[]
+  image    String?
+  Module   Module?  @relation(fields: [moduleId], references: [id])
+  moduleId Int?
 }
 
 model Achievement {

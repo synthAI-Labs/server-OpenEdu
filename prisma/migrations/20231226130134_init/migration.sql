@@ -62,12 +62,23 @@ CREATE TABLE "Module" (
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "content" TEXT[],
-    "quiz" TEXT[],
     "video" TEXT,
     "image" TEXT NOT NULL,
     "subtopicId" INTEGER NOT NULL,
 
     CONSTRAINT "Module_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Quiz" (
+    "id" SERIAL NOT NULL,
+    "Question" TEXT NOT NULL,
+    "Answer" TEXT[],
+    "Options" TEXT[],
+    "image" TEXT,
+    "moduleId" INTEGER,
+
+    CONSTRAINT "Quiz_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -108,6 +119,9 @@ ALTER TABLE "Subtopic" ADD CONSTRAINT "Subtopic_courseId_fkey" FOREIGN KEY ("cou
 
 -- AddForeignKey
 ALTER TABLE "Module" ADD CONSTRAINT "Module_subtopicId_fkey" FOREIGN KEY ("subtopicId") REFERENCES "Subtopic"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Quiz" ADD CONSTRAINT "Quiz_moduleId_fkey" FOREIGN KEY ("moduleId") REFERENCES "Module"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Achievement" ADD CONSTRAINT "Achievement_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

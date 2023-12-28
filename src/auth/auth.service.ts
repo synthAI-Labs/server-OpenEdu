@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
+import sendEmail from 'src/email/email';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -12,7 +13,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) {}
+  ) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -75,7 +76,8 @@ export class AuthService {
 
       const token = this.generateRandomToken();
       const verificationCode = this.generateVerificationCode();
-      await this.sendVerificationCode(dto.email, verificationCode);
+      const res = await this.sendVerificationCode(dto.email, verificationCode);
+      console.log(res);
 
       const user = await this.prisma.user.create({
         data: {
@@ -179,20 +181,13 @@ export class AuthService {
    * @param code - The verification code to send.
    * @returns A boolean indicating whether the code was successfully sent.
    */
-  async sendVerificationCode(email: string, code: string): Promise<boolean> {
-    const isCodeVerified = await this.mockEmailService.sendVerificationCode(
-      email,
-      code,
-    );
-    return isCodeVerified;
-  }
+  async sendVerificationCode(email: string, code: string) {
+    const subject = 'OTP for Verification';
+    const text = 'Thankyou for registering with us. Your OTP is ' + code + '. Please enter this OTP to verify your account.';
 
-  mockEmailService = {
-    async sendVerificationCode(email: string, code: string): Promise<boolean> {
-      console.log(`Sending verification code ${code} to ${email}`);
-      return code === '1234';
-    },
-  };
+    const res = sendEmail(email, subject, text)
+    return res;
+  }
 
   /**
    * Signs in a user with the provided authentication data.

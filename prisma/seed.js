@@ -65,10 +65,17 @@ async function main() {
                   image: 'image1.jpg',
                 },
                 {
-                  name: 'Module 1.1.2',
+                  name: 'Module 2.1.2',
                   type: 'quiz',
-                  quiz: ['Question 1', 'Question 2'],
-                  image: 'image2.jpg',
+                  image: 'image6.jpg',
+                  quiz: {
+                    create: {
+                      Question: 'Question 2',
+                      Answer: ['Answer 1', 'Answer 2'],
+                      Options: ['Option 1', 'Option 2', 'Option 3'],
+                      image: 'quiz_image2.jpg',
+                    },
+                  },
                 },
               ],
             },
@@ -125,11 +132,17 @@ async function main() {
                   image: 'image5.jpg',
                 },
                 {
-                  name: 'Module 2.1.2',
+                  name: 'Module 1.1.2',
                   type: 'quiz',
-                  
-                  quiz: ['Question 3', 'Question 4'],
-                  image: 'image6.jpg',
+                  image: 'image2.jpg',
+                  quiz: {
+                    create: {
+                      Question: 'Question 1',
+                      Answer: ['Answer 1', 'Answer 2'],
+                      Options: ['Option 1', 'Option 2', 'Option 3'],
+                      image: 'quiz_image1.jpg',
+                    },
+                  },
                 },
               ],
             },
