@@ -6,7 +6,7 @@ Welcome to the AI-Res Server repository. This server powers the AI-Res platform,
 
 ## Documentation
 
-For comprehensive documentation, including installation instructions, configuration details, and usage guidelines, please visit the [AI-Res Server Documentation]().
+For comprehensive documentation, including installation instructions, configuration details, and usage guidelines, please visit the [AI-Res Server Documentation](https://ai-res-server.vercel.app/).
 
 ## Quick Start
 
@@ -43,6 +43,6 @@ We welcome contributions! If you'd like to contribute to the development of the 
 
 This project is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for details.
 
-For more detailed information, troubleshooting, and additional features, please refer to our [official documentation]().
+For more detailed information, troubleshooting, and additional features, please refer to our [official documentation](https://ai-res-server.vercel.app/).
 
 Happy coding!
