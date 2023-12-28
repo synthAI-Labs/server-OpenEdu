@@ -1,49 +1,48 @@
-# Server
-> TO BE UPDATED
+# AI-Res Server
 
-uses NestJS, Prisma, and Postgres
+Welcome to the AI-Res Server repository. This server powers the AI-Res platform, a programming learning platform with a unique feature of a personal AI tutor. 
 
-## Getting Started
+> For detailed information on installation, configuration, and usage, please refer to our official documentation.
 
-### Installation
+## Documentation
 
-```bash
-npm install
-```
+For comprehensive documentation, including installation instructions, configuration details, and usage guidelines, please visit the [AI-Res Server Documentation]().
 
-### Configuration
+## Quick Start
 
-copy .env.example to .env and fill in the values
+To quickly get started, follow these general steps:
 
-```txt
-PORT=4000
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/ai-res/server.git
+   ```
 
-DATABASE_PORT=5432
-DATABASE_USERNAME=postgres
-DATABASE_PASSWORD=pass
-DATABASE_NAME=db
-DATABASE_URL="postgresql://postgres:pass@localhost:5432/db?schema=public"
-```
+2. **Navigate to the Repository:**
+   ```bash
+   cd your-repo
+   ```
 
-Then run
+3. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run db:container:up # start postgres and redis container
-npm run prisma:dev:deploy # deploy prisma schema
-npm run db:seed # seed database
-```
+4. **Run the Server:**
+   ```bash
+   npm run start:dev
+   ```
 
-### Usage
+5. **Explore API Routes:**
+   Visit [http://localhost:4000/api](http://localhost:4000/api) to explore available API routes.
 
-```bash
-npm run start:dev
-```
+## Contributing
 
-the development server will be running at http://localhost:4000, visit `/api` to see all the api routes
+We welcome contributions! If you'd like to contribute to the development of the AI-Res Server, please refer to the [Contribution Guidelines](CONTRIBUTING.md).
 
-### Testing
+## License
 
-```bash
-npm test
-```
+This project is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for details.
 
+For more detailed information, troubleshooting, and additional features, please refer to our [official documentation]().
+
+Happy coding!

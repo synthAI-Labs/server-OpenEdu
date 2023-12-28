@@ -18,8 +18,8 @@ The AI-Res server is designed to serve as the backend for the [AI-Res client]().
 
 ## Contributing
 
-If you're interested in contributing to the development of the AI-Res server, please refer to the [Contribution Guidelines](Not generated).
+If you're interested in contributing to the development of the AI-Res server, please refer to the [Contribution Guidelines](/CONTRIBUTING.md).
 
 ## License
 
-The AI-Res server is licensed under [-](). Please review the license terms before using or contributing to the project.
+The AI-Res server is licensed under [MIT License](/LICENSE.md). Please review the license terms before using or contributing to the project.
