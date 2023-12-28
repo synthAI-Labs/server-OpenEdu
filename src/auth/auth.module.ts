@@ -9,11 +9,8 @@ import Redis from 'ioredis';
     AuthService,
     {
       provide: 'REDIS',
-      useValue: new Redis({
-        host: 'localhost',
-        port: 6379,
-      }),
+      useValue: new Redis(process.env.REDDIS_URL),
     },
   ],
 })
-export class AuthModule {}
+export class AuthModule { }

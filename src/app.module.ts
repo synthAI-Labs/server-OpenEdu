@@ -27,11 +27,8 @@ import Redis from 'ioredis';
     LearnService,
     {
       provide: 'REDIS',
-      useValue: new Redis({
-        host: 'localhost', // replace with your Redis host
-        port: 6379, // replace with your Redis port
-      }),
+      useValue: new Redis(process.env.REDDIS_URL),
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
