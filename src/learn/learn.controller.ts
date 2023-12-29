@@ -36,9 +36,9 @@ export class LearnController {
   @Get('/:id/:topicId')
   async getTopics(
     @Param('id') courseId: string,
-    // @Param('topicId') topicId: string,
+    @Param('topicId') topicId: string,
   ) {
-    return this.learnService.getTopics(courseId);
+    return this.learnService.getTopics(courseId, topicId);
   }
 
   @Get('/:id/:topicId/:moduleId')

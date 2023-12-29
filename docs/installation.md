@@ -1,3 +1,10 @@
+# Installation
+
+[[toc]]
+
+## Manually
+
+clone Repo from [here](https://github.com/ai-res/server.git)
 
 ### Installation
 
@@ -55,3 +62,5 @@ For running tests, use the following command:
 ```bash
 npm test
 ```
+
+## Docker (TBD)

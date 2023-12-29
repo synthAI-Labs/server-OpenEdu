@@ -2,17 +2,7 @@
 
 The `AuthService` is responsible for handling authentication-related operations within the AI-Res server.
 
-## Table of Contents
-
-- [Class: AuthService](#class-authservice)
-  - [Methods](#methods)
-    - [getStatus](#getstatus)
-    - [generateRandomToken](#generaterandomtoken)
-    - [signup](#signup)
-    - [confirmEmail](#confirmemail)
-    - [generateVerificationCode](#generateverificationcode)
-    - [sendVerificationCode](#sendverificationcode)
-    - [signin](#signin)
+[[toc]]
 
 ## Class: AuthService
 

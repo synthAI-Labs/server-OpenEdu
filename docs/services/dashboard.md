@@ -2,20 +2,7 @@
 
 The `DashboardService` is a part of the AI-Res server and provides functionality related to user dashboards and profiles.
 
-## Table of Contents
-
-- [Class: DashboardService](#class-dashboardservice)
-  - [Methods](#methods)
-    - [validateTokenAndUserId](#validatetokenanduserid)
-    - [validateIdFormat](#validateidformat)
-    - [verifyUser](#verifyuser)
-    - [getPublicProfile](#getpublicprofile)
-    - [getStatus](#getstatus)
-    - [getProfile](#getprofile)
-    - [updateProfile](#updateprofile)
-    - [updateSettings](#updatesettings)
-    - [getAchievements](#getachievements)
-    - [claimAchievement](#claimachievement)
+[[toc]]
 
 ## Class: DashboardService
 

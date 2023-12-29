@@ -2,17 +2,7 @@
 
 The `LearnService` is responsible for handling learn-related operations within the AI-Res server.
 
-## Table of Contents
-
-- [Class: LearnService](#class-learnservice)
-  - [Methods](#methods)
-    - [getStatus](#getstatus)
-    - [validateIdFormat](#validateidformat)
-    - [getLearn](#getlearn)
-    - [getCourseById](#getcoursebyid)
-    - [enroll](#enroll)
-    - [getTopics](#gettopics)
-    - [getModule](#getmodule)
+[[toc]]
 
 ## Class: LearnService
 
