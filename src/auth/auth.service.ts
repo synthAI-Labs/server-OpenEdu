@@ -68,7 +68,7 @@ export class AuthService {
    * Signs up a new user with the provided authentication data.
    * @param dto - The authentication data for the new user.
    * @returns The created user object.
-   * @returns ForbiddenException if the username is already taken, password is less than 8 characters,
+   * @throws ForbiddenException if the username is already taken, password is less than 8 characters,
    * name or username is less than 1 character, or if the email already exists.
    */
   async signup(dto: AuthDto) {
@@ -83,7 +83,7 @@ export class AuthService {
         !dto.username ||
         dto.username.length <= 1
       ) {
-        return new ForbiddenException('Missing required fields');
+        throw new ForbiddenException('Missing required fields');
       }
 
       const sameUserName = await this.prisma.user.findUnique({
@@ -93,15 +93,15 @@ export class AuthService {
       });
 
       if (sameUserName) {
-        return new ForbiddenException('Username Already taken');
+        throw new ForbiddenException('Username Already taken');
       }
 
       if (dto.password.length < 8) {
-        return new ForbiddenException('Password must be at least 8 characters');
+        throw new ForbiddenException('Password must be at least 8 characters');
       }
 
       if (dto.name.length < 1 || dto.username.length < 1) {
-        return new ForbiddenException(
+        throw new ForbiddenException(
           'Name and username must be at least 1 character',
         );
       }
@@ -159,11 +159,11 @@ export class AuthService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          return new ForbiddenException('Email already exists');
+          throw new ForbiddenException('Email already exists');
         }
       }
 
-      return error;
+      throw error;
     }
   }
 
@@ -172,14 +172,14 @@ export class AuthService {
    * @param userEmail - The email of the user.
    * @param userGivenCode - The verification code provided by the user.
    * @returns The updated user object if the verification code is valid.
-   * @returns ForbiddenException if no verification code is found, or if the verification code is invalid.
+   * @throws ForbiddenException if no verification code is found, or if the verification code is invalid.
    */
   async confirmEmail(userEmail: string, userGivenCode: string) {
     try {
       const verificationCode = await this.redisClient.get(userEmail);
 
       if (!verificationCode) {
-        return new ForbiddenException('No verification code found');
+        throw new ForbiddenException('No verification code found');
       }
 
       if (verificationCode === userGivenCode) {
@@ -195,10 +195,10 @@ export class AuthService {
         });
         return user;
       } else {
-        return new ForbiddenException('Invalid verification code');
+        throw new ForbiddenException('Invalid verification code');
       }
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -215,17 +215,13 @@ export class AuthService {
       })
 
       if (!userAvailable) {
-        const Error = {
-          "status": 400,
-          "message": "Not Found"
-        }
-        return Error
+        throw new BadRequestException("Not Found");
       }
 
       const newToken = this.generateRandomToken()
-      console.log(newToken)
 
-      const updateUser = await this.prisma.user.update({
+
+      await this.prisma.user.update({
         where: {
           id: parseInt(userId)
         },
@@ -234,16 +230,13 @@ export class AuthService {
         }
       })
 
-      console.log(updateUser)
-
-      const success = {
+      return {
         "status": 200,
         "message": "User Logged Out successfully"
-      }
-      return success
+      };
     } catch {
       console.log("Error")
-      throw new BadRequestException("Invalid Request")
+      throw new BadRequestException("Invalid Request");
     }
   }
 
@@ -251,7 +244,7 @@ export class AuthService {
    * Signs in a user with the provided authentication data.
    * @param dto - The authentication data for the user.
    * @returns The signed-in user object.
-   * @returns ForbiddenException if no user with the provided email is found or if the password is invalid.
+   * @throws ForbiddenException if no user with the provided email is found or if the password is invalid.
    */
   async signin(dto: LoginDto) {
     try {
@@ -262,19 +255,19 @@ export class AuthService {
       });
 
       if (!user) {
-        return new ForbiddenException('No user with email found');
+        throw new ForbiddenException('No user with email found');
       }
 
       const isPasswordValid = user.password === dto.password;
 
       if (!isPasswordValid) {
-        return new ForbiddenException('Invalid password');
+        throw new ForbiddenException('Invalid password');
       }
 
       delete user.password;
       return user;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 }

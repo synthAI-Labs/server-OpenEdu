@@ -10,10 +10,11 @@ import {
 import { DashboardService } from './dashboard.service';
 import { DashboardDto } from './dto';
 import { UserSettingsDto } from './dto';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('')
 export class DashboardController {
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService) { }
 
   @Get('status')
   getStatus() {
@@ -36,6 +37,7 @@ export class DashboardController {
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Put('dashboard/profile')
+  @ApiBody({ type: DashboardDto })
   updateProfile(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -45,6 +47,7 @@ export class DashboardController {
   }
 
   @Put('dashboard/profile/settings')
+  @ApiBody({ type: UserSettingsDto })
   updateSettings(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as a,R as o}from"./chunks/framework.6Daji7ki.js";const m=JSON.parse('{"title":"Introduction","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),n={name:"index.md"},i=o("",11),r=[i];function s(l,c,h,d,u,f){return t(),a("div",null,r)}const b=e(n,[["render",s]]);export{m as __pageData,b as default};

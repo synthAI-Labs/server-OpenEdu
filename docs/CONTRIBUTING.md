@@ -2,15 +2,7 @@
 
 Welcome to the AI-Res Server project! We appreciate your interest in contributing to the development of the server. Before you start, please take a moment to review the following guidelines.
 
-## Table of Contents
-
-- [Code of Conduct](#code-of-conduct)
-- [How to Contribute](#how-to-contribute)
-  - [Reporting Bugs](#reporting-bugs)
-  - [Requesting Features](#requesting-features)
-  - [Creating Pull Requests](#creating-pull-requests)
-- [Coding Standards](#coding-standards)
-- [License](#license)
+[[toc]]
 
 ## Code of Conduct
 

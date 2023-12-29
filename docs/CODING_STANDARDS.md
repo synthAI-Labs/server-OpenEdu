@@ -2,17 +2,7 @@
 
 These coding standards are guidelines for writing consistent, readable, and maintainable code in the AI-Res Server project. Adhering to these standards helps ensure that the codebase remains clean and accessible to all contributors.
 
-## Table of Contents
-
-1. [General Guidelines](#1-general-guidelines)
-2. [Naming Conventions](#2-naming-conventions)
-3. [Code Organization](#3-code-organization)
-4. [Documentation](#4-documentation)
-5. [Formatting](#5-formatting)
-6. [Comments](#6-comments)
-7. [Testing](#7-testing)
-8. [Error Handling](#8-error-handling)
-9. [Security](#9-security)
+[[toc]]
 
 ## 1. General Guidelines
 

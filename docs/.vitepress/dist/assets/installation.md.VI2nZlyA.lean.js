@@ -1,1 +1,0 @@
-import{_ as s,o as a,c as i,R as e}from"./chunks/framework.6Daji7ki.js";const u=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"installation.md","filePath":"installation.md"}'),n={name:"installation.md"},t=e("",12),l=[t];function p(h,o,d,r,c,k){return a(),i("div",null,l)}const b=s(n,[["render",p]]);export{u as __pageData,b as default};

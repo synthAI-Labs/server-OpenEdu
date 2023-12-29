@@ -4,13 +4,7 @@ Welcome to the documentation for **AI-Res's server**. This documentation provide
 
 > The AI-Res platform is a programming learning platform similar to freeCodeCamp, CodeAcademy, and Khan Academy. It offers a unique feature of a personal AI tutor to enhance your learning efficiency.
 
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Table of Contents](#table-of-contents)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+[[toc]]
 
 ## Usage
 
