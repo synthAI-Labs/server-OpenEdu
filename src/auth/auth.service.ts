@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto, LoginDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -13,7 +18,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) { }
+  ) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -33,7 +38,6 @@ export class AuthService {
     return `${randomString}${timestamp}`;
   }
 
-
   /**
    * Generates a random verification code.
    * @returns The generated verification code.
@@ -49,7 +53,7 @@ export class AuthService {
    * @param code - The verification code to send.
    * @returns A boolean indicating whether the code was successfully sent.
    */
-  async sendVerificationCode(email: string, code: string) {
+  async sendVerificationCode(email: string, code: string): Promise<boolean> {
     try {
       const subject = 'OTP for Verification';
       const text =
@@ -57,10 +61,10 @@ export class AuthService {
         code +
         '. Please enter this OTP to verify your account.';
 
-      const res = sendEmail(email, subject, text);
+      const res = await sendEmail(email, subject, text);
       return res;
     } catch (error) {
-      return error;
+      return false;
     }
   }
 
@@ -108,8 +112,14 @@ export class AuthService {
 
       const token = this.generateRandomToken();
       const verificationCode = this.generateVerificationCode();
-      const res = await this.sendVerificationCode(dto.email, verificationCode);
-      console.log(res);
+      const res: boolean = await this.sendVerificationCode(
+        dto.email,
+        verificationCode,
+      );
+
+      if (!res) {
+        throw new ForbiddenException('Error sending verification code');
+      }
 
       const user = await this.prisma.user.create({
         data: {
@@ -207,36 +217,34 @@ export class AuthService {
       const userAvailable = await this.prisma.user.findUnique({
         where: {
           id: parseInt(userId),
-          token: token
+          token: token,
         },
         select: {
-          token: true
-        }
-      })
+          token: true,
+        },
+      });
 
       if (!userAvailable) {
-        throw new BadRequestException("Not Found");
+        throw new BadRequestException('Not Found');
       }
 
-      const newToken = this.generateRandomToken()
-
+      const newToken = this.generateRandomToken();
 
       await this.prisma.user.update({
         where: {
-          id: parseInt(userId)
+          id: parseInt(userId),
         },
         data: {
-          token: newToken
-        }
-      })
+          token: newToken,
+        },
+      });
 
       return {
-        "status": 200,
-        "message": "User Logged Out successfully"
+        status: 200,
+        message: 'User Logged Out successfully',
       };
     } catch {
-      console.log("Error")
-      throw new BadRequestException("Invalid Request");
+      throw new BadRequestException('Invalid Request');
     }
   }
 

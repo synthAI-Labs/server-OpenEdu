@@ -25,12 +25,12 @@ export class LearnService {
    * @param id - The ID to validate.
    * @param field - The field name associated with the ID.
    * @returns The parsed ID as a number.
-   * @returns ForbiddenException if the ID format is invalid.
+   * @throws ForbiddenException if the ID format is invalid.
    */
-  private validateIdFormat(id: string, field: string) {
+  private validateIdFormat(id: string, field: string): number {
     const parsedId = parseInt(id);
     if (isNaN(parsedId)) {
-      return new ForbiddenException(`Invalid ${field} format`);
+      throw new ForbiddenException(`Invalid ${field} format`);
     }
     return parsedId;
   }
@@ -43,7 +43,7 @@ export class LearnService {
     try {
       return await this.prisma.course.findMany();
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -51,24 +51,26 @@ export class LearnService {
    * Retrieves a course by its ID.
    * @param courseId - The ID of the course to retrieve.
    * @returns A promise that resolves to the course.
-   * @returns ForbiddenException if the course is not found.
+   * @throws ForbiddenException if the course is not found.
    */
   async getCourseById(courseId: string) {
     try {
+      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+
       const course = await this.prisma.course.findUnique({
-        where: { id: parseInt(courseId) },
+        where: { id: parsedCourseId },
         include: {
           subtopics: true,
         },
       });
 
       if (!course) {
-        return new ForbiddenException('Course not found');
+        throw new ForbiddenException('Course not found');
       }
 
       return course;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -82,28 +84,27 @@ export class LearnService {
    */
   async enroll(courseId: string, userId: string, token: string) {
     try {
-      const parsedCourseId = this.validateIdFormat(
-        courseId,
-        'course ID',
-      ) as number;
+      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
 
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
       });
 
       if (!course) {
-        return new NotFoundException('Course not found');
+        throw new NotFoundException('Course not found');
       }
+
+      const parsedUserId = this.validateIdFormat(userId, 'user ID');
 
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: parsedUserId,
           token: token,
         },
       });
 
       if (!user) {
-        return new NotFoundException('User not found or invalid token');
+        throw new NotFoundException('User not found or invalid token');
       }
 
       const alreadyEnrolled = await this.prisma.courseEnrollment.findFirst({
@@ -127,7 +128,7 @@ export class LearnService {
 
       return 'Enrolled';
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -135,19 +136,21 @@ export class LearnService {
    * Retrieves the topics of a course.
    * @param courseId - The ID of the course.
    * @returns A promise that resolves to an array of topics.
-   * @returns ForbiddenException if the course is not found.
+   * @throws ForbiddenException if the course is not found.
    */
-  async getTopics(courseId: string) {
+  async getTopics(courseId: string, topicId: string) {
     try {
-      const parsedCourseId = this.validateIdFormat(
-        courseId,
-        'course ID',
-      ) as number;
+      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+
+      const parsedTopicId = this.validateIdFormat(topicId, 'topic ID');
 
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
           subtopics: {
+            where: {
+              id: parsedTopicId,
+            },
             include: {
               modules: true,
             },
@@ -156,12 +159,12 @@ export class LearnService {
       });
 
       if (!course) {
-        return new ForbiddenException('Course not found');
+        throw new ForbiddenException('Course not found');
       }
 
       return course.subtopics;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -171,15 +174,18 @@ export class LearnService {
    * @param topicId - The ID of the topic.
    * @param moduleId - The ID of the module.
    * @returns A promise that resolves to the module.
-   * @returns ForbiddenException if the course, topic, or module is not found.
+   * @throws ForbiddenException if the course, topic, or module is not found.
    */
   async getModule(courseId: string, topicId: string, moduleId: string) {
     try {
+      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+
       const parsedTopicId = this.validateIdFormat(topicId, 'topic ID');
+
       const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
 
       const course = await this.prisma.course.findUnique({
-        where: { id: parseInt(courseId) },
+        where: { id: parsedCourseId },
         include: {
           subtopics: {
             include: {
@@ -194,24 +200,24 @@ export class LearnService {
       });
 
       if (!course) {
-        return new ForbiddenException('Course not found');
+        throw new ForbiddenException('Course not found');
       }
 
       const topic = course.subtopics.find((t) => t.id === parsedTopicId);
 
       if (!topic) {
-        return new ForbiddenException('Topic not found');
+        throw new ForbiddenException('Topic not found');
       }
 
       const module = topic.modules.find((m) => m.id === parsedModuleId);
 
       if (!module) {
-        return new ForbiddenException('Module not found');
+        throw new ForbiddenException('Module not found');
       }
 
       return module;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 }
