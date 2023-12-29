@@ -45,15 +45,15 @@ module.exports = {
         items: [
           {
             text: "Dashboard",
-            link: "/api/dashboard"
+            link: "/api/dashboard-api"
           },
           {
             text: "Learn",
-            link: "/api/learn"
+            link: "/api/learn-api"
           },
           {
             text: "Auth",
-            link: "/api/auth"
+            link: "/api/auth-api"
           },
         ]
       }
