@@ -1,6 +1,6 @@
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto } from './dto';
+import { AuthDto, LoginDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
 import sendEmail from 'src/email/email';
@@ -13,7 +13,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) {}
+  ) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -31,6 +31,37 @@ export class AuthService {
     const randomString = Math.random().toString(36).substring(2);
     const timestamp = Date.now();
     return `${randomString}${timestamp}`;
+  }
+
+
+  /**
+   * Generates a random verification code.
+   * @returns The generated verification code.
+   */
+  generateVerificationCode(): string {
+    const code = Math.floor(1000 + Math.random() * 9000).toString();
+    return code;
+  }
+
+  /**
+   * Sends a verification code to the provided email address.
+   * @param email - The email address to send the verification code to.
+   * @param code - The verification code to send.
+   * @returns A boolean indicating whether the code was successfully sent.
+   */
+  async sendVerificationCode(email: string, code: string) {
+    try {
+      const subject = 'OTP for Verification';
+      const text =
+        'Thankyou for registering with us. Your OTP is ' +
+        code +
+        '. Please enter this OTP to verify your account.';
+
+      const res = sendEmail(email, subject, text);
+      return res;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
@@ -171,33 +202,48 @@ export class AuthService {
     }
   }
 
-  /**
-   * Generates a random verification code.
-   * @returns The generated verification code.
-   */
-  generateVerificationCode(): string {
-    const code = Math.floor(1000 + Math.random() * 9000).toString();
-    return code;
-  }
-
-  /**
-   * Sends a verification code to the provided email address.
-   * @param email - The email address to send the verification code to.
-   * @param code - The verification code to send.
-   * @returns A boolean indicating whether the code was successfully sent.
-   */
-  async sendVerificationCode(email: string, code: string) {
+  async signOut(token: string, userId: string) {
     try {
-      const subject = 'OTP for Verification';
-      const text =
-        'Thankyou for registering with us. Your OTP is ' +
-        code +
-        '. Please enter this OTP to verify your account.';
+      const userAvailable = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+          token: token
+        },
+        select: {
+          token: true
+        }
+      })
 
-      const res = sendEmail(email, subject, text);
-      return res;
-    } catch (error) {
-      return error;
+      if (!userAvailable) {
+        const Error = {
+          "status": 400,
+          "message": "Not Found"
+        }
+        return Error
+      }
+
+      const newToken = this.generateRandomToken()
+      console.log(newToken)
+
+      const updateUser = await this.prisma.user.update({
+        where: {
+          id: parseInt(userId)
+        },
+        data: {
+          token: newToken
+        }
+      })
+
+      console.log(updateUser)
+
+      const success = {
+        "status": 200,
+        "message": "User Logged Out successfully"
+      }
+      return success
+    } catch {
+      console.log("Error")
+      throw new BadRequestException("Invalid Request")
     }
   }
 
@@ -207,7 +253,7 @@ export class AuthService {
    * @returns The signed-in user object.
    * @returns ForbiddenException if no user with the provided email is found or if the password is invalid.
    */
-  async signin(dto: AuthDto) {
+  async signin(dto: LoginDto) {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
