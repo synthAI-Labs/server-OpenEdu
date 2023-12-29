@@ -248,6 +248,50 @@ export class AuthService {
     }
   }
 
+  async resetPassword(token: string, userId: string, password: string) {
+    if (
+      !password ||
+      password === null ||
+      password === undefined ||
+      password.length < 8
+    ) {
+      throw new ForbiddenException('Password must be valid');
+    }
+
+    let parsedUserId: number;
+
+    try {
+      parsedUserId = parseInt(userId);
+    } catch {
+      throw new BadRequestException('Invalid Request');
+    }
+
+    const userAvailable = await this.prisma.user.findUnique({
+      where: {
+        id: parsedUserId,
+        token: token,
+      },
+    });
+
+    if (!userAvailable) {
+      throw new BadRequestException('Not Found');
+    }
+
+    await this.prisma.user.update({
+      where: {
+        id: parsedUserId,
+      },
+      data: {
+        password: password,
+      },
+    });
+
+    return {
+      status: 200,
+      message: 'Password Reset successfully',
+    };
+  }
+
   /**
    * Signs in a user with the provided authentication data.
    * @param dto - The authentication data for the user.

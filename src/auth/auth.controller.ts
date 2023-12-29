@@ -35,7 +35,15 @@ export class AuthController {
   }
 
   // TODO: for password reset,
-  // @Post('password/reset')
+  @Post('password/reset')
+  @ApiBody({ type: String })
+  resetPassword(
+    @Headers('authorization') token: string,
+    @Headers('user_id') userId: string,
+    @Body('newPassword') password: string,
+  ) {
+    return this.authService.resetPassword(token, userId, password);
+  }
 
   // TODO: Github Signup
   // @Post('signup/github')
