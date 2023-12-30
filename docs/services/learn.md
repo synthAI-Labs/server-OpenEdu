@@ -2,13 +2,12 @@
 
 The `LearnService` is responsible for handling learn-related operations within the AI-Res server.
 
+---
 [[toc]]
+---
 
-## Class: LearnService
 
-### Methods
-
-#### `getStatus`
+## `getStatus`
 
 ```typescript
 getStatus(): string
@@ -19,7 +18,11 @@ Retrieves the status of the authentication service.
 - **Returns:**
   - `string`: A string indicating the status of the authentication service.
 
-#### `validateIdFormat`
+
+---
+
+
+##  `validateIdFormat`
 
 ```typescript
 private validateIdFormat(id: string, field: string): number | ForbiddenException
@@ -34,7 +37,10 @@ Validates the format of an ID.
 - **Returns:**
   - `number | ForbiddenException`: The parsed ID as a number or a `ForbiddenException` if the ID format is invalid.
 
-#### `getLearn`
+
+---
+
+## `getLearn`
 
 ```typescript
 async getLearn(): Promise<Course[]>
@@ -45,7 +51,10 @@ Retrieves all learn courses.
 - **Returns:**
   - `Promise<Course[]>`: A promise that resolves to an array of courses.
 
-#### `getCourseById`
+
+---
+
+##  `getCourseById`
 
 ```typescript
 async getCourseById(courseId: string): Promise<Course | ForbiddenException>
@@ -59,7 +68,10 @@ Retrieves a course by its ID.
 - **Returns:**
   - `Promise<Course | ForbiddenException>`: A promise that resolves to the course or a `ForbiddenException` if the course is not found.
 
-#### `enroll`
+
+---
+
+##  `enroll`
 
 ```typescript
 async enroll(courseId: string, userId: string, token: string): Promise<string | ForbiddenException>
@@ -75,7 +87,10 @@ Enrolls a user in a course.
 - **Returns:**
   - `Promise<string | ForbiddenException>`: A promise that resolves to a string indicating the enrollment status or a `ForbiddenException` if the user or course is not found.
 
-#### `getTopics`
+
+---
+
+##  `getTopics`
 
 ```typescript
 async getTopics(courseId: string): Promise<Subtopic[] | ForbiddenException>
@@ -89,7 +104,10 @@ Retrieves the topics of a course.
 - **Returns:**
   - `Promise<Subtopic[] | ForbiddenException>`: A promise that resolves to an array of topics or a `ForbiddenException` if the course is not found.
 
-#### `getModule`
+
+---
+
+##  `getModule`
 
 ```typescript
 async getModule(courseId: string, topicId: string, moduleId: string): Promise<Module | ForbiddenException>

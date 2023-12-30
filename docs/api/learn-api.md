@@ -2,9 +2,12 @@
 
 ---
 [[toc]]
----
 
-### 1. Get Status
+
+--- 
+
+
+## 1. Get Status
 
 **Endpoint:**
 ```
@@ -19,7 +22,11 @@ GET /learn/courses/status
 }
 ```
 
-### 2. Get All Courses
+
+--- 
+
+
+##  2. Get All Courses
 
 **Endpoint:**
 ```
@@ -34,7 +41,11 @@ GET /learn/courses
 }
 ```
 
-### 3. Get Course by ID with Topics Covered
+
+--- 
+
+
+##  3. Get Course by ID with Topics Covered
 
 **Endpoint:**
 ```
@@ -49,7 +60,11 @@ GET /learn/courses/:id
 }
 ```
 
-### 4. Enroll in a Course
+
+--- 
+
+
+## 4. Enroll in a Course
 
 **Endpoint:**
 ```
@@ -67,7 +82,11 @@ POST /learn/courses/enroll/:id
 }
 ```
 
-### 5. Get Topics Covered in a Course
+
+--- 
+
+
+##  5. Get Topics Covered in a Course
 
 **Endpoint:**
 ```
@@ -82,7 +101,11 @@ GET /learn/courses/:id/:topicId
 }
 ```
 
-### 6. Get Module of a Course
+
+--- 
+
+
+##  6. Get Module of a Course
 
 **Endpoint:**
 ```

@@ -2,9 +2,10 @@
 
 ---
 [[toc]]
----
+--- 
 
-### 1. Get Status
+
+##  1. Get Status
 
 **Endpoint:**
 ```
@@ -19,7 +20,11 @@ GET /status
 }
 ```
 
-### 2. Get Public Profile
+
+--- 
+
+
+##  2. Get Public Profile
 
 **Endpoint:**
 ```
@@ -34,7 +39,11 @@ GET /p/:profileId
 }
 ```
 
-### 3. Get User Profile
+
+--- 
+
+
+## 3. Get User Profile
 
 **Endpoint:**
 ```
@@ -52,7 +61,11 @@ POST /dashboard/profile
 }
 ```
 
-### 4. Update User Profile
+
+--- 
+
+
+## 4. Update User Profile
 
 **Endpoint:**
 ```
@@ -77,7 +90,11 @@ PUT /dashboard/profile
 }
 ```
 
-### 5. Update User Settings
+
+--- 
+
+
+##  5. Update User Settings
 
 **Endpoint:**
 ```
@@ -102,7 +119,11 @@ PUT /dashboard/profile/settings
 }
 ```
 
-### 6. Get User Achievements
+
+--- 
+
+
+##  6. Get User Achievements
 
 **Endpoint:**
 ```
@@ -120,7 +141,11 @@ POST /dashboard/achievements
 }
 ```
 
-### 7. Claim Achievement
+
+--- 
+
+
+##  7. Claim Achievement
 
 **Endpoint:**
 ```

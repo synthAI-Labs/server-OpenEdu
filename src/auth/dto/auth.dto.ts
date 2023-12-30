@@ -34,3 +34,15 @@ export class LoginDto {
   @ApiProperty()
   password: string;
 }
+
+export class ResetPasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  code: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  newPassword: string;
+}
