@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto, LoginDto } from './dto';
+import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { ApiBody } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Get('status')
   getStatus() {
@@ -34,8 +34,28 @@ export class AuthController {
     return this.authService.signOut(token, userId);
   }
 
-  // TODO: for password reset,
-  @Post('password/reset')
+  // TODO: password reset request, forgot password
+  @Post('password/forgot')
+  @ApiBody({ type: String })
+  forgotPassword(
+    @Headers('authorization') token: string,
+    @Headers('user_id') userId: string,
+    @Body('userEmail') userEmail: string
+  ) {
+    return this.authService.forgotPassword(token, userId, userEmail);
+  }
+
+  @Post('password/forgot/confirm/:userEmail')
+  @ApiBody({ type: ResetPasswordDto })
+  confirmResetPassword(
+    @Param('userEmail') userEmail: string,
+    @Body() dto: ResetPasswordDto,
+  ) {
+    return this.authService.confirmResetPassword(userEmail, dto);
+  }
+
+  // TODO: for password change,
+  @Post('password/change')
   @ApiBody({ type: String })
   resetPassword(
     @Headers('authorization') token: string,

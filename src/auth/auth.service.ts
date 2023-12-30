@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto, LoginDto } from './dto';
+import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
 import sendEmail from 'src/email/email';
@@ -18,7 +18,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) {}
+  ) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -53,14 +53,8 @@ export class AuthService {
    * @param code - The verification code to send.
    * @returns A boolean indicating whether the code was successfully sent.
    */
-  async sendVerificationCode(email: string, code: string): Promise<boolean> {
+  async sendVerificationCode(email: string, subject: string, text: string): Promise<boolean> {
     try {
-      const subject = 'OTP for Verification';
-      const text =
-        'Thankyou for registering with us. Your OTP is ' +
-        code +
-        '. Please enter this OTP to verify your account.';
-
       const res = await sendEmail(email, subject, text);
       return res;
     } catch (error) {
@@ -112,9 +106,17 @@ export class AuthService {
 
       const token = this.generateRandomToken();
       const verificationCode = this.generateVerificationCode();
+
+      const subject = 'OTP for Verification';
+      const text =
+        'Thankyou for registering with us. Your OTP is ' +
+        verificationCode +
+        '. Please enter this OTP to verify your account.';
+
       const res: boolean = await this.sendVerificationCode(
         dto.email,
-        verificationCode,
+        subject,
+        text
       );
 
       if (!res) {
@@ -245,6 +247,104 @@ export class AuthService {
       };
     } catch {
       throw new BadRequestException('Invalid Request');
+    }
+  }
+
+  /**
+   * Sends a verification code to the user's email for password reset.
+   * @param token - The token associated with the password reset request.
+   * @param userId - The ID of the user requesting the password reset.
+   * @param userEmail - The email address of the user requesting the password reset.
+   * @returns An object containing the status and message indicating the success of sending the verification code.
+   * @throws BadRequestException if the request is invalid or the user is not found.
+   */
+  async forgotPassword(token: string, userId: string, userEmail: string) {
+    if (!userEmail || userEmail === null || userEmail === undefined) {
+      throw new BadRequestException('Invalid Request');
+    }
+    try {
+      const userAvailable = await this.prisma.user.findUnique({
+        where: {
+          id: parseInt(userId),
+          token: token,
+          email: userEmail,
+        },
+      });
+
+      if (!userAvailable) {
+        throw new BadRequestException('Not Found');
+      }
+
+      const alreadyRequested = await this.redisClient.get(userEmail)
+
+      if (alreadyRequested) {
+        this.redisClient.del(userEmail);
+      }
+
+      const verificationCode = await this.generateVerificationCode();
+
+      const subject = 'OTP for Password Reset';
+      const text =
+        'Your OTP for password reset is ' +
+        verificationCode +
+        '. Please enter this OTP to verify your account. And if not sent by you, please ignore this email.';
+
+      await this.sendVerificationCode(userEmail, subject, text);
+
+      await this.redisClient.set(userEmail, verificationCode);
+      console.log(await this.redisClient.get(userEmail))
+      console.log(verificationCode)
+
+      return {
+        status: 200,
+        message: 'Verification Code Sent',
+      };
+    } catch {
+      throw new BadRequestException('Invalid Request');
+    }
+  }
+
+  /**
+   * Confirms the reset password for a user.
+   * 
+   * @param userEmail - The email of the user.
+   * @param dto - The reset password data transfer object.
+   * @returns An object with the status and message indicating the result of the password reset.
+   * @throws BadRequestException if the verification code is not found or is invalid.
+   * @throws ForbiddenException if an error occurs during the password reset process.
+   */
+  async confirmResetPassword(userEmail: string, dto: ResetPasswordDto) {
+    try {
+      const verificationCode: string = await this.redisClient.get(userEmail);
+      console.log(await this.redisClient.get(userEmail))
+      console.log(dto.code)
+
+
+      if (!verificationCode) {
+        throw new BadRequestException('Not Found');
+      }
+
+      if (verificationCode === dto.code) {
+        this.redisClient.del(userEmail);
+
+        this.prisma.user.update({
+          where: {
+            email: userEmail,
+          },
+          data: {
+            password: dto.newPassword,
+          },
+        });
+
+        return {
+          status: 200,
+          message: 'Password Reset successfully',
+        };
+      } else {
+        throw new BadRequestException('Invalid verification code');
+      }
+    } catch (error) {
+      throw new ForbiddenException(error);
     }
   }
 

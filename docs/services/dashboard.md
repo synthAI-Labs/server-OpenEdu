@@ -2,13 +2,12 @@
 
 The `DashboardService` is a part of the AI-Res server and provides functionality related to user dashboards and profiles.
 
+---
 [[toc]]
+---
 
-## Class: DashboardService
 
-### Methods
-
-#### `validateTokenAndUserId`
+##  `validateTokenAndUserId`
 
 ```typescript
 private validateTokenAndUserId(token: string, userId: string): BadRequestException | void
@@ -23,7 +22,10 @@ Validates the token and user ID.
 - **Throws:**
   - `BadRequestException`: If the token or user ID is invalid.
 
-#### `validateIdFormat`
+
+---
+
+##  `validateIdFormat`
 
 ```typescript
 private validateIdFormat(id: string, field: string): number
@@ -41,7 +43,10 @@ Validates the ID format.
 - **Throws:**
   - `BadRequestException`: If the ID format is invalid.
 
-#### `verifyUser`
+
+---
+
+##  `verifyUser`
 
 ```typescript
 async verifyUser(userId: string): NotFoundException | void
@@ -55,7 +60,10 @@ Verifies if a user is verified based on their user ID.
 - **Throws:**
   - `NotFoundException`: If the user is not verified.
 
-#### `getPublicProfile`
+
+---
+
+##  `getPublicProfile`
 
 ```typescript
 async getPublicProfile(profileId: string): NotFoundException | string | Profile
@@ -72,7 +80,10 @@ Retrieves the public profile of a user.
 - **Throws:**
   - `NotFoundException`: If the user is not found.
 
-#### `getStatus`
+
+---
+
+##  `getStatus`
 
 ```typescript
 getStatus(): string
@@ -83,7 +94,10 @@ Retrieves the status of the authentication service.
 - **Returns:**
   - `string`: A string indicating the status of the authentication service.
 
-#### `getProfile`
+
+---
+
+##  `getProfile`
 
 ```typescript
 async getProfile(token: string, userId: string): NotFoundException | User
@@ -101,7 +115,10 @@ Retrieves the user profile.
 - **Throws:**
   - `NotFoundException`: If the user is not found.
 
-#### `updateProfile`
+
+---
+
+##  `updateProfile`
 
 ```typescript
 async updateProfile(token: string, userId: string, dto: DashboardDto): NotFoundException | User
@@ -120,7 +137,10 @@ Updates the user profile.
 - **Throws:**
   - `NotFoundException`: If the user is not found.
 
-#### `updateSettings`
+
+---
+
+##  `updateSettings`
 
 ```typescript
 async updateSettings(token: string, userId: string, dto: UserSettingsDto): UserSettings
@@ -136,7 +156,10 @@ Updates the user settings.
 - **Returns:**
   - `UserSettings`: The updated user settings.
 
-#### `getAchievements`
+
+---
+
+##  `getAchievements`
 
 ```typescript
 async getAchievements(token: string, userId: string): NotFoundException | UserAchievements
@@ -154,7 +177,10 @@ Retrieves the user achievements.
 - **Throws:**
   - `NotFoundException`: If the user is not found.
 
-#### `claimAchievement`
+
+---
+
+##  `claimAchievement`
 
 ```typescript
 async claimAchievement(token: string, userId: string, achievementId: string): NotFoundException | ConflictException | User
