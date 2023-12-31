@@ -1,6 +1,6 @@
 # Auth Service Documentation
 
-The `AuthService` is responsible for handling authentication-related operations within the AI-Res server.
+The `AuthService` is responsible for handling authentication-related operations within the OPEN-EDU server.
 
 ---
 [[toc]]

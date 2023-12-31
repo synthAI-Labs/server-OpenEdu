@@ -1,6 +1,6 @@
 # Coding Standards
 
-These coding standards are guidelines for writing consistent, readable, and maintainable code in the AI-Res Server project. Adhering to these standards helps ensure that the codebase remains clean and accessible to all contributors.
+These coding standards are guidelines for writing consistent, readable, and maintainable code in the OPEN-EDU Server project. Adhering to these standards helps ensure that the codebase remains clean and accessible to all contributors.
 
 ## Table of Contents
 

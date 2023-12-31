@@ -1,20 +1,41 @@
 version: '3'
 services:
+  # for development purposes
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - .:/app
+    ports:
+      - "4000:4000"
+      #
+      # final build, testing with UI
+      #
+      # web:
+      #   image: himanshu806/openedu:server-latest
+      #   depends_on:
+      #     - redis
+      #     - postgres
+      #   env_file:
+      #     - .env.docker
+      #   ports:
+      #     - "4000:4000"
+      #   command: sh -c "npm run db:dev && npm run start:prod"
+
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
 
   postgres:
-    image: postgres:16.0-alpine
-    restart: always
+    image: postgres:latest
     ports:
-      - ${DATABASE_PORT}:5432
-    volumes:
-      - backend-db:/var/lib/postgresql/data
+      - "5432:5432"
     environment:
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
-volumes:
-  backend-db:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=db

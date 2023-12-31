@@ -7,10 +7,6 @@ import Redis from 'ioredis';
   controllers: [AuthController],
   providers: [
     AuthService,
-    {
-      provide: 'REDIS',
-      useValue: new Redis(process.env.REDDIS_URL),
-    },
   ],
 })
-export class AuthModule {}
+export class AuthModule { }

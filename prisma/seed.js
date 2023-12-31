@@ -8,7 +8,7 @@ async function main() {
     data: {
       username: 'user1',
       name: 'User One',
-      photo: 'url_to_user1_photo.jpg',
+      photo: 'boy1.png',
       bio: 'Bio for User One',
       emailVerified: true,
       email: 'user1@example.com',
@@ -27,15 +27,33 @@ async function main() {
     data: {
       username: 'user2',
       name: 'User Two',
-      photo: 'url_to_user2_photo.jpg',
+      photo: 'girl1.png',
       bio: 'Bio for User Two',
       email: 'user2@example.com',
       password: 'password2',
       settings: {
         create: {
-          publicProfile: false,
-          publicEmail: true,
+          publicProfile: true,
+          publicEmail: false,
           userId: 2,
+        },
+      },
+    },
+  });
+
+  const user3 = await prisma.user.create({
+    data: {
+      username: 'user3',
+      name: 'User Three',
+      photo: 'girl2.png',
+      bio: 'Bio for User Three',
+      email: 'user3@example.com',
+      password: 'password3',
+      settings: {
+        create: {
+          publicProfile: false,
+          publicEmail: false,
+          userId: 3,
         },
       },
     },
@@ -44,7 +62,6 @@ async function main() {
   // Create courses with subtopics and modules
   const course1 = await prisma.course.create({
     data: {
-      id: 1,
       name: 'Course 1',
       description: 'Description for Course 1',
       tags: ['tag1', 'tag2'],
@@ -53,7 +70,6 @@ async function main() {
         create: [
           {
             name: 'Subtopic 1.1',
-            
             image: 'image1.jpg',
             description: 'Description for Subtopic 1.1',
             modules: {
@@ -83,7 +99,6 @@ async function main() {
           {
             name: 'Subtopic 1.2',
             description: 'Description for Subtopic 1.2',
-            
             image: 'image1.jpg',
             modules: {
               create: [
@@ -109,7 +124,6 @@ async function main() {
 
   const course2 = await prisma.course.create({
     data: {
-      id: 2,
       name: 'Course 2',
       description: 'Description for Course 2',
       tags: ['tag3', 'tag4'],
@@ -117,17 +131,14 @@ async function main() {
       subtopics: {
         create: [
           {
-            id: 3,
             name: 'Subtopic 2.1',
             description: 'Description for Subtopic 2.1',
-            
             image: 'image1.jpg',
             modules: {
               create: [
                 {
                   name: 'Module 2.1.1',
                   type: 'text',
-                  
                   content: ['Content for Module 2.1.1'],
                   image: 'image5.jpg',
                 },
@@ -151,21 +162,21 @@ async function main() {
             id: 4,
             name: 'Subtopic 2.2',
             description: 'Description for Subtopic 2.2',
-            
+
             image: 'image1.jpg',
             modules: {
               create: [
                 {
                   name: 'Module 2.2.1',
                   type: 'text',
-                  
+
                   content: ['Content for Module 2.2.1'],
                   image: 'image7.jpg',
                 },
                 {
                   name: 'Module 2.2.2',
                   type: 'video',
-                  
+
                   video: 'video2.mp4',
                   image: 'image8.jpg',
                 },
@@ -177,7 +188,6 @@ async function main() {
     },
   });
 
-  // Enroll users in courses
   await prisma.courseEnrollment.create({
     data: {
       userId: user1.id,
@@ -185,6 +195,15 @@ async function main() {
       status: 'COMPLETED',
     },
   });
+
+  await prisma.courseEnrollment.create({
+    data: {
+      userId: user3.id,
+      courseId: course1.id,
+      status: 'COMPLETED',
+    },
+  });
+
 
   await prisma.courseEnrollment.create({
     data: {
@@ -216,7 +235,17 @@ async function main() {
       icon: 'icon1.jpg',
       description: 'Description for Achievement 1',
       courseId: 1,
-      userId: 1, 
+      userId: 1,
+    },
+  });
+
+  const achievement3 = await prisma.achievement.create({
+    data: {
+      name: 'Achievement 3',
+      icon: 'icon3.jpg',
+      description: 'Description for Achievement 3',
+      courseId: course1.id,
+      userId: user3.id,
     },
   });
 
