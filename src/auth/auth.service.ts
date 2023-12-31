@@ -108,10 +108,15 @@ export class AuthService {
       const verificationCode = this.generateVerificationCode();
 
       const subject = 'OTP for Verification';
-      const text =
-        'Thankyou for registering with us. Your OTP is ' +
-        verificationCode +
-        '. Please enter this OTP to verify your account.';
+      const text = `
+      <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+      <h1 style="font-size: 20px; margin-bottom: 20px;">OTP for Verification</h1>
+      <p style="font-size: 20px; margin-bottom: 20px;">
+        Thank you for registering with us. <br> Your OTP is <strong>${verificationCode}</strong>. <br>Please enter this OTP to verify your account.
+      </p>
+      <p style="font-size: 16px; margin-top: 20px;">Regard,<br>OpenEDU team at SynthAI Lab</p>
+      </div>
+      `;
 
       const res: boolean = await this.sendVerificationCode(
         dto.email,

@@ -1,9 +1,11 @@
 import * as nodemailer from 'nodemailer';
 
+
 export default async function sendEmail(
   emailAddress: string,
   subject: string,
   text: string,
+  ccAddress?: string,
 ): Promise<boolean> {
   try {
     const transporter = nodemailer.createTransport({
@@ -18,8 +20,9 @@ export default async function sendEmail(
     const mailOptions = {
       from: `${process.env.EMAIL_ADDRESS}`,
       to: emailAddress,
+      cc: ccAddress,
       subject: subject,
-      text: text,
+      html: text,
     };
     // console.log(mailOptions);
 
