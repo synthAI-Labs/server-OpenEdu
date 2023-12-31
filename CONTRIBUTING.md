@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-Welcome to the AI-Res Server project! We appreciate your interest in contributing to the development of the server. Before you start, please take a moment to review the following guidelines.
+Welcome to the OPEN-EDU Server project! We appreciate your interest in contributing to the development of the server. Before you start, please take a moment to review the following guidelines.
 
 ## Table of Contents
 
@@ -63,6 +63,6 @@ Please adhere to the coding standards and conventions used in the project. If un
 
 ## License
 
-By contributing to the AI-Res Server project, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+By contributing to the OPEN-EDU Server project, you agree that your contributions will be licensed under the [MIT License](LICENSE).
 
 Thank you for contributing! 🚀

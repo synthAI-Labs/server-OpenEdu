@@ -1,6 +1,6 @@
 # Dashboard Service Documentation
 
-The `DashboardService` is a part of the AI-Res server and provides functionality related to user dashboards and profiles.
+The `DashboardService` is a part of the OPEN-EDU server and provides functionality related to user dashboards and profiles.
 
 ---
 [[toc]]

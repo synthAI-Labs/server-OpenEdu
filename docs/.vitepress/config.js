@@ -1,7 +1,7 @@
 const sidebar = [{ text: "Introduction", link: "/" }]
 module.exports = {
-  title: "AI-Res Server",
-  description: "AI-Res Server",
+  title: "OPEN-EDU Server",
+  description: "OPEN-EDU Server",
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },

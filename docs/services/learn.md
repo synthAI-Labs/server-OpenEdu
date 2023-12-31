@@ -1,6 +1,6 @@
 # Learn Service Documentation
 
-The `LearnService` is responsible for handling learn-related operations within the AI-Res server.
+The `LearnService` is responsible for handling learn-related operations within the OPEN-EDU server.
 
 ---
 [[toc]]
