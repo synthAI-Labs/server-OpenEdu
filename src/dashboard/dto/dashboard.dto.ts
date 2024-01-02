@@ -26,9 +26,4 @@ export class DashboardDto {
   @ApiProperty()
   @ValidateNested()
   interests: string[];
-
-  @IsArray()
-  @ApiProperty()
-  @ValidateNested()
-  settings: string[];
 }

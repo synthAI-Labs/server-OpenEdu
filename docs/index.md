@@ -1,7 +1,7 @@
 # Introduction
 
 :::warning
-This documentation is incomplete / still a work in progress. Certain sections may be missing or incomplete. Please refer to the [Open-EDU server repository](https://github.com/AI-RES/server-OpenEdu) for more information.
+This documentation is incomplete / still a work in progress. Certain sections may be missing or incomplete. Please refer to the [Open-EDU server repository](https://github.com/synthAI-Labs/server-OpenEdu) for more information.
 :::
 
 Welcome to the documentation for **OPEN-EDU's server**. This documentation provides a comprehensive guide to the server that powers the OPEN-EDU platform.

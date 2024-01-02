@@ -9,7 +9,7 @@ import { DashboardDto, UserSettingsDto } from './dto';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Validates the token and user ID.
@@ -68,7 +68,7 @@ export class DashboardService {
       }
 
       return true;
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -78,11 +78,18 @@ export class DashboardService {
    * @returns NotFoundException if the user is not found.
    */
   async getPublicProfile(profileId: string) {
+    let id: number;
+
     try {
-      // this.verifyUser(profileId);
+      id = parseInt(profileId);
+    } catch (error) {
+      throw new BadRequestException('Invalid profile ID');
+    }
+
+    try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(profileId),
+          id: id,
         },
       });
 
@@ -92,7 +99,7 @@ export class DashboardService {
 
       const userSettings = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(profileId),
+          id: id,
         },
         include: {
           settings: true,

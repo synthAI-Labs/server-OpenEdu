@@ -14,7 +14,7 @@ To quickly get started, follow these general steps:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/ai-res/server.git
+   git clone https://github.com/synthAI-Labs/server.git
    ```
 
 2. **Navigate to the Repository:**

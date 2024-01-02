@@ -4,7 +4,7 @@
 
 ## Manually
 
-clone Repo from [here](https://github.com/ai-res/server.git)
+clone Repo from [here](https://github.com/synthAI-Labs/server.git)
 
 ### Installation
 

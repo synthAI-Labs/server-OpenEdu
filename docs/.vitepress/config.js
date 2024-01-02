@@ -7,7 +7,7 @@ module.exports = {
       { text: "Home", link: "/" },
       { text: "API {Swaggers}", link: "https://ai-res-server-development.onrender.com/api" },
       { text: "API Calls", link: "/api" },
-      { text: "GitHub", link: "https://github.com/ai-res/server" }
+      { text: "GitHub", link: "https://github.com/synthAI-Labs/server" }
     ],
     sidebar: [
       {

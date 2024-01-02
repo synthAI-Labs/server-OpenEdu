@@ -18,7 +18,11 @@ export class AppController {
 
   @Get('/i/:imagePath')
   getImage(@Res() res, @Param('imagePath') imagePath: string) {
-    return res.sendFile(imagePath, { root: 'uploads' });
+    if (imagePath.length > 2) {
+      return res.sendFile(imagePath, { root: 'uploads' });
+    } else {
+      return res.sendFile("boy1.png", { root: 'uploads' });
+    }
   }
 
   @Post('/contact')

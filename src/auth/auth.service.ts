@@ -128,6 +128,12 @@ export class AuthService {
         throw new ForbiddenException('Error sending verification code');
       }
 
+      const images: string[] = [
+        "boy1.png", "boy2.png", "boy3.png", "boy4.png", "boy5.png", "boy6.png", "boy7.png",
+        // "girl1.png", "girl2.png", "girl3.png", "girl4.png", "girl5.png", "girl6.png", "girl7.png",
+      ]
+      let randomImage = images[Math.floor(Math.random() * images.length)];
+      console.log(randomImage);
       const user = await this.prisma.user.create({
         data: {
           email: dto.email,
@@ -136,7 +142,7 @@ export class AuthService {
           username: dto.username,
           emailVerified: false,
           token: token,
-          photo: '',
+          photo: randomImage,
           bio: '',
           role: 'user',
           settings: {
