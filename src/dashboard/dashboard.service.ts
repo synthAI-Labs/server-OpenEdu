@@ -77,19 +77,27 @@ export class DashboardService {
    * @returns The public profile of the user, including their ID, name, email, bio, photo, interests, username, and settings.
    * @returns NotFoundException if the user is not found.
    */
-  async getPublicProfile(profileId: string) {
+  async getPublicProfile(profileId: string, v2: boolean=false) {
     let id: number;
-
-    try {
-      id = parseInt(profileId);
-    } catch (error) {
-      throw new BadRequestException('Invalid profile ID');
-    }
+    let isV2Enabled = v2;
+    let username:string = profileId
+    if (!isV2Enabled) { // if v2 not enabled. user id is consider or else username will be considered
+      try {
+        id = parseInt(profileId);
+        if (isNaN(id)) {
+          throw new Error(); // Throw an error for invalid parseInt result
+        }
+      } catch (error) {
+        throw new BadRequestException('Invalid profile ID');
+      }
+  }
 
     try {
       const user = await this.prisma.user.findUnique({
-        where: {
-          id: id,
+        where: isV2Enabled ? {
+          username: username
+        } : {
+         id: id
         },
       });
 
@@ -98,8 +106,10 @@ export class DashboardService {
       }
 
       const userSettings = await this.prisma.user.findUnique({
-        where: {
-          id: id,
+        where: isV2Enabled ? {
+          username: username
+        } : {
+          id: id
         },
         include: {
           settings: true,
