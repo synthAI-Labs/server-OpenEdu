@@ -28,7 +28,7 @@ GET /status
 
 **Endpoint:**
 ```
-GET /p/:profileId
+GET /p/:username
 ```
 
 **Example API Call:**
