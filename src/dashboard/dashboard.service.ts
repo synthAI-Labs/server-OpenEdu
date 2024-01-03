@@ -79,9 +79,8 @@ export class DashboardService {
    */
   async getPublicProfile(profileId: string, v2: boolean=false) {
     let id: number;
-    let isV2Enabled = v2;
     let username:string = profileId
-    if (!isV2Enabled) { // if v2 not enabled. user id is consider or else username will be considered
+    if (!v2) { // if v2 not enabled. user id is consider or else username will be considered
       try {
         id = parseInt(profileId);
         if (isNaN(id)) {
@@ -94,7 +93,7 @@ export class DashboardService {
 
     try {
       const user = await this.prisma.user.findUnique({
-        where: isV2Enabled ? {
+        where: v2 ? {
           username: username
         } : {
          id: id
@@ -106,7 +105,7 @@ export class DashboardService {
       }
 
       const userSettings = await this.prisma.user.findUnique({
-        where: isV2Enabled ? {
+        where: v2 ? {
           username: username
         } : {
           id: id
