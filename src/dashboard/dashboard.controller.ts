@@ -22,7 +22,7 @@ export class DashboardController {
     return this.dashboardService.getStatus();
   }
 
-    @Get('p/:profileId')
+  @Get('p/:profileId')
   getPublicProfile(@Param('profileId') profileId: string, @Query('v2') v2: boolean | undefined) {
     return this.dashboardService.getPublicProfile(profileId, v2);
   }
