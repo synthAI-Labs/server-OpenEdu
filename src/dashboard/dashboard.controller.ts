@@ -4,7 +4,6 @@ import {
   Get,
   Headers,
   Param,
-  Query,
   Post,
   Put,
 } from '@nestjs/common';
@@ -22,9 +21,9 @@ export class DashboardController {
     return this.dashboardService.getStatus();
   }
 
-  @Get('p/:profileId')
-  getPublicProfile(@Param('profileId') profileId: string, @Query('v2') v2: boolean | undefined) {
-    return this.dashboardService.getPublicProfile(profileId, v2);
+  @Get('p/:username')
+  getPublicProfile(@Param('username') userName: string) {
+    return this.dashboardService.getPublicProfile(username);
   }
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
