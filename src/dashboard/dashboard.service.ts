@@ -78,19 +78,13 @@ export class DashboardService {
    * @returns NotFoundException if the user is not found.
    */
   async getPublicProfile(profileId: string) {
-    let id: number;
-
-    try {
-      id = parseInt(profileId);
-    } catch (error) {
-      throw new BadRequestException('Invalid profile ID');
-    }
+    let username: string = profileId;
 
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: id,
-        },
+          username: username,
+        }
       });
 
       if (!user) {
@@ -99,8 +93,8 @@ export class DashboardService {
 
       const userSettings = await this.prisma.user.findUnique({
         where: {
-          id: id,
-        },
+          username: username,
+        } 
         include: {
           settings: true,
           achievements: true,
