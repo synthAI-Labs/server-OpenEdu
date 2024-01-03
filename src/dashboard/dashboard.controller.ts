@@ -23,7 +23,7 @@ export class DashboardController {
 
   @Get('p/:username')
   getPublicProfile(@Param('username') userName: string) {
-    return this.dashboardService.getPublicProfile(username);
+    return this.dashboardService.getPublicProfile(userName);
   }
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
