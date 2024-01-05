@@ -19,7 +19,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) {}
+  ) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -210,7 +210,7 @@ export class AuthService {
    * @returns The updated user object if the verification code is valid.
    * @throws ForbiddenException if no verification code is found, or if the verification code is invalid.
    */
-  async confirmEmail(userEmail: string, userGivenCode: string) {
+  async confirmEmail(userEmail: string, userGivenCode: number) {
     try {
       const verificationCode = await this.redisClient.get(userEmail);
 
@@ -218,7 +218,7 @@ export class AuthService {
         throw new ForbiddenException('No verification code found');
       }
 
-      if (verificationCode === userGivenCode) {
+      if (parseInt(verificationCode) == userGivenCode) {
         await this.redisClient.del(userEmail);
 
         const user = await this.prisma.user.update({
