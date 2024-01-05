@@ -39,6 +39,9 @@ CREATE TABLE "Course" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
     "userId" INTEGER,
     "tags" TEXT[],
 
@@ -50,6 +53,9 @@ CREATE TABLE "Subtopic" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
     "courseId" INTEGER NOT NULL,
     "image" TEXT NOT NULL,
 
@@ -61,7 +67,11 @@ CREATE TABLE "Module" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
-    "content" TEXT[],
+    "description" TEXT NOT NULL,
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
+    "content" TEXT,
     "video" TEXT,
     "image" TEXT NOT NULL,
     "subtopicId" INTEGER NOT NULL,
@@ -101,6 +111,9 @@ CREATE TABLE "CourseEnrollment" (
     "status" "UserCourseStatus" NOT NULL,
     "enrolledAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "completedAt" TIMESTAMP(3),
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
 
     CONSTRAINT "CourseEnrollment_pkey" PRIMARY KEY ("id")
 );

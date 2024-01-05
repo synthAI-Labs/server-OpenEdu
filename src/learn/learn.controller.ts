@@ -33,20 +33,16 @@ export class LearnController {
   }
 
   // return all topics covered in a course
-  @Get('/:id/:topicId')
-  async getTopics(
-    @Param('id') courseId: string,
-    @Param('topicId') topicId: string,
-  ) {
-    return this.learnService.getTopics(courseId, topicId);
-  }
+  // @Get('/:id/:topicId')
+  // async getTopics(
+  //   @Param('id') courseId: string,
+  //   @Param('topicId') topicId: string,
+  // ) {
+  //   return this.learnService.getTopics(courseId, topicId);
+  // }
 
-  @Get('/:id/:topicId/:moduleId')
-  async getModule(
-    @Param('id') courseId: string,
-    @Param('topicId') topicId: string,
-    @Param('moduleId') moduleId: string,
-  ) {
-    return this.learnService.getModule(courseId, topicId, moduleId);
+  @Get('/m/:moduleId')
+  async getModule(@Param('moduleId') moduleId: string) {
+    return this.learnService.getModule(moduleId);
   }
 }

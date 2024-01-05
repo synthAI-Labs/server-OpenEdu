@@ -4,7 +4,7 @@ import { ContactDto } from './contact.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello() {
@@ -21,7 +21,7 @@ export class AppController {
     if (imagePath.length > 2) {
       return res.sendFile(imagePath, { root: 'uploads' });
     } else {
-      return res.sendFile("boy1.png", { root: 'uploads' });
+      return res.sendFile('boy1.png', { root: 'uploads' });
     }
   }
 

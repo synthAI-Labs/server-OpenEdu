@@ -12,6 +12,9 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import Redis from 'ioredis';
 import { MulterModule } from '@nestjs/platform-express/multer';
+import { ChatModule } from './chat/chat.module';
+import { ChatController } from './chat/chat.controller';
+import { ChatService } from './chat/chat.service';
 
 @Module({
   imports: [
@@ -21,18 +24,21 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     MulterModule.register({
       dest: './uploads',
     }),
+    ChatModule,
   ],
   controllers: [
     AppController,
     AuthController,
     DashboardController,
     LearnController,
+    ChatController,
   ],
   providers: [
     AppService,
     AuthService,
     DashboardService,
     LearnService,
+    ChatService,
     {
       provide: 'REDIS',
       useFactory: () => {
@@ -44,4 +50,4 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 /**
@@ -60,7 +56,15 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-          subtopics: true,
+          subtopics: {
+            include: {
+              modules: {
+                include: {
+                  quiz: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -91,7 +95,10 @@ export class LearnService {
       });
 
       if (!course) {
-        throw new NotFoundException('Course not found');
+        return {
+          status: 403,
+          message: 'Course not found',
+        };
       }
 
       const parsedUserId = this.validateIdFormat(userId, 'user ID');
@@ -104,7 +111,10 @@ export class LearnService {
       });
 
       if (!user) {
-        throw new NotFoundException('User not found or invalid token');
+        return {
+          status: 403,
+          message: 'User not found',
+        };
       }
 
       const alreadyEnrolled = await this.prisma.courseEnrollment.findFirst({
@@ -115,7 +125,10 @@ export class LearnService {
       });
 
       if (alreadyEnrolled) {
-        return 'Already enrolled';
+        return {
+          status: 200,
+          message: 'Already enrolled',
+        };
       }
 
       await this.prisma.courseEnrollment.create({
@@ -123,10 +136,16 @@ export class LearnService {
           userId: user.id,
           courseId: course.id,
           status: 'NOT_STARTED',
+          name: course.name,
+          description: course.description,
+          image: course.image,
         },
       });
 
-      return 'Enrolled';
+      return {
+        status: 201,
+        message: 'Enrolled Successfully',
+      };
     } catch (error) {
       throw error;
     }
@@ -176,43 +195,19 @@ export class LearnService {
    * @returns A promise that resolves to the module.
    * @throws ForbiddenException if the course, topic, or module is not found.
    */
-  async getModule(courseId: string, topicId: string, moduleId: string) {
+  async getModule(moduleId: string) {
     try {
-      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-
-      const parsedTopicId = this.validateIdFormat(topicId, 'topic ID');
-
       const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
 
-      const course = await this.prisma.course.findUnique({
-        where: { id: parsedCourseId },
+      const module = await this.prisma.module.findUnique({
+        where: { id: parsedModuleId },
         include: {
-          subtopics: {
-            include: {
-              modules: {
-                include: {
-                  quiz: true,
-                },
-              },
-            },
-          },
+          quiz: true,
         },
       });
 
-      if (!course) {
-        throw new ForbiddenException('Course not found');
-      }
-
-      const topic = course.subtopics.find((t) => t.id === parsedTopicId);
-
-      if (!topic) {
-        throw new ForbiddenException('Topic not found');
-      }
-
-      const module = topic.modules.find((m) => m.id === parsedModuleId);
-
       if (!module) {
-        throw new ForbiddenException('Module not found');
+        throw new ForbiddenException('Course not found');
       }
 
       return module;

@@ -5,7 +5,7 @@ import { ApiBody } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Get('status')
   getStatus() {
@@ -40,7 +40,7 @@ export class AuthController {
   forgotPassword(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
-    @Body('userEmail') userEmail: string
+    @Body('userEmail') userEmail: string,
   ) {
     return this.authService.forgotPassword(token, userId, userEmail);
   }

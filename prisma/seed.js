@@ -65,24 +65,34 @@ async function main() {
       name: 'Course 1',
       description: 'Description for Course 1',
       tags: ['tag1', 'tag2'],
-      image: 'image.jpg',
+      madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+      madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+      image: 'image.png',
       subtopics: {
         create: [
           {
             name: 'Subtopic 1.1',
             image: 'image1.jpg',
+            madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+            madeByUserGit: ['https://github.com/Himasnhu-AT/'],
             description: 'Description for Subtopic 1.1',
             modules: {
               create: [
                 {
                   name: 'Module 1.1.1',
                   type: 'text',
-                  content: ['Content for Module 1.1.1'],
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 1.1.1',
+                  content: 'Content for Module 1.1.1',
                   image: 'image1.jpg',
                 },
                 {
                   name: 'Module 2.1.2',
                   type: 'quiz',
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 1.1.2',
                   image: 'image6.jpg',
                   quiz: {
                     create: {
@@ -100,17 +110,25 @@ async function main() {
             name: 'Subtopic 1.2',
             description: 'Description for Subtopic 1.2',
             image: 'image1.jpg',
+            madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+            madeByUserGit: ['https://github.com/Himasnhu-AT/'],
             modules: {
               create: [
                 {
                   name: 'Module 1.2.1',
                   type: 'text',
-                  content: ['Content for Module 1.2.1'],
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 1.2.1',
+                  content: 'Content for Module 1.2.1',
                   image: 'image3.jpg',
                 },
                 {
                   name: 'Module 1.2.2',
                   type: 'video',
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 1.2.2',
                   video: 'video1.mp4',
                   image: 'image4.jpg',
                 },
@@ -127,24 +145,34 @@ async function main() {
       name: 'Course 2',
       description: 'Description for Course 2',
       tags: ['tag3', 'tag4'],
-      image: 'image.jpg',
+      madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+      madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+      image: 'image.png',
       subtopics: {
         create: [
           {
             name: 'Subtopic 2.1',
             description: 'Description for Subtopic 2.1',
             image: 'image1.jpg',
+            madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+            madeByUserGit: ['https://github.com/Himasnhu-AT/'],
             modules: {
               create: [
                 {
                   name: 'Module 2.1.1',
                   type: 'text',
-                  content: ['Content for Module 2.1.1'],
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 2.1.1',
+                  content: 'Content for Module 2.1.1',
                   image: 'image5.jpg',
                 },
                 {
                   name: 'Module 1.1.2',
                   type: 'quiz',
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 2.1.2',
                   image: 'image2.jpg',
                   quiz: {
                     create: {
@@ -162,21 +190,26 @@ async function main() {
             id: 4,
             name: 'Subtopic 2.2',
             description: 'Description for Subtopic 2.2',
-
+            madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+            madeByUserGit: ['https://github.com/Himasnhu-AT/'],
             image: 'image1.jpg',
             modules: {
               create: [
                 {
                   name: 'Module 2.2.1',
                   type: 'text',
-
-                  content: ['Content for Module 2.2.1'],
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 2.2.1',
+                  content: 'Content for Module 2.2.1',
                   image: 'image7.jpg',
                 },
                 {
                   name: 'Module 2.2.2',
                   type: 'video',
-
+                  madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
+                  madeByUserGit: ['https://github.com/Himasnhu-AT/'],
+                  description: 'Description for Module 2.2.2',
                   video: 'video2.mp4',
                   image: 'image8.jpg',
                 },
@@ -192,6 +225,9 @@ async function main() {
     data: {
       userId: user1.id,
       courseId: course1.id,
+      name: course1.name,
+      description: course1.description,
+      image: course1.image,
       status: 'COMPLETED',
     },
   });
@@ -200,6 +236,9 @@ async function main() {
     data: {
       userId: user3.id,
       courseId: course1.id,
+      name: course1.name,
+      description: course1.description,
+      image: course1.image,
       status: 'COMPLETED',
     },
   });
@@ -209,6 +248,9 @@ async function main() {
     data: {
       userId: user1.id,
       courseId: course2.id,
+      name: course2.name,
+      description: course2.description,
+      image: course2.image,
       status: 'IN_PROGRESS',
     },
   });
@@ -217,6 +259,9 @@ async function main() {
     data: {
       userId: user2.id,
       courseId: course1.id,
+      name: course1.name,
+      description: course1.description,
+      image: course1.image,
       status: 'COMPLETED',
     },
   });
@@ -225,6 +270,9 @@ async function main() {
     data: {
       userId: user2.id,
       courseId: course2.id,
+      name: course2.name,
+      description: course2.description,
+      image: course2.image,
       status: 'IN_PROGRESS',
     },
   });

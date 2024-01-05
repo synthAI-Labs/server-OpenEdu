@@ -8,7 +8,7 @@ import sendEmail from './email/email';
  */
 @Injectable()
 export class AppService {
-  constructor(private http: HttpHealthIndicator) { }
+  constructor(private http: HttpHealthIndicator) {}
 
   /**
    * Returns a greeting message.
@@ -28,9 +28,9 @@ export class AppService {
     services: { name: string; status: any; message: any }[];
   }> {
     const services = [
-      { name: 'auth', url: 'http://localhost:3001/auth/status' },
-      { name: 'dashboard', url: 'http://localhost:3001/dashboard/status' },
-      { name: 'learn', url: 'http://localhost:3001/learn/courses/status' },
+      { name: 'auth', url: 'http://localhost:4000/auth/status' },
+      { name: 'dashboard', url: 'http://localhost:4000/dashboard/status' },
+      { name: 'learn', url: 'http://localhost:4000/learn/courses/status' },
     ];
 
     const results = await Promise.all(
@@ -52,15 +52,22 @@ export class AppService {
   }
 
   async contact(body: ContactDto) {
-    if (body.name === undefined || body.email === undefined || body.message === undefined) {
+    if (
+      body.name === undefined ||
+      body.email === undefined ||
+      body.message === undefined
+    ) {
       throw new BadRequestException('Please fill out all fields');
     }
 
-    const status = { status: 200, message: 'Thank you for contacting us!\nWe will get back to you soon' };
+    const status = {
+      status: 200,
+      message: 'Thank you for contacting us!\nWe will get back to you soon',
+    };
 
     const email = body.email;
-    const ccAddress = process.env.EMAIL_ADDRESS
-    const subject = "Support Ticket @OpenEdu"
+    const ccAddress = process.env.EMAIL_ADDRESS;
+    const subject = 'Support Ticket @OpenEdu';
     const text = `
     <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 20px;">
 
@@ -80,7 +87,7 @@ export class AppService {
   </body>
   `;
 
-    const emailStatus = await sendEmail(email, subject, text, ccAddress)
+    const emailStatus = await sendEmail(email, subject, text, ccAddress);
 
     if (!emailStatus) {
       status.status = 500;
@@ -89,6 +96,5 @@ export class AppService {
     }
 
     return status;
-
   }
 }
