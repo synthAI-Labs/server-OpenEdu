@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   getStatus() {
     return {
@@ -76,21 +76,21 @@ export class ChatService {
   }
 
   async getResponse(message: string, module_message: string) {
-    if (process.env.AI === 'true') {
-      const answer = await fetch(process.env.AI_URL, {
-        method: 'POST',
-        headers: {
-          user: 'ADMIN',
-          password: 'ADMIN',
-          custom_secret: process.env.AI_SECRET,
-        },
-        body: JSON.stringify({
-          doubt: message,
-          text: module_message,
-        }),
-      });
-      return answer.json();
-    }
+    // if (process.env.AI === 'true') {
+    //   const answer = await fetch(process.env.AI_URL, {
+    //     method: 'POST',
+    //     headers: {
+    //       user: 'ADMIN',
+    //       password: 'ADMIN',
+    //       custom_secret: process.env.AI_SECRET,
+    //     },
+    //     body: JSON.stringify({
+    //       doubt: message,
+    //       text: module_message,
+    //     }),
+    //   });
+    //   return answer.json();
+    // }
 
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
