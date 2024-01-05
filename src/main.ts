@@ -5,9 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    origin: ['https://ai-res-server.vercel.app', 'https://web-client-ai-res.vercel.app/learn'],
-  });
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('Your API Title')
