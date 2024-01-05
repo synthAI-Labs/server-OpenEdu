@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['https://ai-res-server.vercel.app'],
+    origin: ['https://ai-res-server.vercel.app', 'https://web-client-ai-res.vercel.app/learn'],
   });
 
   const config = new DocumentBuilder()
