@@ -9,21 +9,41 @@ datasource db {
 }
 
 model User {
-  id               Int                @id @default(autoincrement())
-  username         String             @unique
-  photo            String
-  name             String
-  bio              String
-  email            String             @unique
-  password         String
-  emailVerified    Boolean            @default(false)
-  role             String             @default("USER")
-  settings         UserSettings       @relation(fields: [userSettingsId], references: [id])
-  token            String             @default("demo")
-  interests        String[]
-  achievements     Achievement[]
-  userSettingsId   Int
-  CourseEnrollment CourseEnrollment[]
+  id                         Int                      @id @default(autoincrement())
+  username                   String                   @unique
+  photo                      String
+  name                       String
+  bio                        String
+  email                      String                   @unique
+  password                   String
+  emailVerified              Boolean                  @default(false)
+  role                       String                   @default("USER")
+  settings                   UserSettings             @relation(fields: [userSettingsId], references: [id])
+  token                      String                   @default("demo")
+  interests                  String[]
+  achievements               Achievement[]
+  userSettingsId             Int
+  CourseEnrollment           CourseEnrollment[]
+  EmailServiceSubscription   EmailServiceSubscription @relation(fields: [emailServiceSubscriptionId], references: [id])
+  emailServiceSubscriptionId Int
+}
+
+model EmailServiceSubscription {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  CourseUpdates Boolean  @default(true)
+  montlyUpdates Boolean  @default(true)
+  security      Boolean  @default(true)
+  emailService  Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
+  User          User[]
+}
+
+model NewsletterSubscription {
+  id         Int      @id @default(autoincrement())
+  Email      String[]
+  newsletter Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
 }
 
 model UserSettings {
@@ -36,12 +56,6 @@ model UserSettings {
   publicName      Boolean @default(true)
   publicInterests Boolean @default(true)
   User            User[]
-}
-
-enum UserCourseStatus {
-  IN_PROGRESS
-  COMPLETED
-  NOT_STARTED
 }
 
 model Course {
@@ -81,7 +95,6 @@ model Module {
   madeByUser    String[]
   GithubLink    String?
   content       String?
-  quiz          Quiz[]
   video         String?
   image         String
   subtopicId    Int      @map("subtopicId")
@@ -89,16 +102,21 @@ model Module {
 }
 
 model Quiz {
-  id            Int      @id @default(autoincrement())
-  Question      String
-  Answer        String[]
-  Options       String[]
-  madeByUserGit String[]
-  madeByUser    String[]
-  GithubLink    String?
-  image         String?
-  Module        Module?  @relation(fields: [moduleId], references: [id])
-  moduleId      Int?
+  id           Int         @id @default(autoincrement())
+  Question     String
+  Answer       String[]
+  Options      String[]
+  image        String?
+  Assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+  assignmentId Int?
+}
+
+model Assignment {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  image       String?
+  Quiz        Quiz[]
 }
 
 model Achievement {
@@ -113,15 +131,18 @@ model Achievement {
 }
 
 model CourseEnrollment {
-  id          Int              @id @default(autoincrement())
-  userId      Int
-  courseId    Int
-  status      UserCourseStatus
-  enrolledAt  DateTime         @default(now())
-  completedAt DateTime?
-  course      Course           @relation(fields: [courseId], references: [id])
-  User        User             @relation(fields: [userId], references: [id])
-  name        String
-  description String
-  image       String
+  id                 Int       @id @default(autoincrement())
+  userId             Int
+  courseId           Int
+  enrolledAt         DateTime  @default(now())
+  completedAt        DateTime?
+  course             Course    @relation(fields: [courseId], references: [id])
+  name               String
+  description        String
+  image              String
+  completed          Boolean   @default(false)
+  progress           Int       @default(0)
+  totalModules       Int
+  User               User      @relation(fields: [userId], references: [id])
+  completedModulesId Int[] // all the modules in that course
 }

@@ -9,7 +9,7 @@ import { DashboardDto, UserSettingsDto } from './dto';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Validates the token and user ID.
@@ -68,7 +68,7 @@ export class DashboardService {
       }
 
       return true;
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -165,6 +165,7 @@ export class DashboardService {
         throw new NotFoundException('User not found');
       }
 
+      delete user.password;
       return user;
     } catch (error) {
       throw error;

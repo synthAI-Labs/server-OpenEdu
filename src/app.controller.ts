@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ContactDto } from './contact.dto';
+import { isEmail } from 'class-validator';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   getHello() {
@@ -28,5 +29,36 @@ export class AppController {
   @Post('/contact')
   contact(@Body() dto: ContactDto) {
     return this.appService.contact(dto);
+  }
+
+  @Post('/subscribe')
+  subscribe(@Body('email') Email: string) {
+    const emailIsGiven = isEmail(Email)
+    if (emailIsGiven) {
+      return this.appService.subscribe(Email)
+    } else {
+      return {
+        status: 403,
+        message: 'Email is not valid'
+      }
+    }
+  }
+
+  @Post('/unsubscribe')
+  unsubscribe(@Body('email') Email: string) {
+    const emailIsGiven = isEmail(Email)
+    if (emailIsGiven) {
+      return this.appService.unsubscribe(Email)
+    } else {
+      return {
+        status: 403,
+        message: 'Email is not valid'
+      }
+    }
+  }
+
+  @Post('/sendNewsLetter')
+  sendNewsLetter(@Headers('code') secretCode: string, @Body('message') message: string) {
+    return this.appService.sendNewsLetter(secretCode, message)
   }
 }

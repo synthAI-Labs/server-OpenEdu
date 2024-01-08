@@ -3,7 +3,7 @@ import { LearnService } from './learn.service';
 
 @Controller('learn/courses')
 export class LearnController {
-  constructor(private learnService: LearnService) {}
+  constructor(private learnService: LearnService) { }
 
   @Get('status')
   getStatus() {
@@ -32,17 +32,17 @@ export class LearnController {
     return this.learnService.enroll(courseId, userId, token);
   }
 
-  // return all topics covered in a course
-  // @Get('/:id/:topicId')
-  // async getTopics(
-  //   @Param('id') courseId: string,
-  //   @Param('topicId') topicId: string,
-  // ) {
-  //   return this.learnService.getTopics(courseId, topicId);
-  // }
-
   @Get('/m/:moduleId')
   async getModule(@Param('moduleId') moduleId: string) {
     return this.learnService.getModule(moduleId);
+  }
+
+  @Post('complete/m/:moduleId')
+  async completeModule(
+    @Headers('authorization') token: string,
+    @Headers('user_id') userId: string,
+    @Param('moduleId') moduleId: string,
+  ) {
+    return this.learnService.completeModule(moduleId, userId, token);
   }
 }

@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create users with different user settings
+
   const user1 = await prisma.user.create({
     data: {
       username: 'user1',
@@ -12,7 +12,7 @@ async function main() {
       bio: 'Bio for User One',
       emailVerified: true,
       email: 'user1@example.com',
-      password: 'password1',
+      password: '$2b$10$lKDjIf1d7TOcVpTk/nl2QOYkQlJE8uYORnzxMGWvwDd42U7fIbUim',
       settings: {
         create: {
           publicProfile: true,
@@ -20,6 +20,12 @@ async function main() {
           userId: 1,
         },
       },
+      EmailServiceSubscription: {
+        create: {
+          emailService: true,
+          userId: 1
+        }
+      }
     },
   });
 
@@ -30,7 +36,7 @@ async function main() {
       photo: 'girl1.png',
       bio: 'Bio for User Two',
       email: 'user2@example.com',
-      password: 'password2',
+      password: '$2b$10$lKDjIf1d7TOcVpTk/nl2QOYkQlJE8uYORnzxMGWvwDd42U7fIbUim',
       settings: {
         create: {
           publicProfile: true,
@@ -38,6 +44,12 @@ async function main() {
           userId: 2,
         },
       },
+      EmailServiceSubscription: {
+        create: {
+          emailService: true,
+          userId: 2
+        }
+      }
     },
   });
 
@@ -48,7 +60,7 @@ async function main() {
       photo: 'girl2.png',
       bio: 'Bio for User Three',
       email: 'user3@example.com',
-      password: 'password3',
+      password: '$2b$10$lKDjIf1d7TOcVpTk/nl2QOYkQlJE8uYORnzxMGWvwDd42U7fIbUim',
       settings: {
         create: {
           publicProfile: false,
@@ -56,6 +68,12 @@ async function main() {
           userId: 3,
         },
       },
+      EmailServiceSubscription: {
+        create: {
+          emailService: true,
+          userId: 3
+        }
+      }
     },
   });
 
@@ -88,20 +106,13 @@ async function main() {
                   image: 'image1.jpg',
                 },
                 {
-                  name: 'Module 2.1.2',
-                  type: 'quiz',
+                  name: 'Module 1.1.2',
+                  type: 'text',
                   madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
                   madeByUserGit: ['https://github.com/Himasnhu-AT/'],
-                  description: 'Description for Module 1.1.2',
-                  image: 'image6.jpg',
-                  quiz: {
-                    create: {
-                      Question: 'Question 2',
-                      Answer: ['Answer 1', 'Answer 2'],
-                      Options: ['Option 1', 'Option 2', 'Option 3'],
-                      image: 'quiz_image2.jpg',
-                    },
-                  },
+                  description: 'Description for Module 1.1.1',
+                  content: 'Content for Module 1.1.1',
+                  image: 'image1.jpg',
                 },
               ],
             },
@@ -168,20 +179,13 @@ async function main() {
                   image: 'image5.jpg',
                 },
                 {
-                  name: 'Module 1.1.2',
-                  type: 'quiz',
+                  name: 'Module 2.1.2',
+                  type: 'text',
                   madeByUser: ['https://avatars.githubusercontent.com/u/117301124?v=4'],
                   madeByUserGit: ['https://github.com/Himasnhu-AT/'],
-                  description: 'Description for Module 2.1.2',
-                  image: 'image2.jpg',
-                  quiz: {
-                    create: {
-                      Question: 'Question 1',
-                      Answer: ['Answer 1', 'Answer 2'],
-                      Options: ['Option 1', 'Option 2', 'Option 3'],
-                      image: 'quiz_image1.jpg',
-                    },
-                  },
+                  description: 'Description for Module 2.1.1',
+                  content: 'Content for Module 2.1.1',
+                  image: 'image5.jpg',
                 },
               ],
             },
@@ -228,7 +232,7 @@ async function main() {
       name: course1.name,
       description: course1.description,
       image: course1.image,
-      status: 'COMPLETED',
+      totalModules: 4,
     },
   });
 
@@ -239,7 +243,7 @@ async function main() {
       name: course1.name,
       description: course1.description,
       image: course1.image,
-      status: 'COMPLETED',
+      totalModules: 4,
     },
   });
 
@@ -251,7 +255,7 @@ async function main() {
       name: course2.name,
       description: course2.description,
       image: course2.image,
-      status: 'IN_PROGRESS',
+      totalModules: 4,
     },
   });
 
@@ -262,7 +266,7 @@ async function main() {
       name: course1.name,
       description: course1.description,
       image: course1.image,
-      status: 'COMPLETED',
+      totalModules: 4,
     },
   });
 
@@ -273,7 +277,7 @@ async function main() {
       name: course2.name,
       description: course2.description,
       image: course2.image,
-      status: 'IN_PROGRESS',
+      totalModules: 4,
     },
   });
 

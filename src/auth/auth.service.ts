@@ -10,6 +10,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
 import sendEmail from 'src/email/email';
 import * as bcrypt from 'bcrypt';
+import { log } from 'console';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -163,9 +164,15 @@ export class AuthService {
               userId: 1,
             },
           },
+          EmailServiceSubscription: {
+            create: {
+              userId: 1,
+            }
+          }
         },
         include: {
           settings: true,
+          EmailServiceSubscription: true
         },
       });
 
@@ -179,6 +186,11 @@ export class AuthService {
               userId: user.id,
             },
           },
+          EmailServiceSubscription: {
+            update: {
+              userId: user.id,
+            }
+          }
         },
         include: {
           settings: true,
@@ -212,7 +224,20 @@ export class AuthService {
    */
   async confirmEmail(userEmail: string, userGivenCode: number) {
     try {
+      console.log(userEmail, userGivenCode)
+      const userAvailable = await this.prisma.user.findUnique({
+        where: {
+          email: userEmail
+        }
+      })
+
+      if (!userAvailable) {
+        throw new ForbiddenException('No user with email found');
+      }
+
       const verificationCode = await this.redisClient.get(userEmail);
+
+      console.log(verificationCode)
 
       if (!verificationCode) {
         throw new ForbiddenException('No verification code found');
