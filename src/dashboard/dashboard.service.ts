@@ -87,7 +87,10 @@ export class DashboardService {
       });
 
       if (!user) {
-        throw new NotFoundException(`User not Found`);
+        return {
+          "status": 404,
+          "message": "User Not Found"
+        }
       }
 
       const userSettings = await this.prisma.user.findUnique({
@@ -122,7 +125,10 @@ export class DashboardService {
 
       return profile;
     } catch (error) {
-      throw error;
+      return {
+        "status": 500,
+        "message": "Internal Server Error"
+      }
     }
   }
 
@@ -162,13 +168,19 @@ export class DashboardService {
       });
 
       if (!user) {
-        throw new NotFoundException('User not found');
+        return {
+          "status": 404,
+          "message": "User Not Found"
+        }
       }
 
       delete user.password;
       return user;
     } catch (error) {
-      throw error;
+      return {
+        "status": 500,
+        "message": "Internal Server Error"
+      }
     }
   }
 
@@ -185,7 +197,11 @@ export class DashboardService {
       const verifiedUser = await this.validateTokenAndUserId(token, userId);
 
       if (!verifiedUser) {
-        throw new BadRequestException('Invalid token or user ID');
+        return {
+          "status": 403,
+          "message": "Invalid token or user ID"
+        }
+        // throw new BadRequestException('Invalid token or user ID');
       }
 
       const user = await this.prisma.user.findUnique({
@@ -196,7 +212,11 @@ export class DashboardService {
       });
 
       if (!user) {
-        throw new NotFoundException('User not found, invalid token');
+        return {
+          "status": 404,
+          "message": "User not found or invalid token"
+        }
+        // throw new NotFoundException('User not found, invalid token');
       }
 
       const updatedUser = await this.prisma.user.update({
@@ -220,7 +240,10 @@ export class DashboardService {
 
       return updatedUser;
     } catch (error) {
-      throw error;
+      return {
+        "status": 500,
+        "message": "Internal Server Error"
+      }
     }
   }
 
@@ -237,7 +260,10 @@ export class DashboardService {
       const verifiedUser = await this.validateTokenAndUserId(token, userId);
 
       if (!verifiedUser) {
-        throw new BadRequestException('Invalid token or user ID');
+        return {
+          "status": 403,
+          "message": "Invalid token or user ID"
+        }
       }
 
       const updatedSettings = await this.prisma.userSettings.update({
@@ -256,7 +282,10 @@ export class DashboardService {
 
       return updatedSettings;
     } catch (error) {
-      throw error;
+      return {
+        "status": 500,
+        "message": "Internal Server Error"
+      }
     }
   }
 
@@ -267,41 +296,51 @@ export class DashboardService {
    * @returns The user achievements.
    * @returns NotFoundException if the user is not found.
    */
-  async getAchievements(token: string, userId: string) {
-    try {
-      const verifiedUser = await this.validateTokenAndUserId(token, userId);
+  // async getAchievements(token: string, userId: string) {
+  //   try {
+  //     const verifiedUser = await this.validateTokenAndUserId(token, userId);
 
-      if (!verifiedUser) {
-        throw new BadRequestException('Invalid token or user ID');
-      }
+  //     if (!verifiedUser) {
+  //       return {
+  //         "status": 403,
+  //         "message": "Invalid token or user ID"
+  //       }
+  //     }
 
-      const user = await this.prisma.user.findUnique({
-        where: {
-          id: parseInt(userId),
-          token: token,
-        },
-      });
+  //     const user = await this.prisma.user.findUnique({
+  //       where: {
+  //         id: parseInt(userId),
+  //         token: token,
+  //       },
+  //     });
 
-      if (!user) {
-        throw new NotFoundException('User not found, invalid token');
-      }
+  //     if (!user) {
+  //       return {
+  //         "status": 404,
+  //         "message": "User not found or invalid token"
+  //       }
+  //       // throw new NotFoundException('User not found, invalid token');
+  //     }
 
-      const userAchievements = await this.prisma.user.findMany({
-        where: {
-          id: parseInt(userId),
-        },
-        include: {
-          achievements: {
-            include: {},
-          },
-        },
-      });
+  //     const userAchievements = await this.prisma.user.findMany({
+  //       where: {
+  //         id: parseInt(userId),
+  //       },
+  //       include: {
+  //         achievements: {
+  //           include: {},
+  //         },
+  //       },
+  //     });
 
-      return userAchievements;
-    } catch (error) {
-      throw error;
-    }
-  }
+  //     return userAchievements;
+  //   } catch (error) {
+  //     return {
+  //       "status": 500,
+  //       "message": "Internal Server Error"
+  //     }
+  //   }
+  // }
 
   /**
    * Claims an achievement for the user.
@@ -317,7 +356,10 @@ export class DashboardService {
       const verifiedUser = this.validateTokenAndUserId(token, userId);
 
       if (!verifiedUser) {
-        throw new BadRequestException('Invalid token or user ID');
+        return {
+          "status": 403,
+          "message": "Invalid token or user ID"
+        }
       }
 
       const user = await this.prisma.user.findUnique({
@@ -328,7 +370,10 @@ export class DashboardService {
       });
 
       if (!user) {
-        throw new NotFoundException('User not found, invalid token');
+        return {
+          "status": 404,
+          "message": "User not found or invalid token"
+        }
       }
 
       const achievement = await this.prisma.achievement.findUnique({
@@ -338,7 +383,11 @@ export class DashboardService {
       });
 
       if (!achievement) {
-        throw new NotFoundException('Achievement not found');
+
+        return {
+          "status": 404,
+          "message": "Achievement not found"
+        }
       }
 
       const alreadyClaimed = await this.prisma.user.findUnique({
@@ -355,7 +404,10 @@ export class DashboardService {
           (ach) => ach.id === parseInt(achievementId),
         )
       ) {
-        throw new ConflictException('Achievement already claimed');
+        return {
+          "status": 403,
+          "message": "Achievement already claimed"
+        }
       }
 
       const updatedUser = await this.prisma.user.update({
@@ -376,7 +428,10 @@ export class DashboardService {
 
       return updatedUser;
     } catch (error) {
-      throw error;
+      return {
+        "status": 500,
+        "message": "Internal Server Error"
+      }
     }
   }
 }

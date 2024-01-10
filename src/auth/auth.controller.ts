@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Header, Headers, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { ApiBody } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Get('status')
   getStatus() {
@@ -21,7 +21,10 @@ export class AuthController {
   // TODO: for email confirmation,
   @Post('signup/confirm/:userEmail')
   @ApiBody({ type: String })
-  confirm(@Param('userEmail') userEmail: string, @Headers('code') code: number) {
+  confirm(
+    @Param('userEmail') userEmail: string,
+    @Headers('code') code: number,
+  ) {
     return this.authService.confirmEmail(userEmail, code);
   }
 

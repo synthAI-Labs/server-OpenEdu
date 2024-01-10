@@ -9,7 +9,10 @@ import { PrismaService } from './prisma/prisma.service';
  */
 @Injectable()
 export class AppService {
-  constructor(private prisma: PrismaService, private http: HttpHealthIndicator) { }
+  constructor(
+    private prisma: PrismaService,
+    private http: HttpHealthIndicator,
+  ) {}
 
   /**
    * Returns a greeting message.
@@ -101,77 +104,81 @@ export class AppService {
 
   async subscribe(Email: string) {
     try {
-      const newsletterSubscriptionMade = await this.prisma.newsletterSubscription.findFirst({
-        where: {
-          id: 1
-        }
-      })
+      const newsletterSubscriptionMade =
+        await this.prisma.newsletterSubscription.findFirst({
+          where: {
+            id: 1,
+          },
+        });
 
-      console.log(!newsletterSubscriptionMade)
+      console.log(!newsletterSubscriptionMade);
 
       if (!newsletterSubscriptionMade) {
         await this.prisma.newsletterSubscription.create({
           data: {
             id: 1,
-            Email: [Email]
-          }
-        })
+            Email: [Email],
+          },
+        });
         return {
           status: 200,
           message: `Thank you for subscribing to our newsletter! We will send you updates at ${Email}`,
-        }
+        };
       } else {
         const isEmailPresent = newsletterSubscriptionMade.Email.includes(Email);
-        console.log(isEmailPresent)
+        console.log(isEmailPresent);
         if (isEmailPresent) {
           return {
             status: 200,
             message: `You are already subscribed to our newsletter!`,
-          }
+          };
         } else {
           await this.prisma.newsletterSubscription.update({
             where: {
-              id: 1
+              id: 1,
             },
             data: {
               Email: {
-                push: Email
-              }
-            }
-          })
+                push: Email,
+              },
+            },
+          });
           return {
             status: 200,
             message: `Thank you for subscribing to our newsletter! We will send you updates at ${Email}`,
-          }
+          };
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return {
         status: 500,
-        message: 'Error subscribing to newsletter'
+        message: 'Error subscribing to newsletter',
       };
     }
   }
 
   async unsubscribe(emailToRemove: string) {
     try {
-      const existingSubscription = await this.prisma.newsletterSubscription.findUnique({
-        where: {
-          id: 1
-        }
-      });
+      const existingSubscription =
+        await this.prisma.newsletterSubscription.findUnique({
+          where: {
+            id: 1,
+          },
+        });
 
       if (existingSubscription) {
-        const updatedEmails = existingSubscription.Email.filter(email => email !== emailToRemove);
+        const updatedEmails = existingSubscription.Email.filter(
+          (email) => email !== emailToRemove,
+        );
 
         await this.prisma.newsletterSubscription.update({
           where: {
-            id: 1
+            id: 1,
           },
           data: {
-            Email: updatedEmails
-          }
+            Email: updatedEmails,
+          },
         });
 
         return {
@@ -181,31 +188,30 @@ export class AppService {
       } else {
         return {
           status: 404,
-          message: 'Newsletter subscription not found'
+          message: 'Newsletter subscription not found',
         };
       }
     } catch (error) {
       console.log(error);
       return {
         status: 500,
-        message: 'Error unsubscribing from newsletter'
+        message: 'Error unsubscribing from newsletter',
       };
     }
   }
-
 
   async sendNewsLetter(secretCode: string, message: string) {
     if (secretCode == process.env.SECRET_CODE) {
       try {
         const subscriber = await this.prisma.newsletterSubscription.findUnique({
           where: {
-            id: 1
-          }
+            id: 1,
+          },
         });
 
         if (subscriber && subscriber.Email && subscriber.Email.length > 0) {
           const subject = 'Newsletter Update';
-          const ccAddress = '';  // Provide a CC address if needed
+          const ccAddress = ''; // Provide a CC address if needed
 
           // Assuming you have a sendEmail function
           for (const emailAddress of subscriber.Email) {
@@ -214,27 +220,26 @@ export class AppService {
 
           return {
             status: 200,
-            message: 'Newsletter sent successfully'
+            message: 'Newsletter sent successfully',
           };
         } else {
           return {
             status: 404,
-            message: 'No subscribers found or subscribers without emails'
+            message: 'No subscribers found or subscribers without emails',
           };
         }
       } catch (error) {
         console.log(error);
         return {
           status: 500,
-          message: 'Error sending newsletter'
+          message: 'Error sending newsletter',
         };
       }
     } else {
       return {
         status: 403,
-        message: 'Invalid secret code'
+        message: 'Invalid secret code',
       };
     }
   }
-
 }

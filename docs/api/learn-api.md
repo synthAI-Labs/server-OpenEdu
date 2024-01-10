@@ -1,11 +1,8 @@
-# API Calls For learn Service
+Sure, here's an updated version of your API documentation:
 
----
+# API Calls For Learn Service
+
 [[toc]]
-
-
---- 
-
 
 ## 1. Get Status
 
@@ -22,11 +19,9 @@ GET /learn/courses/status
 }
 ```
 
+---
 
---- 
-
-
-##  2. Get All Courses
+## 2. Get All Courses
 
 **Endpoint:**
 ```
@@ -41,11 +36,9 @@ GET /learn/courses
 }
 ```
 
+---
 
---- 
-
-
-##  3. Get Course by ID with Topics Covered
+## 3. Get Course by ID with Topics Covered
 
 **Endpoint:**
 ```
@@ -60,9 +53,7 @@ GET /learn/courses/:id
 }
 ```
 
-
---- 
-
+---
 
 ## 4. Enroll in a Course
 
@@ -82,15 +73,12 @@ POST /learn/courses/enroll/:id
 }
 ```
 
+---
 
---- 
-
-
-##  5. Get Topics Covered in a Course
-
+## 5. Get Module based on id
 **Endpoint:**
 ```
-GET /learn/courses/:id/:topicId
+GET /learn/courses/m/:moduleId
 ```
 
 **Example API Call:**
@@ -101,20 +89,21 @@ GET /learn/courses/:id/:topicId
 }
 ```
 
+---
 
---- 
-
-
-##  6. Get Module of a Course
-
+## 6. Complete an module
 **Endpoint:**
 ```
-GET /learn/courses/:id/:topicId/:moduleId
+POST /learn/courses/complete/m/:moduleId
 ```
 
-**Example API Call:**
+**Example Api Call:**
 ```json
 {
-  "Headers": {},
+  "Headers": {
+    "authorization": "<token>",
+    "user_id": "<userId>"
+  },
   "Body": {}
 }
+```
