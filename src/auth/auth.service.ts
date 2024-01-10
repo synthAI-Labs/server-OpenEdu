@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -19,7 +14,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) { }
+  ) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -87,8 +82,8 @@ export class AuthService {
         dto.username.length <= 1
       ) {
         return {
-          "status": 403,
-          "message": "All feilds are required"
+          status: 403,
+          message: 'All feilds are required',
         };
       }
 
@@ -100,15 +95,15 @@ export class AuthService {
 
       if (sameUserName) {
         return {
-          "status": 403,
-          "message": "Username already taken"
+          status: 403,
+          message: 'Username already taken',
         };
       }
 
       if (dto.password.length < 8) {
         return {
-          "status": 403,
-          "message": "Password should be greater than 8 words"
+          status: 403,
+          message: 'Password should be greater than 8 words',
         };
       }
 
@@ -134,9 +129,9 @@ export class AuthService {
 
       if (!res) {
         return {
-          "status": 500,
-          "message": "Error sending verification code"
-        }
+          status: 500,
+          message: 'Error sending verification code',
+        };
       }
 
       const images: string[] = [
@@ -213,16 +208,16 @@ export class AuthService {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           return {
-            "status": 403,
-            "message": "Email already exists"
-          }
+            status: 403,
+            message: 'Email already exists',
+          };
         }
       }
 
       return {
-        "status": 500,
-        "message": "Internal server errors"
-      }
+        status: 500,
+        message: 'Internal server errors',
+      };
     }
   }
 
@@ -244,9 +239,9 @@ export class AuthService {
 
       if (!userAvailable) {
         return {
-          "status": 404,
-          "message": "No user with email found"
-        }
+          status: 404,
+          message: 'No user with email found',
+        };
         // throw new ForbiddenException('No user with email found');
       }
 
@@ -256,9 +251,9 @@ export class AuthService {
 
       if (!verificationCode) {
         return {
-          "status": 404,
-          "message": "No verification code found"
-        }
+          status: 404,
+          message: 'No verification code found',
+        };
         // throw new ForbiddenException('No verification code found');
       }
 
@@ -276,16 +271,16 @@ export class AuthService {
         return user;
       } else {
         return {
-          "status": 403,
-          "message": "Invalid verification code"
-        }
+          status: 403,
+          message: 'Invalid verification code',
+        };
         // throw new ForbiddenException('Invalid verification code');
       }
     } catch (error) {
       return {
-        "status": 500,
-        "message": "Internal server error"
-      }
+        status: 500,
+        message: 'Internal server error',
+      };
     }
   }
 
@@ -303,9 +298,9 @@ export class AuthService {
 
       if (!userAvailable) {
         return {
-          "status": 403,
-          "message": "User Not Found"
-        }
+          status: 403,
+          message: 'User Not Found',
+        };
         // throw new BadRequestException('Not Found');
       }
 
@@ -389,9 +384,9 @@ export class AuthService {
       };
     } catch {
       return {
-        "status": 500,
-        "message": "Internal Server Error"
-      }
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 
@@ -410,9 +405,9 @@ export class AuthService {
 
       if (!verificationCode) {
         return {
-          "status": 404,
-          "message": "Verification code not found"
-        }
+          status: 404,
+          message: 'Verification code not found',
+        };
         // throw new BadRequestException('Not Found');
       }
 
@@ -441,9 +436,9 @@ export class AuthService {
       }
     } catch (error) {
       return {
-        "status": 500,
-        "message": "Internal Server error"
-      }
+        status: 500,
+        message: 'Internal Server error',
+      };
     }
   }
 
@@ -455,9 +450,9 @@ export class AuthService {
       password.length < 8
     ) {
       return {
-        "status": 403,
-        "message": "Password must be valid"
-      }
+        status: 403,
+        message: 'Password must be valid',
+      };
     }
 
     let parsedUserId: number;
@@ -466,9 +461,9 @@ export class AuthService {
       parsedUserId = parseInt(userId);
     } catch {
       return {
-        "status": 403,
-        "message": "password must be valid"
-      }
+        status: 403,
+        message: 'password must be valid',
+      };
       // throw new BadRequestException('Invalid Request');÷
     }
 
@@ -480,7 +475,10 @@ export class AuthService {
     });
 
     if (!userAvailable) {
-      throw new BadRequestException('Not Found');
+      return {
+        status: 403,
+        message: 'user not found',
+      };
     }
 
     await this.prisma.user.update({
@@ -521,9 +519,9 @@ export class AuthService {
 
       if (!user) {
         return {
-          "status": 404,
-          "message": "user not found with given email"
-        }
+          status: 404,
+          message: 'user not found with given email',
+        };
         // throw new ForbiddenException('No user with email found');
       }
 
@@ -531,9 +529,9 @@ export class AuthService {
 
       if (!isPasswordValid) {
         return {
-          "status": 403,
-          "message": "Invalid Password"
-        }
+          status: 403,
+          message: 'Invalid Password',
+        };
         // throw new ForbiddenException('Invalid password');
       }
 
@@ -541,9 +539,9 @@ export class AuthService {
       return user;
     } catch (error) {
       return {
-        "status": 500,
-        "message": "Internal Server Error"
-      }
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 }

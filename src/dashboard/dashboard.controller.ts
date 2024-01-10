@@ -14,7 +14,7 @@ import { ApiBody } from '@nestjs/swagger';
 
 @Controller('')
 export class DashboardController {
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService) {}
 
   @Get('status')
   getStatus() {

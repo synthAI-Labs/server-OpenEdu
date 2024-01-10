@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HttpHealthIndicator, HealthCheck } from '@nestjs/terminus';
 import { ContactDto } from './contact.dto';
 import sendEmail from './email/email';
@@ -61,7 +61,11 @@ export class AppService {
       body.email === undefined ||
       body.message === undefined
     ) {
-      throw new BadRequestException('Please fill out all fields');
+      return {
+        status: 403,
+        message: 'Please fill out all fields',
+      };
+      // throw new BadRequestException('Please fill out all fields');
     }
 
     const status = {

@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Get the status of the chat service.
@@ -48,12 +48,10 @@ export class ChatService {
       }
 
       const { message, module_id }: ChatDto = dto;
-      let receivedMessage
+      let receivedMessage;
 
       if (process.env.API_KEY) {
-
         if (module_id) {
-
           const module_details = await this.prisma.module.findUnique({
             where: {
               id: parseInt(module_id),
@@ -70,9 +68,7 @@ export class ChatService {
 
           console.log(receivedMessage);
         } else {
-          receivedMessage = await this.getResponse(
-            message,
-          );
+          receivedMessage = await this.getResponse(message);
         }
 
         return {
@@ -88,7 +84,7 @@ export class ChatService {
     } catch (error) {
       return {
         status: 500,
-        message: "cant run",
+        message: 'cant run',
       };
     }
   }

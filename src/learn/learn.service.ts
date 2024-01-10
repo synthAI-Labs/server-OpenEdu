@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
  */
 @Injectable()
 export class LearnService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -67,18 +67,18 @@ export class LearnService {
 
       if (!course) {
         return {
-          "status": 404,
-          "message": "Course not found"
-        }
+          status: 404,
+          message: 'Course not found',
+        };
         // throw new ForbiddenException('Course not found');
       }
 
       return course;
     } catch (error) {
       return {
-        "status": 500,
-        "message": "Internal Server Error"
-      }
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 
@@ -192,17 +192,17 @@ export class LearnService {
 
       if (!module) {
         return {
-          "status": 404,
-          "message": "Course not found"
-        }
+          status: 404,
+          message: 'Course not found',
+        };
       }
 
       return module;
     } catch (error) {
       return {
-        "status": 500,
-        "message": "Internal Server Error"
-      }
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 
