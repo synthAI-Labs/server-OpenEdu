@@ -57,11 +57,7 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-          subtopics: {
-            include: {
               modules: true,
-            },
-          },
         },
       });
 
@@ -100,11 +96,7 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-          subtopics: {
-            include: {
-              modules: true,
-            },
-          },
+              modules: true, 
         },
       });
 
@@ -146,10 +138,7 @@ export class LearnService {
       }
 
       // Calculate pending modules
-      const totalModules = course.subtopics.reduce((acc, subtopic) => {
-        acc += subtopic.modules.length;
-        return acc;
-      }, 0);
+      const totalModules = course.modules.length;
 
       // Create a new course enrollment
       await this.prisma.courseEnrollment.create({
@@ -251,7 +240,7 @@ export class LearnService {
       const enrollment = await this.prisma.courseEnrollment.findFirst({
         where: {
           userId: user.id,
-          courseId: module.subtopicId['courseId'],
+          courseId: module['courseId'],
         },
       });
 

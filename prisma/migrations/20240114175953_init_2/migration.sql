@@ -70,20 +70,6 @@ CREATE TABLE "Course" (
 );
 
 -- CreateTable
-CREATE TABLE "Subtopic" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "madeByUserGit" TEXT[],
-    "madeByUser" TEXT[],
-    "GithubLink" TEXT,
-    "courseId" INTEGER NOT NULL,
-    "image" TEXT NOT NULL,
-
-    CONSTRAINT "Subtopic_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Module" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -92,10 +78,11 @@ CREATE TABLE "Module" (
     "madeByUserGit" TEXT[],
     "madeByUser" TEXT[],
     "GithubLink" TEXT,
+    "numbering" INTEGER NOT NULL,
     "content" TEXT,
     "video" TEXT,
     "image" TEXT NOT NULL,
-    "subtopicId" INTEGER NOT NULL,
+    "courseId" INTEGER NOT NULL,
 
     CONSTRAINT "Module_pkey" PRIMARY KEY ("id")
 );
@@ -106,13 +93,20 @@ CREATE TABLE "Quiz" (
     "Question" TEXT NOT NULL,
     "Answer" TEXT[],
     "Options" TEXT[],
-    "madeByUserGit" TEXT[],
-    "madeByUser" TEXT[],
-    "GithubLink" TEXT,
     "image" TEXT,
-    "moduleId" INTEGER,
+    "assignmentId" INTEGER,
 
     CONSTRAINT "Quiz_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Assignment" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "image" TEXT,
+
+    CONSTRAINT "Assignment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -158,13 +152,10 @@ ALTER TABLE "User" ADD CONSTRAINT "User_userSettingsId_fkey" FOREIGN KEY ("userS
 ALTER TABLE "User" ADD CONSTRAINT "User_emailServiceSubscriptionId_fkey" FOREIGN KEY ("emailServiceSubscriptionId") REFERENCES "EmailServiceSubscription"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Subtopic" ADD CONSTRAINT "Subtopic_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Module" ADD CONSTRAINT "Module_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Module" ADD CONSTRAINT "Module_subtopicId_fkey" FOREIGN KEY ("subtopicId") REFERENCES "Subtopic"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Quiz" ADD CONSTRAINT "Quiz_moduleId_fkey" FOREIGN KEY ("moduleId") REFERENCES "Module"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Quiz" ADD CONSTRAINT "Quiz_assignmentId_fkey" FOREIGN KEY ("assignmentId") REFERENCES "Assignment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Achievement" ADD CONSTRAINT "Achievement_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
