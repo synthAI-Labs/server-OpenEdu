@@ -56,7 +56,11 @@ module.exports = {
             link: "/api/auth-api"
           },
         ]
-      }
+      },
+      {
+        text: "ProjectDetails",
+        link: "/docs/ProjectDetails"
+      },
     ]
   }
 };
