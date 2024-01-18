@@ -6,28 +6,33 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { DashboardDto } from './dto';
 import { UserSettingsDto } from './dto';
 import { ApiBody } from '@nestjs/swagger';
-
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Public } from '../custom.decorator/custom.deco';
 @Controller('')
 export class DashboardController {
   constructor(private dashboardService: DashboardService) {}
 
+  @Public()
   @Get('status')
   getStatus() {
     return this.dashboardService.getStatus();
   }
 
-  @Get('p/:profileId')
-  getPublicProfile(@Param('profileId') profileId: string) {
-    return this.dashboardService.getPublicProfile(profileId);
+  @Public()
+  @Get('p/:username')
+  getPublicProfile(@Param('username') userName: string) {
+    return this.dashboardService.getPublicProfile(userName);
   }
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Post('dashboard/profile')
+  @UseGuards(JwtAuthGuard)
   getProfile(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -37,6 +42,7 @@ export class DashboardController {
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Put('dashboard/profile')
+  @UseGuards(JwtAuthGuard)
   @ApiBody({ type: DashboardDto })
   updateProfile(
     @Headers('authorization') token: string,
@@ -47,6 +53,7 @@ export class DashboardController {
   }
 
   @Put('dashboard/profile/settings')
+  @UseGuards(JwtAuthGuard)
   @ApiBody({ type: UserSettingsDto })
   updateSettings(
     @Headers('authorization') token: string,

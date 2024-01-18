@@ -1,14 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
     origin: ['http://localhost:3000', 'https://ai-res-server.vercel.app'],
+    credentials: true,
   });
-
+  app.use(cookieParser());
   const config = new DocumentBuilder()
     .setTitle('Your API Title')
     .setDescription('API documentation for Your API')

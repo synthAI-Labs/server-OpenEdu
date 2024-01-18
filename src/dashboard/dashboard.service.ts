@@ -77,19 +77,13 @@ export class DashboardService {
    * @returns The public profile of the user, including their ID, name, email, bio, photo, interests, username, and settings.
    * @returns NotFoundException if the user is not found.
    */
-  async getPublicProfile(profileId: string) {
-    let id: number;
 
-    try {
-      id = parseInt(profileId);
-    } catch (error) {
-      throw new BadRequestException('Invalid profile ID');
-    }
-
+  async getPublicProfile(profileName: string) {
+    const username: string = profileName;
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: id,
+          username: username,
         },
       });
 
@@ -99,7 +93,7 @@ export class DashboardService {
 
       const userSettings = await this.prisma.user.findUnique({
         where: {
-          id: id,
+          username: username,
         },
         include: {
           settings: true,

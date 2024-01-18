@@ -12,7 +12,9 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import Redis from 'ioredis';
 import { MulterModule } from '@nestjs/platform-express/multer';
-
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
 @Module({
   imports: [
     PrismaModule,
@@ -20,6 +22,12 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     HttpModule,
     MulterModule.register({
       dest: './uploads',
+    }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.EXPIRES_IN },
     }),
   ],
   controllers: [
@@ -42,6 +50,8 @@ import { MulterModule } from '@nestjs/platform-express/multer';
       },
       scope: Scope.DEFAULT,
     },
+    JwtStrategy,
   ],
+  exports: [AuthService],
 })
 export class AppModule { }
