@@ -15,20 +15,20 @@ This project follows the [Contributor Covenant Code of Conduct](/code_of_conduct
 If you encounter a bug or unexpected behavior, please follow these steps:
 
 1. **Check Existing Issues:**
-   Check if the issue has already been reported by searching the [GitHub Issues](https://github.com/synthAI-Labs/server/issues).
+   Check if the issue has already been reported by searching the [GitHub Issues](https://github.com/synthAI-Labs/server-openedu/issues).
 
 2. **Create a New Issue:**
-   If the issue is not found, [create a new issue](https://github.com/synthAI-Labs/server//issues/new) with a descriptive title and detailed description of the problem, including steps to reproduce it.
+   If the issue is not found, [create a new issue](https://github.com/synthAI-Labs/server-openedu/issues/new) with a descriptive title and detailed description of the problem, including steps to reproduce it.
 
 ### Requesting Features
 
 If you have an idea for a new feature or enhancement, please follow these steps:
 
 1. **Check Existing Requests:**
-   Check if the feature request already exists by searching the [GitHub Issues](https://github.com/synthAI-Labs/server/issues).
+   Check if the feature request already exists by searching the [GitHub Issues](https://github.com/synthAI-Labs/server-openedu/issues).
 
 2. **Create a New Request:**
-   If the feature request is not found, [create a new issue](https://github.com/synthAI-Labs/server/issues/new) with a clear title and detailed description of the proposed feature.
+   If the feature request is not found, [create a new issue](https://github.com/synthAI-Labs/server-openedu/issues/new) with a clear title and detailed description of the proposed feature.
 
 ### Creating Pull Requests
 
@@ -47,7 +47,7 @@ If you'd like to contribute code to the project, please follow these steps:
    Ensure that your changes do not introduce new issues and that existing functionality still works as expected.
 
 5. **Create a Pull Request:**
-   [Create a pull request](https://github.com/synthAI-Labs/server/compare) from your branch to the `main` branch of the original repository. Provide a clear title and description for your changes.
+   [Create a pull request](https://github.com/synthAI-Labs/server-openedu/compare) from your branch to the `main` branch of the original repository. Provide a clear title and description for your changes.
 
 ## Coding Standards
 

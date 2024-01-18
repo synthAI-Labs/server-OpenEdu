@@ -335,7 +335,7 @@ export class AuthService {
    * @returns An object containing the status and message indicating the success of sending the verification code.
    * @throws BadRequestException if the request is invalid or the user is not found.
    */
-  async forgotPassword(token: string, userId: string, userEmail: string) {
+  async forgotPassword(userEmail: string) {
     if (!userEmail || userEmail === null || userEmail === undefined) {
       return {
         status: 403,
@@ -345,8 +345,6 @@ export class AuthService {
     try {
       const userAvailable = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
-          token: token,
           email: userEmail,
         },
       });
@@ -411,7 +409,7 @@ export class AuthService {
         // throw new BadRequestException('Not Found');
       }
 
-      if (verificationCode === dto.code) {
+      if (verificationCode == dto.code) {
         this.redisClient.del(userEmail);
 
         this.prisma.user.update({

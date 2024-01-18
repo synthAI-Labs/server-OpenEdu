@@ -1,18 +1,25 @@
 # API Calls For Dashboard Service
 
----
+::: warning TODO
+
+1. Implement in frontend
+
+:::
+
 [[toc]]
---- 
 
+---
 
-##  1. Get Status
+## 1. Get Status
 
 **Endpoint:**
+
 ```
 GET /status
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -20,18 +27,18 @@ GET /status
 }
 ```
 
+:::
 
---- 
-
-
-##  2. Get Public Profile
+## 2. Get Public Profile
 
 **Endpoint:**
+
 ```
 GET /p/:username
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -39,18 +46,18 @@ GET /p/:username
 }
 ```
 
-
---- 
-
+:::
 
 ## 3. Get User Profile
 
 **Endpoint:**
+
 ```
 POST /dashboard/profile
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -61,18 +68,22 @@ POST /dashboard/profile
 }
 ```
 
-
---- 
-
+:::
 
 ## 4. Update User Profile
 
 **Endpoint:**
+
 ```
 PUT /dashboard/profile
 ```
 
-**Example API Call:**
+::: warning
+Implement in frontend
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -90,18 +101,22 @@ PUT /dashboard/profile
 }
 ```
 
+:::
 
---- 
-
-
-##  5. Update User Settings
+## 5. Update User Settings
 
 **Endpoint:**
+
 ```
 PUT /dashboard/profile/settings
 ```
 
-**Example API Call:**
+::: warning
+Implement in frontend
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -119,18 +134,18 @@ PUT /dashboard/profile/settings
 }
 ```
 
+:::
 
---- 
-
-
-##  6. Get User Achievements
+## 6. Get User Achievements
 
 **Endpoint:**
+
 ```
 POST /dashboard/achievements
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -141,18 +156,22 @@ POST /dashboard/achievements
 }
 ```
 
+:::
 
---- 
-
-
-##  7. Claim Achievement
+## 7. Claim Achievement
 
 **Endpoint:**
+
 ```
 POST /dashboard/achievements/:achievementId/claim
 ```
 
-**Example API Call:**
+::: warning
+Decide Functionality
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -161,3 +180,6 @@ POST /dashboard/achievements/:achievementId/claim
   },
   "Body": {}
 }
+```
+
+:::

@@ -41,11 +41,9 @@ export class AuthController {
   @Post('password/forgot')
   @ApiBody({ type: String })
   forgotPassword(
-    @Headers('authorization') token: string,
-    @Headers('user_id') userId: string,
     @Body('userEmail') userEmail: string,
   ) {
-    return this.authService.forgotPassword(token, userId, userEmail);
+    return this.authService.forgotPassword( userEmail);
   }
 
   @Post('password/forgot/confirm/:userEmail')

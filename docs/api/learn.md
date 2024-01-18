@@ -1,17 +1,23 @@
-Sure, here's an updated version of your API documentation:
-
 # API Calls For Learn Service
+
+::: warning
+
+1. Implement in frontend
+
+:::
 
 [[toc]]
 
 ## 1. Get Status
 
 **Endpoint:**
+
 ```
 GET /learn/courses/status
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -19,16 +25,18 @@ GET /learn/courses/status
 }
 ```
 
----
+:::
 
 ## 2. Get All Courses
 
 **Endpoint:**
+
 ```
 GET /learn/courses
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -36,16 +44,18 @@ GET /learn/courses
 }
 ```
 
----
+:::
 
 ## 3. Get Course by ID with Topics Covered
 
 **Endpoint:**
+
 ```
 GET /learn/courses/:id
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -53,16 +63,18 @@ GET /learn/courses/:id
 }
 ```
 
----
+:::
 
 ## 4. Enroll in a Course
 
 **Endpoint:**
+
 ```
 POST /learn/courses/enroll/:id
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -73,15 +85,18 @@ POST /learn/courses/enroll/:id
 }
 ```
 
----
+:::
 
 ## 5. Get Module based on id
+
 **Endpoint:**
+
 ```
 GET /learn/courses/m/:moduleId
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -89,15 +104,22 @@ GET /learn/courses/m/:moduleId
 }
 ```
 
----
+:::
 
 ## 6. Complete an module
+
 **Endpoint:**
+
 ```
 POST /learn/courses/complete/m/:moduleId
 ```
 
-**Example Api Call:**
+::: warning
+Implement in frontend
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -107,3 +129,5 @@ POST /learn/courses/complete/m/:moduleId
   "Body": {}
 }
 ```
+
+:::
