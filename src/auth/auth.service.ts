@@ -480,7 +480,7 @@ export class AuthService {
       };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
-      const access_token: string = this.jwtService.sign(payload);
+      const access_token: string = this.jwtService.sign(payload) || '';
       return { ...result, access_token };
     } catch (error) {
       throw error;
