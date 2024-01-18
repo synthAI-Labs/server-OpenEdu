@@ -79,7 +79,7 @@ export class AuthController {
   // @Post('signup/github')
 
   // TODO: Google Signup
-  // @Post('sigAuthGuardnup/google')
+  // @Post('signup/google')
 
   @Public()
   @Post('signin')
