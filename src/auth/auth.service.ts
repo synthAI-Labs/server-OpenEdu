@@ -9,8 +9,10 @@ import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
 import sendEmail from 'src/email/email';
+
 import * as bcrypt from 'bcrypt';
 import { log } from 'console';
+import { JwtService } from '@nestjs/jwt';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -20,7 +22,8 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     @Inject('REDIS') private redisClient: Redis,
-  ) { }
+    private jwtService: JwtService,
+  ) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -470,9 +473,15 @@ export class AuthService {
       if (!isPasswordValid) {
         throw new ForbiddenException('Invalid password');
       }
-
-      delete user.password;
-      return user;
+      const payload = {
+        sub: user.id,
+        username: user.username,
+        email: user.email,
+      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user;
+      const access_token: string = this.jwtService.sign(payload) || '';
+      return { ...result, access_token };
     } catch (error) {
       throw error;
     }
