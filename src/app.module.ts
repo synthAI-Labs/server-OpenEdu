@@ -12,9 +12,13 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import Redis from 'ioredis';
 import { MulterModule } from '@nestjs/platform-express/multer';
+import { ChatModule } from './chat/chat.module';
+import { ChatController } from './chat/chat.controller';
+import { ChatService } from './chat/chat.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+
 @Module({
   imports: [
     PrismaModule,
@@ -23,6 +27,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
     MulterModule.register({
       dest: './uploads',
     }),
+    ChatModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       global: true,
@@ -35,12 +40,14 @@ import { JwtStrategy } from './auth/jwt.strategy';
     AuthController,
     DashboardController,
     LearnController,
+    ChatController,
   ],
   providers: [
     AppService,
     AuthService,
     DashboardService,
     LearnService,
+    ChatService,
     {
       provide: 'REDIS',
       useFactory: () => {
@@ -54,4 +61,4 @@ import { JwtStrategy } from './auth/jwt.strategy';
   ],
   exports: [AuthService],
 })
-export class AppModule { }
+export class AppModule {}

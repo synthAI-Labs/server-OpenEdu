@@ -1,6 +1,5 @@
 import * as nodemailer from 'nodemailer';
 
-
 export default async function sendEmail(
   emailAddress: string,
   subject: string,

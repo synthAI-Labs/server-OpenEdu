@@ -26,7 +26,7 @@ export class AuthController {
   @Public()
   @Post('signup/confirm/:userEmail')
   @ApiBody({ type: String })
-  confirm(@Param('userEmail') userEmail: string, @Body('code') code: string) {
+  confirm(@Param('userEmail') userEmail: string, @Headers('code') code: number) {
     return this.authService.confirmEmail(userEmail, code);
   }
 
@@ -48,7 +48,7 @@ export class AuthController {
   forgotPassword(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
-    @Body('userEmail') userEmail: string
+    @Body('userEmail') userEmail: string,
   ) {
     return this.authService.forgotPassword(token, userId, userEmail);
   }

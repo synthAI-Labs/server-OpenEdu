@@ -77,7 +77,6 @@ export class DashboardService {
    * @returns The public profile of the user, including their ID, name, email, bio, photo, interests, username, and settings.
    * @returns NotFoundException if the user is not found.
    */
-
   async getPublicProfile(profileName: string) {
     const username: string = profileName;
     try {
@@ -166,6 +165,7 @@ export class DashboardService {
         throw new NotFoundException('User not found');
       }
 
+      delete user.password;
       return user;
     } catch (error) {
       throw error;

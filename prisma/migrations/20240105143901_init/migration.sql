@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "UserCourseStatus" AS ENUM ('IN_PROGRESS', 'COMPLETED', 'NOT_STARTED');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -15,8 +12,32 @@ CREATE TABLE "User" (
     "token" TEXT NOT NULL DEFAULT 'demo',
     "interests" TEXT[],
     "userSettingsId" INTEGER NOT NULL,
+    "emailServiceSubscriptionId" INTEGER NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EmailServiceSubscription" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "CourseUpdates" BOOLEAN NOT NULL DEFAULT true,
+    "montlyUpdates" BOOLEAN NOT NULL DEFAULT true,
+    "security" BOOLEAN NOT NULL DEFAULT true,
+    "emailService" BOOLEAN NOT NULL DEFAULT true,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "EmailServiceSubscription_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NewsletterSubscription" (
+    "id" SERIAL NOT NULL,
+    "Email" TEXT[],
+    "newsletter" BOOLEAN NOT NULL DEFAULT true,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "NewsletterSubscription_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -39,6 +60,9 @@ CREATE TABLE "Course" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
     "userId" INTEGER,
     "tags" TEXT[],
 
@@ -50,6 +74,9 @@ CREATE TABLE "Subtopic" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
     "courseId" INTEGER NOT NULL,
     "image" TEXT NOT NULL,
 
@@ -61,7 +88,11 @@ CREATE TABLE "Module" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
-    "content" TEXT[],
+    "description" TEXT NOT NULL,
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
+    "content" TEXT,
     "video" TEXT,
     "image" TEXT NOT NULL,
     "subtopicId" INTEGER NOT NULL,
@@ -75,6 +106,9 @@ CREATE TABLE "Quiz" (
     "Question" TEXT NOT NULL,
     "Answer" TEXT[],
     "Options" TEXT[],
+    "madeByUserGit" TEXT[],
+    "madeByUser" TEXT[],
+    "GithubLink" TEXT,
     "image" TEXT,
     "moduleId" INTEGER,
 
@@ -98,9 +132,15 @@ CREATE TABLE "CourseEnrollment" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "courseId" INTEGER NOT NULL,
-    "status" "UserCourseStatus" NOT NULL,
     "enrolledAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "completedAt" TIMESTAMP(3),
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "completed" BOOLEAN NOT NULL DEFAULT false,
+    "progress" INTEGER NOT NULL DEFAULT 0,
+    "totalModules" INTEGER NOT NULL,
+    "completedModulesId" INTEGER[],
 
     CONSTRAINT "CourseEnrollment_pkey" PRIMARY KEY ("id")
 );
@@ -113,6 +153,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_userSettingsId_fkey" FOREIGN KEY ("userSettingsId") REFERENCES "UserSettings"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_emailServiceSubscriptionId_fkey" FOREIGN KEY ("emailServiceSubscriptionId") REFERENCES "EmailServiceSubscription"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Subtopic" ADD CONSTRAINT "Subtopic_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

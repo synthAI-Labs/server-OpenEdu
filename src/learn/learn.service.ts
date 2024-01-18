@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 /**
@@ -10,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
  */
 @Injectable()
 export class LearnService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Retrieves the status of the authentication service.
@@ -29,6 +25,7 @@ export class LearnService {
    */
   private validateIdFormat(id: string, field: string): number {
     const parsedId = parseInt(id);
+    console.log(parsedId);
     if (isNaN(parsedId)) {
       throw new ForbiddenException(`Invalid ${field} format`);
     }
@@ -60,7 +57,11 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-          subtopics: true,
+          subtopics: {
+            include: {
+              modules: true,
+            },
+          },
         },
       });
 
@@ -84,16 +85,120 @@ export class LearnService {
    */
   async enroll(courseId: string, userId: string, token: string) {
     try {
+      console.log(userId);
       const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+      const parsedUserId = this.validateIdFormat(userId, 'user ID');
 
+      // Check if the course exists
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
+        include: {
+          subtopics: {
+            include: {
+              modules: true,
+            },
+          },
+        },
       });
 
       if (!course) {
-        throw new NotFoundException('Course not found');
+        return {
+          status: 404,
+          message: 'Course not found',
+        };
       }
 
+      // Check if the user exists and the token is valid
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: parsedUserId,
+          token: token,
+        },
+      });
+
+      if (!user) {
+        return {
+          status: 404,
+          message: 'User not found or invalid token',
+        };
+      }
+
+      // Check if the user is already enrolled
+      const alreadyEnrolled = await this.prisma.courseEnrollment.findFirst({
+        where: {
+          userId: user.id,
+          courseId: course.id,
+        },
+      });
+
+      if (alreadyEnrolled) {
+        return {
+          status: 200,
+          message: 'Already enrolled',
+        };
+      }
+
+      // Calculate pending modules
+      const totalModules = course.subtopics.reduce((acc, subtopic) => {
+        acc += subtopic.modules.length;
+        return acc;
+      }, 0);
+
+      // Create a new course enrollment
+      await this.prisma.courseEnrollment.create({
+        data: {
+          userId: parseInt(userId),
+          courseId: parseInt(courseId),
+          name: course.name,
+          description: course.description,
+          image: course.image,
+          totalModules: totalModules,
+        },
+      });
+
+      return {
+        status: 201,
+        message: 'Enrolled Successfully',
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 500,
+        message: 'Internal Server Error',
+      };
+    }
+  }
+
+
+  /**
+   * Retrieves a module of a course.
+   * @param courseId - The ID of the course.
+   * @param topicId - The ID of the topic.
+   * @param moduleId - The ID of the module.
+   * @returns A promise that resolves to the module.
+   * @throws ForbiddenException if the course, topic, or module is not found.
+   */
+  async getModule(moduleId: string) {
+    try {
+      const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
+
+      const module = await this.prisma.module.findUnique({
+        where: { id: parsedModuleId },
+      });
+
+      if (!module) {
+        throw new ForbiddenException('Course not found');
+      }
+
+      return module;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async completeModule(moduleId: string, userId: string, token: string) {
+    try {
+      const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
       const parsedUserId = this.validateIdFormat(userId, 'user ID');
 
       const user = await this.prisma.user.findUnique({
@@ -104,120 +209,70 @@ export class LearnService {
       });
 
       if (!user) {
-        throw new NotFoundException('User not found or invalid token');
+        return {
+          status: 403,
+          message: 'User not found',
+        };
       }
 
-      const alreadyEnrolled = await this.prisma.courseEnrollment.findFirst({
+      const module = await this.prisma.module.findUnique({
         where: {
-          userId: user.id,
-          courseId: course.id,
+          id: parsedModuleId,
         },
       });
-
-      if (alreadyEnrolled) {
-        return 'Already enrolled';
-      }
-
-      await this.prisma.courseEnrollment.create({
-        data: {
-          userId: user.id,
-          courseId: course.id,
-          status: 'NOT_STARTED',
-        },
-      });
-
-      return 'Enrolled';
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  /**
-   * Retrieves the topics of a course.
-   * @param courseId - The ID of the course.
-   * @returns A promise that resolves to an array of topics.
-   * @throws ForbiddenException if the course is not found.
-   */
-  async getTopics(courseId: string, topicId: string) {
-    try {
-      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-
-      const parsedTopicId = this.validateIdFormat(topicId, 'topic ID');
-
-      const course = await this.prisma.course.findUnique({
-        where: { id: parsedCourseId },
-        include: {
-          subtopics: {
-            where: {
-              id: parsedTopicId,
-            },
-            include: {
-              modules: true,
-            },
-          },
-        },
-      });
-
-      if (!course) {
-        throw new ForbiddenException('Course not found');
-      }
-
-      return course.subtopics;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  /**
-   * Retrieves a module of a course.
-   * @param courseId - The ID of the course.
-   * @param topicId - The ID of the topic.
-   * @param moduleId - The ID of the module.
-   * @returns A promise that resolves to the module.
-   * @throws ForbiddenException if the course, topic, or module is not found.
-   */
-  async getModule(courseId: string, topicId: string, moduleId: string) {
-    try {
-      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-
-      const parsedTopicId = this.validateIdFormat(topicId, 'topic ID');
-
-      const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
-
-      const course = await this.prisma.course.findUnique({
-        where: { id: parsedCourseId },
-        include: {
-          subtopics: {
-            include: {
-              modules: {
-                include: {
-                  quiz: true,
-                },
-              },
-            },
-          },
-        },
-      });
-
-      if (!course) {
-        throw new ForbiddenException('Course not found');
-      }
-
-      const topic = course.subtopics.find((t) => t.id === parsedTopicId);
-
-      if (!topic) {
-        throw new ForbiddenException('Topic not found');
-      }
-
-      const module = topic.modules.find((m) => m.id === parsedModuleId);
 
       if (!module) {
-        throw new ForbiddenException('Module not found');
+        return {
+          status: 403,
+          message: 'Module not found',
+        };
       }
 
-      return module;
+      // Check if the module is already completed by the user
+      const enrollment = await this.prisma.courseEnrollment.findFirst({
+        where: {
+          userId: user.id,
+          courseId: module.subtopicId['courseId'],
+        },
+      });
+
+      if (!enrollment) {
+        return {
+          status: 403,
+          message: 'User not enrolled in the course',
+        };
+      }
+
+      if (enrollment.completedModulesId.includes(parsedModuleId)) {
+        return {
+          status: 200,
+          message: 'Module already completed by the user',
+        };
+      }
+
+      // Update the completed modules list in the enrollment
+      await this.prisma.courseEnrollment.update({
+        where: {
+          id: enrollment.id,
+        },
+        data: {
+          completedModulesId: {
+            push: parsedModuleId,
+          },
+          progress: enrollment.progress + 1, // Increment the progress
+        },
+      });
+
+      return {
+        status: 200,
+        message: 'Module completed successfully',
+      };
     } catch (error) {
-      throw error;
+      console.log(error);
+      return {
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 }

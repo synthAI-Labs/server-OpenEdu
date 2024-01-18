@@ -9,6 +9,9 @@ import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import Redis from 'ioredis';
 import sendEmail from 'src/email/email';
+
+import * as bcrypt from 'bcrypt';
+import { log } from 'console';
 import { JwtService } from '@nestjs/jwt';
 
 /**
@@ -55,7 +58,11 @@ export class AuthService {
    * @param code - The verification code to send.
    * @returns A boolean indicating whether the code was successfully sent.
    */
-  async sendVerificationCode(email: string, subject: string, text: string): Promise<boolean> {
+  async sendVerificationCode(
+    email: string,
+    subject: string,
+    text: string,
+  ): Promise<boolean> {
     try {
       const res = await sendEmail(email, subject, text);
       return res;
@@ -123,7 +130,7 @@ export class AuthService {
       const res: boolean = await this.sendVerificationCode(
         dto.email,
         subject,
-        text
+        text,
       );
 
       if (!res) {
@@ -131,15 +138,23 @@ export class AuthService {
       }
 
       const images: string[] = [
-        "boy1.png", "boy2.png", "boy3.png", "boy4.png", "boy5.png", "boy6.png", "boy7.png",
+        'boy1.png',
+        'boy2.png',
+        'boy3.png',
+        'boy4.png',
+        'boy5.png',
+        'boy6.png',
+        'boy7.png',
         // "girl1.png", "girl2.png", "girl3.png", "girl4.png", "girl5.png", "girl6.png", "girl7.png",
-      ]
-      let randomImage = images[Math.floor(Math.random() * images.length)];
-      console.log(randomImage);
+      ];
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+
+      const hashedPassword = await bcrypt.hash(dto.password, 10);
+
       const user = await this.prisma.user.create({
         data: {
           email: dto.email,
-          password: dto.password,
+          password: hashedPassword,
           name: dto.name,
           username: dto.username,
           emailVerified: false,
@@ -152,9 +167,15 @@ export class AuthService {
               userId: 1,
             },
           },
+          EmailServiceSubscription: {
+            create: {
+              userId: 1,
+            }
+          }
         },
         include: {
           settings: true,
+          EmailServiceSubscription: true
         },
       });
 
@@ -168,6 +189,11 @@ export class AuthService {
               userId: user.id,
             },
           },
+          EmailServiceSubscription: {
+            update: {
+              userId: user.id,
+            }
+          }
         },
         include: {
           settings: true,
@@ -199,15 +225,28 @@ export class AuthService {
    * @returns The updated user object if the verification code is valid.
    * @throws ForbiddenException if no verification code is found, or if the verification code is invalid.
    */
-  async confirmEmail(userEmail: string, userGivenCode: string) {
+  async confirmEmail(userEmail: string, userGivenCode: number) {
     try {
+      console.log(userEmail, userGivenCode)
+      const userAvailable = await this.prisma.user.findUnique({
+        where: {
+          email: userEmail
+        }
+      })
+
+      if (!userAvailable) {
+        throw new ForbiddenException('No user with email found');
+      }
+
       const verificationCode = await this.redisClient.get(userEmail);
+
+      console.log(verificationCode)
 
       if (!verificationCode) {
         throw new ForbiddenException('No verification code found');
       }
 
-      if (verificationCode === userGivenCode) {
+      if (parseInt(verificationCode) == userGivenCode) {
         await this.redisClient.del(userEmail);
 
         const user = await this.prisma.user.update({
@@ -288,7 +327,7 @@ export class AuthService {
         throw new BadRequestException('Not Found');
       }
 
-      const alreadyRequested = await this.redisClient.get(userEmail)
+      const alreadyRequested = await this.redisClient.get(userEmail);
 
       if (alreadyRequested) {
         this.redisClient.del(userEmail);
@@ -305,8 +344,8 @@ export class AuthService {
       await this.sendVerificationCode(userEmail, subject, text);
 
       await this.redisClient.set(userEmail, verificationCode);
-      console.log(await this.redisClient.get(userEmail))
-      console.log(verificationCode)
+      console.log(await this.redisClient.get(userEmail));
+      console.log(verificationCode);
 
       return {
         status: 200,
@@ -319,7 +358,7 @@ export class AuthService {
 
   /**
    * Confirms the reset password for a user.
-   * 
+   *
    * @param userEmail - The email of the user.
    * @param dto - The reset password data transfer object.
    * @returns An object with the status and message indicating the result of the password reset.
@@ -329,9 +368,8 @@ export class AuthService {
   async confirmResetPassword(userEmail: string, dto: ResetPasswordDto) {
     try {
       const verificationCode: string = await this.redisClient.get(userEmail);
-      console.log(await this.redisClient.get(userEmail))
-      console.log(dto.code)
-
+      console.log(await this.redisClient.get(userEmail));
+      console.log(dto.code);
 
       if (!verificationCode) {
         throw new BadRequestException('Not Found');
@@ -411,11 +449,18 @@ export class AuthService {
    * @returns The signed-in user object.
    * @throws ForbiddenException if no user with the provided email is found or if the password is invalid.
    */
+  // ...
+
   async signin(dto: LoginDto) {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
           email: dto.email,
+        },
+        include: {
+          settings: true,
+          CourseEnrollment: true,
+          achievements: true,
         },
       });
 
@@ -423,7 +468,7 @@ export class AuthService {
         throw new ForbiddenException('No user with email found');
       }
 
-      const isPasswordValid = user.password === dto.password;
+      const isPasswordValid = await bcrypt.compare(dto.password, user.password);
 
       if (!isPasswordValid) {
         throw new ForbiddenException('Invalid password');
