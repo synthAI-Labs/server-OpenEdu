@@ -63,7 +63,7 @@ export class AuthController {
     @Headers('user_id') userId: string,
     @Body('newPassword') password: string,
   ) {
-    return this.authService.resetPassword(token, userId, password);
+    return this.authService.changePassword(token, userId, password);
   }
 
   // TODO: Github Signup

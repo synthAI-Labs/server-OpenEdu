@@ -268,6 +268,8 @@ export class AuthService {
             emailVerified: true,
           },
         });
+
+        delete user.password;
         return user;
       } else {
         return {
@@ -440,7 +442,7 @@ export class AuthService {
     }
   }
 
-  async resetPassword(token: string, userId: string, password: string) {
+  async changePassword(token: string, userId: string, password: string) {
     if (
       !password ||
       password === null ||
@@ -490,7 +492,7 @@ export class AuthService {
 
     return {
       status: 200,
-      message: 'Password Reset successfully',
+      message: 'Password changed successfully',
     };
   }
 
