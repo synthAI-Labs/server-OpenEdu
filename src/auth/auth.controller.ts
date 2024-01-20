@@ -1,17 +1,21 @@
-import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { ApiBody } from '@nestjs/swagger';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { Public } from '../custom.decorator/custom.deco';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Get('status')
   getStatus() {
     return this.authService.getStatus();
   }
 
+  @Public()
   @Post('signup')
   @ApiBody({ type: AuthDto })
   signup(@Body() dto: AuthDto) {
@@ -19,6 +23,7 @@ export class AuthController {
   }
 
   // TODO: for email confirmation,
+  @Public()
   @Post('signup/confirm/:userEmail')
   @ApiBody({ type: String })
   confirm(
@@ -29,7 +34,9 @@ export class AuthController {
   }
 
   // TODO: for token reset,
+  @Public()
   @Post('signout')
+  @UseGuards(JwtAuthGuard)
   signout(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -38,6 +45,7 @@ export class AuthController {
   }
 
   // TODO: password reset request, forgot password
+  @Public()
   @Post('password/forgot')
   @ApiBody({ type: String })
   forgotPassword(
@@ -46,6 +54,7 @@ export class AuthController {
     return this.authService.forgotPassword( userEmail);
   }
 
+  @Public()
   @Post('password/forgot/confirm/:userEmail')
   @ApiBody({ type: ResetPasswordDto })
   confirmResetPassword(
@@ -56,6 +65,7 @@ export class AuthController {
   }
 
   // TODO: for password change,
+  @Public()
   @Post('password/change')
   @ApiBody({ type: String })
   resetPassword(
@@ -72,6 +82,7 @@ export class AuthController {
   // TODO: Google Signup
   // @Post('signup/google')
 
+  @Public()
   @Post('signin')
   @ApiBody({ type: LoginDto })
   signin(@Body() dto: LoginDto) {

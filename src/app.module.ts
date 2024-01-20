@@ -15,6 +15,9 @@ import { MulterModule } from '@nestjs/platform-express/multer';
 import { ChatModule } from './chat/chat.module';
 import { ChatController } from './chat/chat.controller';
 import { ChatService } from './chat/chat.service';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
   imports: [
@@ -25,6 +28,12 @@ import { ChatService } from './chat/chat.service';
       dest: './uploads',
     }),
     ChatModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.EXPIRES_IN },
+    }),
   ],
   controllers: [
     AppController,
@@ -48,6 +57,8 @@ import { ChatService } from './chat/chat.service';
       },
       scope: Scope.DEFAULT,
     },
+    JwtStrategy,
   ],
+  exports: [AuthService],
 })
 export class AppModule {}
