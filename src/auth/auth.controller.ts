@@ -7,7 +7,7 @@ import { Public } from '../custom.decorator/custom.deco';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Public()
   @Get('status')
@@ -26,7 +26,10 @@ export class AuthController {
   @Public()
   @Post('signup/confirm/:userEmail')
   @ApiBody({ type: String })
-  confirm(@Param('userEmail') userEmail: string, @Headers('code') code: number) {
+  confirm(
+    @Param('userEmail') userEmail: string,
+    @Headers('code') code: number,
+  ) {
     return this.authService.confirmEmail(userEmail, code);
   }
 
@@ -46,11 +49,9 @@ export class AuthController {
   @Post('password/forgot')
   @ApiBody({ type: String })
   forgotPassword(
-    @Headers('authorization') token: string,
-    @Headers('user_id') userId: string,
     @Body('userEmail') userEmail: string,
   ) {
-    return this.authService.forgotPassword(token, userId, userEmail);
+    return this.authService.forgotPassword( userEmail);
   }
 
   @Public()
@@ -72,7 +73,7 @@ export class AuthController {
     @Headers('user_id') userId: string,
     @Body('newPassword') password: string,
   ) {
-    return this.authService.resetPassword(token, userId, password);
+    return this.authService.changePassword(token, userId, password);
   }
 
   // TODO: Github Signup

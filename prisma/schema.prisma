@@ -66,24 +66,11 @@ model Course {
   madeByUserGit    String[]
   madeByUser       String[]
   GithubLink       String?
-  subtopics        Subtopic[]
+  modules          Module[]
   userId           Int?
   Achievement      Achievement[]
   tags             String[]
   CourseEnrollment CourseEnrollment[]
-}
-
-model Subtopic {
-  id            Int      @id @default(autoincrement())
-  name          String
-  description   String
-  madeByUserGit String[]
-  madeByUser    String[]
-  GithubLink    String?
-  courseId      Int      @map("courseId")
-  image         String
-  course        Course   @relation(fields: [courseId], references: [id])
-  modules       Module[]
 }
 
 model Module {
@@ -94,11 +81,12 @@ model Module {
   madeByUserGit String[]
   madeByUser    String[]
   GithubLink    String?
+  numbering     Int
   content       String?
   video         String?
   image         String
-  subtopicId    Int      @map("subtopicId")
-  subtopic      Subtopic @relation(fields: [subtopicId], references: [id])
+  courseId      Int      @map("courseId")
+  Course        Course?  @relation(fields: [courseId], references: [id])
 }
 
 model Quiz {

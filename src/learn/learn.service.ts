@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
  */
 @Injectable()
 export class LearnService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Retrieves the status of the authentication service.
@@ -57,21 +57,24 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-          subtopics: {
-            include: {
               modules: true,
-            },
-          },
         },
       });
 
       if (!course) {
-        throw new ForbiddenException('Course not found');
+        return {
+          status: 404,
+          message: 'Course not found',
+        };
+        // throw new ForbiddenException('Course not found');
       }
 
       return course;
     } catch (error) {
-      throw error;
+      return {
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 
@@ -93,11 +96,7 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-          subtopics: {
-            include: {
-              modules: true,
-            },
-          },
+              modules: true, 
         },
       });
 
@@ -139,10 +138,7 @@ export class LearnService {
       }
 
       // Calculate pending modules
-      const totalModules = course.subtopics.reduce((acc, subtopic) => {
-        acc += subtopic.modules.length;
-        return acc;
-      }, 0);
+      const totalModules = course.modules.length;
 
       // Create a new course enrollment
       await this.prisma.courseEnrollment.create({
@@ -169,14 +165,11 @@ export class LearnService {
     }
   }
 
-
   /**
    * Retrieves a module of a course.
-   * @param courseId - The ID of the course.
-   * @param topicId - The ID of the topic.
    * @param moduleId - The ID of the module.
    * @returns A promise that resolves to the module.
-   * @throws ForbiddenException if the course, topic, or module is not found.
+   * @throws ForbiddenException if the module is not found.
    */
   async getModule(moduleId: string) {
     try {
@@ -187,15 +180,30 @@ export class LearnService {
       });
 
       if (!module) {
-        throw new ForbiddenException('Course not found');
+        return {
+          status: 404,
+          message: 'Course not found',
+        };
       }
 
       return module;
     } catch (error) {
-      throw error;
+      return {
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 
+  /**
+   * Completes a module of a course for a user.
+   * @param moduleId - The ID of the module to complete.
+   * @param userId - The ID of the user completing the module.
+   * @param token - The token for user authentication.
+   * @returns {NotFoundException} If the user or module is not found.
+   * @returns {ForbiddenException} If the user is not enrolled in the course or the module is already completed.
+   * @returns A Promise that resolves to a success message.
+   */
   async completeModule(moduleId: string, userId: string, token: string) {
     try {
       const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
@@ -232,7 +240,7 @@ export class LearnService {
       const enrollment = await this.prisma.courseEnrollment.findFirst({
         where: {
           userId: user.id,
-          courseId: module.subtopicId['courseId'],
+          courseId: module['courseId'],
         },
       });
 

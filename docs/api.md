@@ -14,6 +14,7 @@ The example api calls are divided into two parts:
 ```
 
 Here:
+
 > Headers: The headers you need to pass in the api call. If empty, no need to pass anything
 
 > Body: The body you need to pass in the api call. If empty, no need to pass anything
@@ -22,8 +23,8 @@ Here:
 
 Visit the following links to see the example api calls:
 
-- [auth](/api/auth-api)
+- [auth](/api/auth)
 
-- [dashboard](/api/dashboard-api)
+- [dashboard](/api/dashboard)
 
-- [learn](/api/learn-api)
+- [learn](/api/learn)

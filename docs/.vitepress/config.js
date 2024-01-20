@@ -1,4 +1,3 @@
-const sidebar = [{ text: "Introduction", link: "/" }]
 module.exports = {
   title: "OPEN-EDU Server",
   description: "OPEN-EDU Server",
@@ -7,7 +6,7 @@ module.exports = {
       { text: "Home", link: "/" },
       { text: "API {Swaggers}", link: "https://ai-res-server-development.onrender.com/api" },
       { text: "API Calls", link: "/api" },
-      { text: "GitHub", link: "https://github.com/synthAI-Labs/server" }
+      { text: "GitHub", link: "https://github.com/synthAI-Labs/server-openedu" }
     ],
     sidebar: [
       {
@@ -24,39 +23,38 @@ module.exports = {
         ]
       },
       {
-        text: "Services",
-        items: [
-          {
-            text: "dashboard - service",
-            link: "/services/dashboard"
-          },
-          {
-            text: "learn - service",
-            link: "/services/learn"
-          },
-          {
-            text: "auth - service",
-            link: "/services/auth"
-          },
-        ]
-      },
-      {
         text: "API Calls",
         items: [
           {
             text: "Dashboard",
-            link: "/api/dashboard-api"
+            link: "/api/dashboard"
           },
           {
             text: "Learn",
-            link: "/api/learn-api"
+            link: "/api/learn"
           },
           {
             text: "Auth",
-            link: "/api/auth-api"
+            link: "/api/auth"
+          },
+          {
+            text: "Projects",
+            link: "/api/project"
+          },
+          {
+            text: "Practise",
+            link: "/api/practise"
+          },
+          {
+            text: "Quiz",
+            link: "/api/quiz"
           },
         ]
-      }
+      },
+      {
+        text: "ProjectDetails",
+        link: "/docs/ProjectDetails"
+      },
     ]
   }
 };

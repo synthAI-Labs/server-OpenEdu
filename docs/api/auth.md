@@ -1,17 +1,24 @@
 # API Calls For Dashboard Service
----
-[[toc]]
----
 
+::: warning TODO
 
-##  1. Get Status
+1. Implement in frontend
+2. add signup/sign using google/github OAuth
+
+:::
+
+## [[toc]]
+
+## 1. Get Status
 
 **Endpoint:**
+
 ```
 GET /auth/status
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -19,18 +26,18 @@ GET /auth/status
 }
 ```
 
+:::
 
---- 
-
-
-##  2. Sign Up
+## 2. Sign Up
 
 **Endpoint:**
+
 ```
 POST /auth/signup
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -43,18 +50,18 @@ POST /auth/signup
 }
 ```
 
+:::
 
---- 
-
-
-##  3. Confirm Email (Signup)
+## 3. Confirm Email (Signup)
 
 **Endpoint:**
+
 ```
 POST /auth/signup/confirm/:userEmail
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -64,18 +71,18 @@ POST /auth/signup/confirm/:userEmail
 }
 ```
 
+:::
 
---- 
-
-
-##  4. Sign Out
+## 4. Sign Out
 
 **Endpoint:**
+
 ```
 POST /auth/signout
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -86,21 +93,25 @@ POST /auth/signout
 }
 ```
 
+:::
 
---- 
-
-
-##  5. Forgot Password
+## 5. Forgot Password
 
 **Endpoint:**
+
 ```
 POST /auth/password/forgot
 ```
 
-**Example API Call:**
+::: warning
+Implement in frontend
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
-  "Headers" : {
+  "Headers": {
     "authorization": "<token>",
     "user_id": "<userId>"
   },
@@ -110,18 +121,22 @@ POST /auth/password/forgot
 }
 ```
 
+:::
 
---- 
-
-
-##  6. Confirm Forgot Password's Email
+## 6. Confirm Forgot Password's Email
 
 **Endpoint:**
+
 ```
 POST /auth/password/forgot/confirm/:userEmail
 ```
 
-**Example API Call:**
+::: warning
+Implement in frontend
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
   "params": {
@@ -135,18 +150,22 @@ POST /auth/password/forgot/confirm/:userEmail
 }
 ```
 
+:::
 
---- 
-
-
-##  7. Change Password
+## 7. Change Password
 
 **Endpoint:**
+
 ```
 POST /auth/password/change
 ```
 
-**Example API Call:**
+::: warning
+Implement in frontend
+:::
+
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {
@@ -159,18 +178,18 @@ POST /auth/password/change
 }
 ```
 
+:::
 
---- 
-
-
-##  8. Sign In
+## 8. Sign In
 
 **Endpoint:**
+
 ```
 POST /auth/signin
 ```
 
-**Example API Call:**
+::: details **Example API Call:**
+
 ```json
 {
   "Headers": {},
@@ -179,3 +198,5 @@ POST /auth/signin
     "password": "<password>"
   }
 }
+:::
+```

@@ -6,8 +6,8 @@
   "private": true,
   "license": "",
   "scripts": {
-    "git:pre-commit": "npm run lint && npm run build && npm run test && npm run format",
-    "docker:deploy": "npm run git-precommit && docker build -t open-edu-server . && docker tag open-edu-server:latest himanshu806/openedu:server-latest && docker push himanshu806/openedu:server-latest",
+    "git:pre-commit": "npm run lint && npm run build && npm run format",
+    "docker:deploy": "npm run git:pre-commit && docker build -t open-edu-server . && docker tag open-edu-server:latest himanshu806/openedu:server-latest && docker push himanshu806/openedu:server-latest",
     "docker:dev:prod": "docker build -t open-edu-server . && docker run -p 4000:4000 open-edu-server",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

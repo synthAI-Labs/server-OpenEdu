@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -90,7 +85,10 @@ export class AuthService {
         !dto.username ||
         dto.username.length <= 1
       ) {
-        throw new ForbiddenException('Missing required fields');
+        return {
+          status: 403,
+          message: 'All feilds are required',
+        };
       }
 
       const sameUserName = await this.prisma.user.findUnique({
@@ -100,17 +98,17 @@ export class AuthService {
       });
 
       if (sameUserName) {
-        throw new ForbiddenException('Username Already taken');
+        return {
+          status: 403,
+          message: 'Username already taken',
+        };
       }
 
       if (dto.password.length < 8) {
-        throw new ForbiddenException('Password must be at least 8 characters');
-      }
-
-      if (dto.name.length < 1 || dto.username.length < 1) {
-        throw new ForbiddenException(
-          'Name and username must be at least 1 character',
-        );
+        return {
+          status: 403,
+          message: 'Password should be greater than 8 words',
+        };
       }
 
       const token = this.generateRandomToken();
@@ -134,7 +132,10 @@ export class AuthService {
       );
 
       if (!res) {
-        throw new ForbiddenException('Error sending verification code');
+        return {
+          status: 500,
+          message: 'Error sending verification code',
+        };
       }
 
       const images: string[] = [
@@ -170,12 +171,12 @@ export class AuthService {
           EmailServiceSubscription: {
             create: {
               userId: 1,
-            }
-          }
+            },
+          },
         },
         include: {
           settings: true,
-          EmailServiceSubscription: true
+          EmailServiceSubscription: true,
         },
       });
 
@@ -192,8 +193,8 @@ export class AuthService {
           EmailServiceSubscription: {
             update: {
               userId: user.id,
-            }
-          }
+            },
+          },
         },
         include: {
           settings: true,
@@ -210,11 +211,17 @@ export class AuthService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          throw new ForbiddenException('Email already exists');
+          return {
+            status: 403,
+            message: 'Email already exists',
+          };
         }
       }
 
-      throw error;
+      return {
+        status: 500,
+        message: 'Internal server errors',
+      };
     }
   }
 
@@ -227,23 +234,31 @@ export class AuthService {
    */
   async confirmEmail(userEmail: string, userGivenCode: number) {
     try {
-      console.log(userEmail, userGivenCode)
+      console.log(userEmail, userGivenCode);
       const userAvailable = await this.prisma.user.findUnique({
         where: {
-          email: userEmail
-        }
-      })
+          email: userEmail,
+        },
+      });
 
       if (!userAvailable) {
-        throw new ForbiddenException('No user with email found');
+        return {
+          status: 404,
+          message: 'No user with email found',
+        };
+        // throw new ForbiddenException('No user with email found');
       }
 
       const verificationCode = await this.redisClient.get(userEmail);
 
-      console.log(verificationCode)
+      console.log(verificationCode);
 
       if (!verificationCode) {
-        throw new ForbiddenException('No verification code found');
+        return {
+          status: 404,
+          message: 'No verification code found',
+        };
+        // throw new ForbiddenException('No verification code found');
       }
 
       if (parseInt(verificationCode) == userGivenCode) {
@@ -257,12 +272,21 @@ export class AuthService {
             emailVerified: true,
           },
         });
+
+        delete user.password;
         return user;
       } else {
-        throw new ForbiddenException('Invalid verification code');
+        return {
+          status: 403,
+          message: 'Invalid verification code',
+        };
+        // throw new ForbiddenException('Invalid verification code');
       }
     } catch (error) {
-      throw error;
+      return {
+        status: 500,
+        message: 'Internal server error',
+      };
     }
   }
 
@@ -279,7 +303,11 @@ export class AuthService {
       });
 
       if (!userAvailable) {
-        throw new BadRequestException('Not Found');
+        return {
+          status: 403,
+          message: 'User Not Found',
+        };
+        // throw new BadRequestException('Not Found');
       }
 
       const newToken = this.generateRandomToken();
@@ -298,7 +326,10 @@ export class AuthService {
         message: 'User Logged Out successfully',
       };
     } catch {
-      throw new BadRequestException('Invalid Request');
+      return {
+        status: 500,
+        message: 'Internal server error',
+      };
     }
   }
 
@@ -310,21 +341,25 @@ export class AuthService {
    * @returns An object containing the status and message indicating the success of sending the verification code.
    * @throws BadRequestException if the request is invalid or the user is not found.
    */
-  async forgotPassword(token: string, userId: string, userEmail: string) {
+  async forgotPassword(userEmail: string) {
     if (!userEmail || userEmail === null || userEmail === undefined) {
-      throw new BadRequestException('Invalid Request');
+      return {
+        status: 403,
+        message: 'Invalid Request, fill all fields',
+      };
     }
     try {
       const userAvailable = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
-          token: token,
           email: userEmail,
         },
       });
 
       if (!userAvailable) {
-        throw new BadRequestException('Not Found');
+        return {
+          status: 403,
+          message: 'Not Found',
+        };
       }
 
       const alreadyRequested = await this.redisClient.get(userEmail);
@@ -352,7 +387,10 @@ export class AuthService {
         message: 'Verification Code Sent',
       };
     } catch {
-      throw new BadRequestException('Invalid Request');
+      return {
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 
@@ -368,14 +406,16 @@ export class AuthService {
   async confirmResetPassword(userEmail: string, dto: ResetPasswordDto) {
     try {
       const verificationCode: string = await this.redisClient.get(userEmail);
-      console.log(await this.redisClient.get(userEmail));
-      console.log(dto.code);
 
       if (!verificationCode) {
-        throw new BadRequestException('Not Found');
+        return {
+          status: 404,
+          message: 'Verification code not found',
+        };
+        // throw new BadRequestException('Not Found');
       }
 
-      if (verificationCode === dto.code) {
+      if (verificationCode == dto.code) {
         this.redisClient.del(userEmail);
 
         this.prisma.user.update({
@@ -392,21 +432,31 @@ export class AuthService {
           message: 'Password Reset successfully',
         };
       } else {
-        throw new BadRequestException('Invalid verification code');
+        return {
+          status: 403,
+          message: 'Invalid Verification code',
+        };
+        // throw new BadRequestException('Invalid verification code');
       }
     } catch (error) {
-      throw new ForbiddenException(error);
+      return {
+        status: 500,
+        message: 'Internal Server error',
+      };
     }
   }
 
-  async resetPassword(token: string, userId: string, password: string) {
+  async changePassword(token: string, userId: string, password: string) {
     if (
       !password ||
       password === null ||
       password === undefined ||
       password.length < 8
     ) {
-      throw new ForbiddenException('Password must be valid');
+      return {
+        status: 403,
+        message: 'Password must be valid',
+      };
     }
 
     let parsedUserId: number;
@@ -414,7 +464,11 @@ export class AuthService {
     try {
       parsedUserId = parseInt(userId);
     } catch {
-      throw new BadRequestException('Invalid Request');
+      return {
+        status: 403,
+        message: 'password must be valid',
+      };
+      // throw new BadRequestException('Invalid Request');÷
     }
 
     const userAvailable = await this.prisma.user.findUnique({
@@ -425,7 +479,10 @@ export class AuthService {
     });
 
     if (!userAvailable) {
-      throw new BadRequestException('Not Found');
+      return {
+        status: 403,
+        message: 'user not found',
+      };
     }
 
     await this.prisma.user.update({
@@ -439,7 +496,7 @@ export class AuthService {
 
     return {
       status: 200,
-      message: 'Password Reset successfully',
+      message: 'Password changed successfully',
     };
   }
 
@@ -465,13 +522,21 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new ForbiddenException('No user with email found');
+        return {
+          status: 404,
+          message: 'user not found with given email',
+        };
+        // throw new ForbiddenException('No user with email found');
       }
 
       const isPasswordValid = await bcrypt.compare(dto.password, user.password);
 
       if (!isPasswordValid) {
-        throw new ForbiddenException('Invalid password');
+        return {
+          status: 403,
+          message: 'Invalid Password',
+        };
+        // throw new ForbiddenException('Invalid password');
       }
       const payload = {
         sub: user.id,
@@ -483,7 +548,10 @@ export class AuthService {
       const access_token: string = this.jwtService.sign(payload) || '';
       return { ...result, access_token };
     } catch (error) {
-      throw error;
+      return {
+        status: 500,
+        message: 'Internal Server Error',
+      };
     }
   }
 }

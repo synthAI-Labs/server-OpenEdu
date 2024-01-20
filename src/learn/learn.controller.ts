@@ -3,12 +3,13 @@ import { LearnService } from './learn.service';
 
 @Controller('learn/courses')
 export class LearnController {
-  constructor(private learnService: LearnService) { }
+  constructor(private learnService: LearnService) {}
 
   @Get('status')
   getStatus() {
     return this.learnService.getStatus();
   }
+
   // return all courses
   @Get('')
   async getLearn() {

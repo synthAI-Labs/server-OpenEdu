@@ -5,14 +5,25 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
+  /**
+   * Get the status of the chat service.
+   * @returns An object with the status code.
+   */
   getStatus() {
     return {
       status: 200,
     };
   }
 
+  /**
+   * Get the chat response based on the user's message and module details.
+   * @param token - The user's token.
+   * @param userId - The user's ID.
+   * @param dto - The chat data transfer object.
+   * @returns An object with the status code and the chat response message.
+   */
   async getChat(token: string, userId: string, dto: ChatDto) {
     try {
       try {
@@ -37,45 +48,54 @@ export class ChatService {
       }
 
       const { message, module_id }: ChatDto = dto;
+      let receivedMessage;
 
-      if (process.env.DEV === 'true') {
-        return {
-          status: 200,
-          message: 'pong',
-        };
-      } else if (process.env.PROD === 'true') {
-        const module_details = await this.prisma.module.findUnique({
-          where: {
-            id: parseInt(module_id),
-          },
-          select: {
-            description: true,
-          },
-        });
+      if (process.env.API_KEY) {
+        if (module_id) {
+          const module_details = await this.prisma.module.findUnique({
+            where: {
+              id: parseInt(module_id),
+            },
+            select: {
+              description: true,
+            },
+          });
 
-        const receivedMessage = await this.getResponse(
-          message,
-          module_details.description,
-        );
+          receivedMessage = await this.getResponse(
+            message,
+            module_details.description,
+          );
+
+          console.log(receivedMessage);
+        } else {
+          receivedMessage = await this.getResponse(message);
+        }
+
         return {
           status: 200,
           message: receivedMessage,
         };
       } else {
         return {
-          status: 500,
-          message: 'Internal Server Error',
+          status: 200,
+          message: 'pong',
         };
       }
     } catch (error) {
       return {
         status: 500,
-        message: error as string,
+        message: 'cant run',
       };
     }
   }
 
-  async getResponse(message: string, module_message: string) {
+  /**
+   * Get the response using the user's message and module message.
+   * @param message - The user's message.
+   * @param module_message - The module's message.
+   * @returns The generated response.
+   */
+  async getResponse(message: string, module_message?: string) {
     // if (process.env.AI === 'true') {
     //   const answer = await fetch(process.env.AI_URL, {
     //     method: 'POST',
@@ -98,10 +118,10 @@ export class ChatService {
       const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
       let prompt: string;
-      if (module_message.length < 2) {
-        prompt = ` DOUBT: ${message}`;
+      if (module_message && module_message.length > 0) {
+        prompt = `${process.env.Pre_Prompt} DOUBT: ${message}, FROM TOPIC: ${module_message}`;
       } else {
-        prompt = ` DOUBT: ${message}, FROM TOPIC: ${module_message}}`;
+        prompt = `${process.env.Pre_Prompt}  DOUBT: ${message}`;
       }
 
       const result = await model.generateContent(prompt);

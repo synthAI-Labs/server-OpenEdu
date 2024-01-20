@@ -63,13 +63,16 @@ export class DashboardController {
     return this.dashboardService.updateSettings(token, userId, dto);
   }
 
-  @Post('dashboard/achievements')
-  getAchievements(
-    @Headers('authorization') token: string,
-    @Headers('user_id') userId: string,
-  ) {
-    return this.dashboardService.getAchievements(token, userId);
-  }
+  // Not in use Right now
+  // Will be used in future
+
+  // @Post('dashboard/achievements')
+  // getAchievements(
+  //   @Headers('authorization') token: string,
+  //   @Headers('user_id') userId: string,
+  // ) {
+  //   return this.dashboardService.getAchievements(token, userId);
+  // }
 
   @Post('dashboard/achievements/:achievementId/claim')
   claimAchievement(
