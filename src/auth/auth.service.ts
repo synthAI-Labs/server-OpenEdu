@@ -6,7 +6,6 @@ import Redis from 'ioredis';
 import sendEmail from 'src/email/email';
 
 import * as bcrypt from 'bcrypt';
-import { log } from 'console';
 import { JwtService } from '@nestjs/jwt';
 
 /**
@@ -73,7 +72,7 @@ export class AuthService {
    * @throws ForbiddenException if the username is already taken, password is less than 8 characters,
    * name or username is less than 1 character, or if the email already exists.
    */
-  async signup(dto: AuthDto) {
+  async signup(dto: AuthDto, response) {
     try {
       if (
         !dto.email ||
@@ -177,10 +176,12 @@ export class AuthService {
         include: {
           settings: true,
           EmailServiceSubscription: true,
+          CourseEnrollment: true,
+          achievements: true,
         },
       });
 
-      const updatedUser = await this.prisma.user.update({
+      await this.prisma.user.update({
         where: {
           id: user.id,
         },
@@ -196,9 +197,6 @@ export class AuthService {
             },
           },
         },
-        include: {
-          settings: true,
-        },
       });
 
       try {
@@ -207,7 +205,25 @@ export class AuthService {
         return error;
       }
 
-      return updatedUser;
+      const payload = {
+        sub: user.id,
+        username: user.username,
+        email: user.email,
+      };
+
+      const access_token: string = this.jwtService.sign(payload) || '';
+
+      // Set the access_token as a cookie
+      response.cookie('access_token', access_token, { httpOnly: true });
+
+      // Omitting the password from the result before sending it
+      delete user.password;
+
+      return {
+        status: 200,
+        message: 'Signup successful',
+        user: user,
+      };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -508,7 +524,7 @@ export class AuthService {
    */
   // ...
 
-  async signin(dto: LoginDto) {
+  async signin(dto: LoginDto, response) {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -524,9 +540,8 @@ export class AuthService {
       if (!user) {
         return {
           status: 404,
-          message: 'user not found with given email',
+          message: 'User not found with the given email',
         };
-        // throw new ForbiddenException('No user with email found');
       }
 
       const isPasswordValid = await bcrypt.compare(dto.password, user.password);
@@ -536,17 +551,27 @@ export class AuthService {
           status: 403,
           message: 'Invalid Password',
         };
-        // throw new ForbiddenException('Invalid password');
       }
+
       const payload = {
         sub: user.id,
         username: user.username,
         email: user.email,
       };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
+
       const access_token: string = this.jwtService.sign(payload) || '';
-      return { ...result, access_token };
+
+      // Set the access_token as a cookie
+      response.cookie('access_token', access_token, { httpOnly: true });
+
+      // Omitting the password from the result before sending it
+      delete user.password;
+
+      return {
+        status: 200,
+        message: 'Signin successful',
+        user: user,
+      };
     } catch (error) {
       return {
         status: 500,

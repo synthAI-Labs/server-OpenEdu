@@ -1,5 +1,13 @@
-import { Controller, Get, Post, Param, Headers } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Headers,
+  UseGuards,
+} from '@nestjs/common';
 import { LearnService } from './learn.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('learn/courses')
 export class LearnController {
@@ -24,6 +32,7 @@ export class LearnController {
 
   // enroll in a course
   @Post('/enroll/:id')
+  @UseGuards(JwtAuthGuard)
   async enroll(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -39,6 +48,7 @@ export class LearnController {
   }
 
   @Post('complete/m/:moduleId')
+  @UseGuards(JwtAuthGuard)
   async completeModule(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

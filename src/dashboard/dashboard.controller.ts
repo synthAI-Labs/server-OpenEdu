@@ -75,6 +75,7 @@ export class DashboardController {
   // }
 
   @Post('dashboard/achievements/:achievementId/claim')
+  @UseGuards(JwtAuthGuard)
   claimAchievement(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

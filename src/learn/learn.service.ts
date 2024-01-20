@@ -57,7 +57,7 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-              modules: true,
+          modules: true,
         },
       });
 
@@ -96,7 +96,7 @@ export class LearnService {
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
         include: {
-              modules: true, 
+          modules: true,
         },
       });
 

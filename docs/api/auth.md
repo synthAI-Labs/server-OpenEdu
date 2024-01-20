@@ -46,11 +46,22 @@ POST /auth/signup
     "password": "<password>",
     "name": "<name>",
     "username": "<username>"
-  }
+  },
+  "cookie": "access_token=<token>"
 }
 ```
 
 :::
+
+::: details api response
+
+```json
+{
+  "status": 200,
+  "message": "Signup successful",
+  "user": "User Object"
+}
+```
 
 ## 3. Confirm Email (Signup)
 
@@ -196,7 +207,8 @@ POST /auth/signin
   "Body": {
     "email": "<email>",
     "password": "<password>"
-  }
+  },
+  "cookie": "access_token=<token>"
 }
 :::
 ```

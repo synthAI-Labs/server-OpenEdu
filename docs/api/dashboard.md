@@ -64,7 +64,8 @@ POST /dashboard/profile
     "authorization": "<token>",
     "user_id": "<userId>"
   },
-  "Body": {}
+  "Body": {},
+  "cookie": "access_token=<token>"
 }
 ```
 
@@ -97,7 +98,8 @@ Implement in frontend
     "email": "<email>",
     "username": "<username>",
     "interests": ["<interest1>", "<interest2>"]
-  }
+  },
+  "cookie": "access_token=<token>"
 }
 ```
 
@@ -130,7 +132,8 @@ Implement in frontend
     "publicPhoto": true,
     "publicName": true,
     "publicInterests": true
-  }
+  },
+  "cookie": "access_token=<token>"
 }
 ```
 
@@ -178,7 +181,8 @@ Decide Functionality
     "authorization": "<token>",
     "user_id": "<userId>"
   },
-  "Body": {}
+  "Body": {},
+  "cookie": "access_token=<token>"
 }
 ```
 

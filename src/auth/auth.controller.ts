@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Headers, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Param,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto, LoginDto, ResetPasswordDto } from './dto';
 import { ApiBody } from '@nestjs/swagger';
@@ -18,8 +27,8 @@ export class AuthController {
   @Public()
   @Post('signup')
   @ApiBody({ type: AuthDto })
-  signup(@Body() dto: AuthDto) {
-    return this.authService.signup(dto);
+  signup(@Body() dto: AuthDto, @Res({ passthrough: true }) response) {
+    return this.authService.signup(dto, response);
   }
 
   // TODO: for email confirmation,
@@ -48,10 +57,8 @@ export class AuthController {
   @Public()
   @Post('password/forgot')
   @ApiBody({ type: String })
-  forgotPassword(
-    @Body('userEmail') userEmail: string,
-  ) {
-    return this.authService.forgotPassword( userEmail);
+  forgotPassword(@Body('userEmail') userEmail: string) {
+    return this.authService.forgotPassword(userEmail);
   }
 
   @Public()
@@ -85,8 +92,8 @@ export class AuthController {
   @Public()
   @Post('signin')
   @ApiBody({ type: LoginDto })
-  signin(@Body() dto: LoginDto) {
-    return this.authService.signin(dto);
+  signin(@Body() dto: LoginDto, @Res({ passthrough: true }) response) {
+    return this.authService.signin(dto, response);
   }
 
   // TODO: Github Signin

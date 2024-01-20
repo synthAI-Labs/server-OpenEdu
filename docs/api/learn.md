@@ -81,7 +81,8 @@ POST /learn/courses/enroll/:id
     "authorization": "<token>",
     "user_id": "<userId>"
   },
-  "Body": {}
+  "Body": {},
+  "cookie": "access_token=<token>"
 }
 ```
 
@@ -126,7 +127,8 @@ Implement in frontend
     "authorization": "<token>",
     "user_id": "<userId>"
   },
-  "Body": {}
+  "Body": {},
+  "cookie": "access_token=<token>"
 }
 ```
 
