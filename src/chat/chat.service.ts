@@ -119,9 +119,9 @@ export class ChatService {
 
       let prompt: string;
       if (module_message && module_message.length > 0) {
-        prompt = `${process.env.Pre_Prompt} DOUBT: ${message}, FROM TOPIC: ${module_message}`;
+        prompt = `${process.env.CHAT_SYS_PROMPT} DOUBT: ${message}, FROM TOPIC: ${module_message}`;
       } else {
-        prompt = `${process.env.Pre_Prompt}  DOUBT: ${message}`;
+        prompt = `${process.env.CHAT_SYS_PROMPT}  DOUBT: ${message}`;
       }
 
       const result = await model.generateContent(prompt);

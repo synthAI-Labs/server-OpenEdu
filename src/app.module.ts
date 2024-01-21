@@ -18,6 +18,8 @@ import { ChatService } from './chat/chat.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { InterviewController } from './interview/interview.controller';
+import { InterviewService } from './interview/interview.service';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
     DashboardController,
     LearnController,
     ChatController,
+    InterviewController
   ],
   providers: [
     AppService,
@@ -48,6 +51,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
     DashboardService,
     LearnService,
     ChatService,
+    InterviewService,
     {
       provide: 'REDIS',
       useFactory: () => {
