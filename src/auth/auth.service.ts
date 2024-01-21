@@ -219,7 +219,7 @@ export class AuthService {
       // Omitting the password from the result before sending it
       delete user.password;
 
-      return user
+      return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -563,7 +563,7 @@ export class AuthService {
       // Omitting the password from the result before sending it
       delete user.password;
 
-      return user
+      return user;
     } catch (error) {
       return {
         status: 500,

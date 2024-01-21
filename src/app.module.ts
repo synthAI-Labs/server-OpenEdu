@@ -43,7 +43,7 @@ import { InterviewService } from './interview/interview.service';
     DashboardController,
     LearnController,
     ChatController,
-    InterviewController
+    InterviewController,
   ],
   providers: [
     AppService,
