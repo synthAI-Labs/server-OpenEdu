@@ -7,3 +7,21 @@ export class InterviewDto {
   @ApiProperty()
   job_description: string;
 }
+
+export class QuestionAnalysisDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  question: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  answer: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  category: string;
+}
+
