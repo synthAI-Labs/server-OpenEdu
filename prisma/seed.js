@@ -482,7 +482,7 @@ async function main() {
       name: course1.name,
       description: course1.description,
       image: course1.image,
-      totalModules: 4,
+      totalModules: 22,
     },
   });
 
@@ -493,7 +493,7 @@ async function main() {
       name: course1.name,
       description: course1.description,
       image: course1.image,
-      totalModules: 4,
+      totalModules: 22,
     },
   });
 
@@ -504,7 +504,7 @@ async function main() {
   //     name: course2.name,
   //     description: course2.description,
   //     image: course2.image,
-  //     totalModules: 4,
+  //     totalModules: 22,
   //   },
   // });
 
@@ -515,7 +515,7 @@ async function main() {
       name: course1.name,
       description: course1.description,
       image: course1.image,
-      totalModules: 4,
+      totalModules: 22,
     },
   });
 
@@ -526,7 +526,7 @@ async function main() {
   //     name: course2.name,
   //     description: course2.description,
   //     image: course2.image,
-  //     totalModules: 4,
+  //     totalModules: 22,
   //   },
   // });
 
