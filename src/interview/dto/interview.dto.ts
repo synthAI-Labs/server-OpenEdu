@@ -24,4 +24,3 @@ export class QuestionAnalysisDto {
   @ApiProperty()
   category: string;
 }
-

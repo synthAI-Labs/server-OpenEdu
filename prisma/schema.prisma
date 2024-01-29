@@ -26,6 +26,58 @@ model User {
   CourseEnrollment           CourseEnrollment[]
   EmailServiceSubscription   EmailServiceSubscription @relation(fields: [emailServiceSubscriptionId], references: [id])
   emailServiceSubscriptionId Int
+  Education                  Education[]
+  educationId                Int?
+  Experience                 Experience[]
+  experienceId               Int?
+  Projects                   Projects[]
+  projectsId                 Int?
+  Skills                     Skills[]
+  skillsId                   Int?
+}
+
+model Skills {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  level     String
+  User      User     @relation(fields: [userId], references: [id])
+  updatedAt DateTime @updatedAt
+}
+
+model Projects {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  DeployedLink String?
+  Githublink   String?
+  User         User     @relation(fields: [userId], references: [id])
+}
+
+model Experience {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  company     String
+  position    String
+  startDate   DateTime
+  endDate     DateTime
+  description String
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  school      String
+  degree      String
+  field       String
+  startDate   DateTime
+  endDate     DateTime
+  description String
+  User        User     @relation(fields: [userId], references: [id])
 }
 
 model EmailServiceSubscription {

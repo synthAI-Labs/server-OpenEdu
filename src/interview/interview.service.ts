@@ -47,7 +47,9 @@ export class InterviewService {
         };
       }
 
-      const receivedMessage = await this.getResponseJobQuestions(dto.job_description);
+      const receivedMessage = await this.getResponseJobQuestions(
+        dto.job_description,
+      );
       return {
         status: 200,
         message: receivedMessage,
@@ -83,7 +85,11 @@ export class InterviewService {
         };
       }
 
-      const receivedMessage = await this.getResponseAnswerAnalysis(dto.question, dto.answer, dto.category);
+      const receivedMessage = await this.getResponseAnswerAnalysis(
+        dto.question,
+        dto.answer,
+        dto.category,
+      );
       return {
         status: 200,
         message: receivedMessage,
@@ -96,7 +102,11 @@ export class InterviewService {
     }
   }
 
-  getResponseAnswerAnalysis(question: string, answer: string, category: string) {
+  getResponseAnswerAnalysis(
+    question: string,
+    answer: string,
+    category: string,
+  ) {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     console.log('\n\n' + process.env.INTERVIEW_SYS_PROMPT + '\n\n\n\n');
     async function run() {
