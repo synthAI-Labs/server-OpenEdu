@@ -141,22 +141,26 @@ model Module {
   Course        Course?  @relation(fields: [courseId], references: [id])
 }
 
-model Quiz {
-  id           Int         @id @default(autoincrement())
-  Question     String
-  Answer       String[]
-  Options      String[]
-  image        String?
+model Question {
+  id           String      @id @default(uuid())
+  title        String
+  options      String[]
+  answer       String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  topics       String[]
+  tags         String[]
+  level        String
   Assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   assignmentId Int?
 }
 
 model Assignment {
-  id          Int     @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   title       String
   description String
   image       String?
-  Quiz        Quiz[]
+  Quiz        Question[]
 }
 
 model Achievement {

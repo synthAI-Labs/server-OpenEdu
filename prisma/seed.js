@@ -401,6 +401,54 @@ async function main() {
     }
   });
 
+  const questions = [
+    {
+      title: 'What is the primary purpose of a retaining wall?',
+      options: ['A. Support vertical loads', 'B. Support lateral loads', 'C. Provide insulation', 'D. Enhance aesthetics'],
+      answer: 'B',
+      topics: ['Structural Engineering'],
+      tags: ['Civil Engineering'],
+      level: 'Medium',
+    },
+    {
+      title: 'Which soil type has the smallest particle size?',
+      options: ['A. Sand', 'B. Silt', 'C. Clay', 'D. Gravel'],
+      answer: 'C',
+      topics: ['Geotechnical Engineering'],
+      tags: ['Civil Engineering'],
+      level: 'Easy',
+    },
+    {
+      title: 'What is the environmental impact of concrete production?',
+      options: ['A. Low impact', 'B. Moderate impact', 'C. High impact', 'D. No impact'],
+      answer: 'C',
+      topics: ['Environmental Engineering'],
+      tags: ['Civil Engineering'],
+      level: 'Hard',
+    },
+    {
+      title: 'What is the modulus of elasticity of concrete?',
+      options: ['A. 200 GPa', 'B. 250 GPa', 'C. 300 GPa', 'D. 350 GPa'],
+      answer: 'A',
+      topics: ['Structural Engineering'],
+      tags: ['Civil Engineering'],
+      level: 'Hard',
+    },
+    {
+      title: 'What is the typical curing period for concrete?',
+      options: ['A. 3 days', 'B. 7 days', 'C. 14 days', 'D. 28 days'],
+      answer: 'D',
+      topics: ['Structural Engineering'],
+      tags: ['Civil Engineering'],
+      level: 'Medium',
+    },
+    // Add more questions as needed
+  ];
+
+  for (const q of questions) {
+    await prisma.question.create({ data: q });
+  }
+
   // const course2 = await prisma.course.create({
   //   data: {
   //     name: 'Course 2',
