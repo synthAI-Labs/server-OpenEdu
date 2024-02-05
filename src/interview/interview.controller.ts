@@ -4,9 +4,9 @@ import {
   Get,
   Headers,
   Post,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+// import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InterviewService } from './interview.service';
 import { InterviewDto, QuestionAnalysisDto } from './dto/interview.dto';
 

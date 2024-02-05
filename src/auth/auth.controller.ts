@@ -76,8 +76,8 @@ export class AuthController {
   @Post('password/change')
   @ApiBody({ type: String })
   resetPassword(
-    @Headers('authorization') token: string,
-    @Headers('user_id') userId: string,
+    @Headers('authorization') token: string | null,
+    @Headers('user_id') userId: string | null,
     @Body('newPassword') password: string,
   ) {
     return this.authService.changePassword(token, userId, password);
