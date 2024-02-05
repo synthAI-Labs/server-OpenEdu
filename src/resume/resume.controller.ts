@@ -7,9 +7,9 @@ import {
   Param,
   Post,
   Put,
-  Res,
+  // Res,
 } from '@nestjs/common';
-import { isEmail } from 'class-validator';
+// import { isEmail } from 'class-validator';
 import { ResumeService } from './resume.service';
 import {
   EducationDto,

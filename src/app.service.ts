@@ -115,8 +115,6 @@ export class AppService {
           },
         });
 
-      console.log(!newsletterSubscriptionMade);
-
       if (!newsletterSubscriptionMade) {
         await this.prisma.newsletterSubscription.create({
           data: {

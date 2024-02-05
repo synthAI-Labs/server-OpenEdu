@@ -22,6 +22,8 @@ import { InterviewController } from './interview/interview.controller';
 import { InterviewService } from './interview/interview.service';
 import { ResumeController } from './resume/resume.controller';
 import { ResumeService } from './resume/resume.service';
+import { QuizController } from './quiz/quiz.controller';
+import { QuizService } from './quiz/quiz.service';
 
 @Module({
   imports: [
@@ -47,6 +49,7 @@ import { ResumeService } from './resume/resume.service';
     ChatController,
     InterviewController,
     ResumeController,
+    QuizController,
   ],
   providers: [
     AppService,
@@ -56,6 +59,7 @@ import { ResumeService } from './resume/resume.service';
     ChatService,
     InterviewService,
     ResumeService,
+    QuizService,
     {
       provide: 'REDIS',
       useFactory: () => {

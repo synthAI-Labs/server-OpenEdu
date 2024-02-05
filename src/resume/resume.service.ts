@@ -32,7 +32,16 @@ export class ResumeService {
   */
 
   async addEducation(token: string, userId: string, dto: EducationDto) {
-    if (parseInt(userId) < 0 || !token || !dto || userId === null || userId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
 
     try {
       const user = await this.prisma.user.findUnique({
@@ -45,8 +54,8 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       const education = await this.prisma.education.create({
@@ -57,16 +66,16 @@ export class ResumeService {
           degree: dto.degree,
           field: dto.field,
           startDate: dto.startDate,
-          endDate: dto.endDate
-        }
-      })
+          endDate: dto.endDate,
+        },
+      });
 
-      return education
+      return education;
     } catch (error) {
-     return {
-      status: 500,
-      message: `Internal Server Error: ${error}`
-     }
+      return {
+        status: 500,
+        message: `Internal Server Error: ${error}`,
+      };
     }
   }
 
@@ -76,7 +85,19 @@ export class ResumeService {
     educationId: string,
     dto: EducationDto,
   ) {
-    if (parseInt(userId) < 0 || parseInt(educationId) < 0 || !token || !dto || userId === null || userId === undefined || educationId === null || educationId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(educationId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      educationId === null ||
+      educationId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -88,8 +109,8 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       let UpdateEducation;
@@ -97,7 +118,7 @@ export class ResumeService {
         UpdateEducation = await this.prisma.education.update({
           where: {
             userId: parseInt(userId),
-            id: parseInt(educationId)
+            id: parseInt(educationId),
           },
           data: {
             school: dto.school,
@@ -105,27 +126,38 @@ export class ResumeService {
             field: dto.field,
             startDate: dto.startDate,
             endDate: dto.endDate,
-            description: dto.description
-          }
-        }) 
+            description: dto.description,
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid education ID`
-        }
+          message: `invalid education ID`,
+        };
       }
 
-      return UpdateEducation
-    } catch(error) {
+      return UpdateEducation;
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal server error. ${error}`
-      }
+        message: `Internal server error. ${error}`,
+      };
     }
   }
 
   async DeleteEducation(token: string, userId: string, educationId: string) {
-    if (parseInt(userId) < 0 || parseInt(educationId) < 0 || !token || userId === null || userId === undefined || educationId === null || educationId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(educationId) < 0 ||
+      !token ||
+      userId === null ||
+      userId === undefined ||
+      educationId === null ||
+      educationId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -137,32 +169,32 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
-      try { 
+      try {
         await this.prisma.education.delete({
           where: {
-            id: parseInt(educationId)
-          }
-        })
+            id: parseInt(educationId),
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid education ID`
-        }
+          message: `invalid education ID`,
+        };
       }
 
       return {
         status: 200,
-        message: 'success'
-      }
-    } catch(error) {
+        message: 'success',
+      };
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal Server Error. ${error}`
-      }
+        message: `Internal Server Error. ${error}`,
+      };
     }
   }
 
@@ -176,7 +208,16 @@ export class ResumeService {
   */
 
   async addExperience(token: string, userId: string, dto: ExperienceDto) {
-    if (parseInt(userId) < 0 || !token || !dto || userId === null || userId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
 
     try {
       const user = await this.prisma.user.findUnique({
@@ -189,8 +230,8 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       await this.prisma.experience.create({
@@ -200,14 +241,14 @@ export class ResumeService {
           description: dto.description,
           position: dto.position,
           startDate: dto.startDate,
-          endDate: dto.endDate
-        }
-      })
+          endDate: dto.endDate,
+        },
+      });
     } catch (error) {
-     return {
-      status: 500,
-      message: `Internal Server Error: ${error}`
-     }
+      return {
+        status: 500,
+        message: `Internal Server Error: ${error}`,
+      };
     }
   }
 
@@ -217,7 +258,19 @@ export class ResumeService {
     experienceId: string,
     dto: ExperienceDto,
   ) {
-    if (parseInt(userId) < 0 || parseInt(experienceId) < 0 || !token || !dto || userId === null || userId === undefined || experienceId === null || experienceId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(experienceId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      experienceId === null ||
+      experienceId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -229,8 +282,8 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       let UpdateExperience;
@@ -238,34 +291,45 @@ export class ResumeService {
         UpdateExperience = await this.prisma.experience.update({
           where: {
             userId: parseInt(userId),
-            id: parseInt(experienceId)
+            id: parseInt(experienceId),
           },
           data: {
             company: dto.company,
             position: dto.position,
             startDate: dto.startDate,
             endDate: dto.endDate,
-            description: dto.description
-          }
-        }) 
+            description: dto.description,
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid education ID`
-        }
+          message: `invalid education ID`,
+        };
       }
 
-      return UpdateExperience
-    } catch(error) {
+      return UpdateExperience;
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal server error. ${error}`
-      }
+        message: `Internal server error. ${error}`,
+      };
     }
   }
 
   async DeleteExperience(token: string, userId: string, experienceId: string) {
-    if (parseInt(userId) < 0 || parseInt(experienceId) < 0 || !token || userId === null || userId === undefined || experienceId === null || experienceId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(experienceId) < 0 ||
+      !token ||
+      userId === null ||
+      userId === undefined ||
+      experienceId === null ||
+      experienceId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -277,32 +341,32 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
-      try { 
+      try {
         await this.prisma.experience.delete({
           where: {
-            id: parseInt(experienceId)
-          }
-        })
+            id: parseInt(experienceId),
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid experience ID`
-        }
+          message: `invalid experience ID`,
+        };
       }
 
       return {
         status: 200,
-        message: 'success'
-      }
-    } catch(error) {
+        message: 'success',
+      };
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal Server Error. ${error}`
-      }
+        message: `Internal Server Error. ${error}`,
+      };
     }
   }
 
@@ -316,7 +380,16 @@ export class ResumeService {
   */
 
   async addProject(token: string, userId: string, dto: ProjectsDto) {
-    if (parseInt(userId) < 0 || !token || !dto || userId === null || userId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
 
     try {
       const user = await this.prisma.user.findUnique({
@@ -329,8 +402,8 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       await this.prisma.projects.create({
@@ -341,14 +414,14 @@ export class ResumeService {
           DeployedLink: dto.DeployedLink,
           Githublink: dto.Githublink,
           startDate: dto.startDate,
-          endDate: dto.endDate
-        }
-      })
+          endDate: dto.endDate,
+        },
+      });
     } catch (error) {
-     return {
-      status: 500,
-      message: `Internal Server Error: ${error}`
-     }
+      return {
+        status: 500,
+        message: `Internal Server Error: ${error}`,
+      };
     }
   }
 
@@ -358,7 +431,19 @@ export class ResumeService {
     projectId: string,
     dto: ProjectsDto,
   ) {
-    if (parseInt(userId) < 0 || parseInt(projectId) < 0 || !token || !dto || userId === null || userId === undefined || projectId === null || projectId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(projectId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      projectId === null ||
+      projectId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -370,8 +455,8 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       let UpdateProject;
@@ -379,7 +464,7 @@ export class ResumeService {
         UpdateProject = await this.prisma.projects.update({
           where: {
             userId: parseInt(userId),
-            id: parseInt(projectId)
+            id: parseInt(projectId),
           },
           data: {
             name: dto.name,
@@ -387,27 +472,38 @@ export class ResumeService {
             Githublink: dto.Githublink,
             startDate: dto.startDate,
             endDate: dto.endDate,
-            description: dto.description
-          }
-        }) 
+            description: dto.description,
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid education ID`
-        }
+          message: `invalid education ID`,
+        };
       }
 
-      return UpdateProject
-    } catch(error) {
+      return UpdateProject;
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal server error. ${error}`
-      }
+        message: `Internal server error. ${error}`,
+      };
     }
   }
 
   async DeleteProject(token: string, userId: string, projectId: string) {
-    if (parseInt(userId) < 0 || parseInt(projectId) < 0 || !token || userId === null || userId === undefined || projectId === null || projectId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(projectId) < 0 ||
+      !token ||
+      userId === null ||
+      userId === undefined ||
+      projectId === null ||
+      projectId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -419,32 +515,32 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
-      try { 
+      try {
         await this.prisma.projects.delete({
           where: {
-            id: parseInt(projectId)
-          }
-        })
+            id: parseInt(projectId),
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid project ID`
-        }
+          message: `invalid project ID`,
+        };
       }
 
       return {
         status: 200,
-        message: 'success'
-      }
-    } catch(error) {
+        message: 'success',
+      };
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal Server Error. ${error}`
-      }
+        message: `Internal Server Error. ${error}`,
+      };
     }
   }
 
@@ -458,7 +554,16 @@ export class ResumeService {
   */
 
   async addSkill(token: string, userId: string, dto: SkillsDto) {
-    if (parseInt(userId) < 0 || !token || !dto || userId === null || userId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
 
     try {
       const user = await this.prisma.user.findUnique({
@@ -471,27 +576,44 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       await this.prisma.skills.create({
         data: {
           userId: parseInt(userId),
           name: dto.name,
-          level: dto.level
-        }
-      })
+          level: dto.level,
+        },
+      });
     } catch (error) {
-     return {
-      status: 500,
-      message: `Internal Server Error: ${error}`
-     }
+      return {
+        status: 500,
+        message: `Internal Server Error: ${error}`,
+      };
     }
   }
 
-  async UpdateSkill(token: string, userId: string, skillId: string, dto: SkillsDto) {
-    if (parseInt(userId) < 0 || parseInt(skillId) < 0 || !token || !dto || userId === null || userId === undefined || skillId === null || skillId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+  async UpdateSkill(
+    token: string,
+    userId: string,
+    skillId: string,
+    dto: SkillsDto,
+  ) {
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(skillId) < 0 ||
+      !token ||
+      !dto ||
+      userId === null ||
+      userId === undefined ||
+      skillId === null ||
+      skillId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
 
     try {
       const user = await this.prisma.user.findUnique({
@@ -504,38 +626,51 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
       let UpdateSkill;
-      try{
-        const UpdateSkill = await this.prisma.skills.update({
-        where: {
-          id: parseInt(skillId)
-        },
-        data: {
-          userId: parseInt(userId),
-          name: dto.name,
-          level: dto.level
-        }
-      })
+      try {
+        UpdateSkill = await this.prisma.skills.update({
+          where: {
+            id: parseInt(skillId),
+          },
+          data: {
+            userId: parseInt(userId),
+            name: dto.name,
+            level: dto.level,
+          },
+        });
+      } catch (error) {
+        return {
+          status: 404,
+          message: `Skill with SkillId: ${skillId} no found`,
+        };
+      }
+
+      return UpdateSkill;
     } catch (error) {
       return {
-        status: 404,
-        message: `Skill with SkillId: ${skillId} no found`
-      }
-    }
-    } catch (error) {
-     return {
-      status: 500,
-      message: `Internal Server Error: ${error}`
-     }
+        status: 500,
+        message: `Internal Server Error: ${error}`,
+      };
     }
   }
 
   async DeleteSkill(token: string, userId: string, skillId: string) {
-    if (parseInt(userId) < 0 || parseInt(skillId) < 0 || !token || userId === null || userId === undefined || skillId === null || skillId === undefined || token === null || token === undefined) return {status: 500, message: 'Invalid request. Got undefined values'}
+    if (
+      parseInt(userId) < 0 ||
+      parseInt(skillId) < 0 ||
+      !token ||
+      userId === null ||
+      userId === undefined ||
+      skillId === null ||
+      skillId === undefined ||
+      token === null ||
+      token === undefined
+    )
+      return { status: 500, message: 'Invalid request. Got undefined values' };
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -547,32 +682,32 @@ export class ResumeService {
       if (!user) {
         return {
           status: 404,
-          message: "user Not found"
-        }
+          message: 'user Not found',
+        };
       }
 
-      try { 
+      try {
         await this.prisma.skills.delete({
           where: {
-            id: parseInt(skillId)
-          }
-        })
+            id: parseInt(skillId),
+          },
+        });
       } catch (error) {
         return {
           status: 404,
-          message: `invalid experience ID`
-        }
+          message: `invalid experience ID`,
+        };
       }
 
       return {
         status: 200,
-        message: 'success'
-      }
-    } catch(error) {
+        message: 'success',
+      };
+    } catch (error) {
       return {
         status: 500,
-        message: `Internal Server Error. ${error}`
-      }
+        message: `Internal Server Error. ${error}`,
+      };
     }
   }
 }
