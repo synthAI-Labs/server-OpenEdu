@@ -1,7 +1,10 @@
+// ERROR HANDLING FOR undefined values
+
 import { Injectable } from '@nestjs/common';
 // import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { QuizDto } from './dto/quiz.dto';
+import { Question } from '@prisma/client';
 
 /**
  * Service responsible for handling learn-related operations.
@@ -25,7 +28,6 @@ export class QuizService {
     //     message: `Error in req.`
     //   }
     // }
-    console.log("starting req...")
     try {
       console.log(dto);
       const totalQuestionsCount = parseInt(dto.numberOfQuestions);
@@ -36,12 +38,11 @@ export class QuizService {
       console.log(easyQuestionsCount, mediumQuestionsCount, hardQuestionsCount);
 
       const questions = [];
-
       if (easyQuestionsCount > 0) {
         const easyQuestions = await this.prisma.question.findMany({
           where: {
             topics: {
-              hasSome: dto.topics,
+              hasSome: dto.topics, // Provide a default value for topics
             },
             // level: 'easy',
           },
@@ -57,7 +58,7 @@ export class QuizService {
         const mediumQuestions = await this.prisma.question.findMany({
           where: {
             topics: {
-              hasSome: dto.topics,
+              hasSome: dto.topics || [],
             },
             level: 'medium',
           },
@@ -84,15 +85,28 @@ export class QuizService {
       console.log(questions);
 
       return {
-        staus: 200,
-        message: questions
+        status: 200,
+        message: questions,
       };
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return {
         status: 500,
         message: `Internal Server Error ${error}`,
       };
     }
+  }
+
+  async getTopics(): Promise<string[]> {
+    const questions: Question[] = await this.prisma.question.findMany();
+    const topicsSet: Set<string> = new Set<string>();
+
+    questions.forEach((question) => {
+      question.topics.forEach((topic) => {
+        topicsSet.add(topic);
+      });
+    });
+
+    return Array.from(topicsSet);
   }
 }

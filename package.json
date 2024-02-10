@@ -29,7 +29,7 @@
     "db:dev": "npx prisma migrate reset --force && npx prisma migrate dev && npm run db:reset && npm run db:seed",
     "prisma:dev:deploy": "prisma migrate dev",
     "db:container:rm": "docker compose rm postgres -s -f -v",
-    "db:container:up": "docker compose up dev -d"
+    "db:container:up": "docker compose up postgres redis -d"
   },
   "dependencies": {
     "@google/generative-ai": "^0.1.3",

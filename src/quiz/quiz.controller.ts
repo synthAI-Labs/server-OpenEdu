@@ -24,5 +24,9 @@ export class QuizController {
   getQuiz(@Body() dto: QuizDto) {
     return this.learnService.getQuiz(dto);
   }
-}
 
+  @Get('topics')
+  getTopics() {
+    return this.learnService.getTopics();
+  }
+}
