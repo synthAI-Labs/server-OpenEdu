@@ -14,3 +14,12 @@ export class QuizDto {
   @IsNotEmpty()
   difficulty: string;
 }
+
+export class Question {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+  level: string;
+  topics: string[];
+}

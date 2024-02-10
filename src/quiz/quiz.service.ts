@@ -3,8 +3,7 @@
 import { Injectable } from '@nestjs/common';
 // import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { QuizDto } from './dto/quiz.dto';
-import { Question } from '@prisma/client';
+import { Question, QuizDto } from './dto/quiz.dto';
 
 /**
  * Service responsible for handling learn-related operations.
@@ -98,7 +97,7 @@ export class QuizService {
   }
 
   async getTopics(): Promise<string[]> {
-    const questions: Question[] = await this.prisma.question.findMany();
+    const questions = await this.prisma.question.findMany();
     const topicsSet: Set<string> = new Set<string>();
 
     questions.forEach((question) => {
