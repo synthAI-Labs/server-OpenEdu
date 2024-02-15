@@ -143,7 +143,7 @@ model Module {
 
 model Question {
   id           String      @id @default(uuid())
-  question     String
+  title        String
   options      String[]
   answer       String
   createdAt    DateTime    @default(now())

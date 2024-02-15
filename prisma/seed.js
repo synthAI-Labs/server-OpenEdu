@@ -401,7 +401,7 @@ async function main() {
     }
   });
 
-  const questions = [
+  const Question = [
     {
       "title": "What does CSS stand for?",
       "options": ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
@@ -845,7 +845,7 @@ async function main() {
   ];
 
 
-  for (const q of questions) {
+  for (const q of Question) {
     await prisma.question.create({ data: q });
   }
 
