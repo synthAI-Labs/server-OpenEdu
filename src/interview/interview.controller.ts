@@ -4,11 +4,11 @@ import {
   Get,
   Headers,
   Post,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+// import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InterviewService } from './interview.service';
-import { InterviewDto } from './dto/interview.dto';
+import { InterviewDto, QuestionAnalysisDto } from './dto/interview.dto';
 
 @Controller('interview')
 export class InterviewController {
@@ -20,12 +20,22 @@ export class InterviewController {
   }
 
   @Post('get-interview-question')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   getChat(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
     @Body() dto: InterviewDto,
   ) {
     return this.chatService.getInterviewQuestion(token, userId, dto);
+  }
+
+  @Post('get-analysis')
+  // @UseGuards(JwtAuthGuard)
+  getAnalysisOnAnswer(
+    @Headers('authorization') token: string,
+    @Headers('user_id') userId: string,
+    @Body() dto: QuestionAnalysisDto,
+  ) {
+    return this.chatService.getAnalysis(token, userId, dto);
   }
 }

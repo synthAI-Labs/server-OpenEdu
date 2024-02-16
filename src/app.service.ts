@@ -3,6 +3,7 @@ import { HttpHealthIndicator, HealthCheck } from '@nestjs/terminus';
 import { ContactDto } from './contact.dto';
 import sendEmail from './email/email';
 import { PrismaService } from './prisma/prisma.service';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
  * Service class for the application.
@@ -114,8 +115,6 @@ export class AppService {
             id: 1,
           },
         });
-
-      console.log(!newsletterSubscriptionMade);
 
       if (!newsletterSubscriptionMade) {
         await this.prisma.newsletterSubscription.create({

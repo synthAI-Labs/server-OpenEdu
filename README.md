@@ -1,6 +1,6 @@
 # OPEN-EDU Server
 
-Welcome to the OPEN-EDU Server repository. This server powers the OPEN-EDU platform, a programming learning platform with a unique feature of a personal AI tutor. 
+Welcome to the OPEN-EDU Server repository. This server powers the OPEN-EDU platform, a programming learning platform with a unique feature of a personal AI tutor.
 
 > For detailed information on installation, configuration, and usage, please refer to our official documentation.
 
@@ -13,21 +13,25 @@ For comprehensive documentation, including installation instructions, configurat
 To quickly get started, follow these general steps:
 
 1. **Clone the Repository:**
+
    ```bash
    git clone https://github.com/synthAI-Labs/server.git
    ```
 
 2. **Navigate to the Repository:**
+
    ```bash
    cd your-repo
    ```
 
 3. **Install Dependencies:**
+
    ```bash
    npm install
    ```
 
 4. **Run the Server:**
+
    ```bash
    npm run start:dev
    ```

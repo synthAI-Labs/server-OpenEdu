@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { QuestionAnalysisDto } from './dto/interview.dto';
 
 @Injectable()
 export class InterviewService {
@@ -46,7 +47,9 @@ export class InterviewService {
         };
       }
 
-      const receivedMessage = await this.getResponse(dto.job_description);
+      const receivedMessage = await this.getResponseJobQuestions(
+        dto.job_description,
+      );
       return {
         status: 200,
         message: receivedMessage,
@@ -59,29 +62,74 @@ export class InterviewService {
     }
   }
 
+  async getAnalysis(token: string, userId: string, dto: QuestionAnalysisDto) {
+    try {
+      try {
+        const user = await this.prisma.user.findUnique({
+          where: {
+            id: parseInt(userId),
+            token: token,
+          },
+        });
+
+        if (!user) {
+          return {
+            status: 404,
+            message: 'User not Found',
+          };
+        }
+      } catch (error) {
+        return {
+          status: 401,
+          message: 'invalid request',
+        };
+      }
+
+      const receivedMessage = await this.getResponseAnswerAnalysis(
+        dto.question,
+        dto.answer,
+        dto.category,
+      );
+      return {
+        status: 200,
+        message: receivedMessage,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        message: 'cant run',
+      };
+    }
+  }
+
+  getResponseAnswerAnalysis(
+    question: string,
+    answer: string,
+    category: string,
+  ) {
+    const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+    console.log('\n\n' + process.env.INTERVIEW_SYS_PROMPT + '\n\n\n\n');
+    async function run() {
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+
+      const prompt = `${process.env.ANSWER_ANALYSIS_SYS_PROMPT}  QUESTION: ${question}; CATEGORY: ${category}; ANSWER: ${answer};`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      return text;
+    }
+
+    return run();
+  }
+
   /**
    * Get the response using the user's message and module message.
    * @param message - The user's message.
    * @param module_message - The module's message.
    * @returns The generated response.
    */
-  async getResponse(message: string) {
-    // if (process.env.AI === 'true') {
-    //   const answer = await fetch(process.env.AI_URL, {
-    //     method: 'POST',
-    //     headers: {
-    //       user: 'ADMIN',
-    //       password: 'ADMIN',
-    //       custom_secret: process.env.AI_SECRET,
-    //     },
-    //     body: JSON.stringify({
-    //       doubt: message,
-    //       text: module_message,
-    //     }),
-    //   });
-    //   return answer.json();
-    // }
-
+  async getResponseJobQuestions(message: string) {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     console.log('\n\n' + process.env.INTERVIEW_SYS_PROMPT + '\n\n\n\n');
     async function run() {

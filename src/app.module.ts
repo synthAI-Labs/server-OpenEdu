@@ -20,6 +20,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { InterviewController } from './interview/interview.controller';
 import { InterviewService } from './interview/interview.service';
+import { ResumeController } from './resume/resume.controller';
+import { ResumeService } from './resume/resume.service';
+import { QuizController } from './quiz/quiz.controller';
+import { QuizService } from './quiz/quiz.service';
 
 @Module({
   imports: [
@@ -44,6 +48,8 @@ import { InterviewService } from './interview/interview.service';
     LearnController,
     ChatController,
     InterviewController,
+    ResumeController,
+    QuizController,
   ],
   providers: [
     AppService,
@@ -52,6 +58,8 @@ import { InterviewService } from './interview/interview.service';
     LearnService,
     ChatService,
     InterviewService,
+    ResumeService,
+    QuizService,
     {
       provide: 'REDIS',
       useFactory: () => {
