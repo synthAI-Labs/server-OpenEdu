@@ -406,7 +406,7 @@ export class ResumeService {
         };
       }
 
-      await this.prisma.projects.create({
+      await this.prisma.userProjects.create({
         data: {
           userId: parseInt(userId),
           name: dto.name,
@@ -461,7 +461,7 @@ export class ResumeService {
 
       let UpdateProject;
       try {
-        UpdateProject = await this.prisma.projects.update({
+        UpdateProject = await this.prisma.userProjects.update({
           where: {
             userId: parseInt(userId),
             id: parseInt(projectId),
