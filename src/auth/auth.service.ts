@@ -202,7 +202,10 @@ export class AuthService {
       try {
         await this.redisClient.set(user.email, verificationCode);
       } catch (error) {
-        return error;
+        return {
+          status: 500,
+          message: `Error with Reddis. ${error}`
+        };
       }
 
       const payload = {
@@ -219,7 +222,11 @@ export class AuthService {
       // Omitting the password from the result before sending it
       delete user.password;
 
-      return user;
+      return {
+        status : 200,
+        message: "Sign In Successfull",
+        data: user
+      };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -563,7 +570,11 @@ export class AuthService {
       // Omitting the password from the result before sending it
       delete user.password;
 
-      return user;
+      return {
+        status: 200,
+        message: "Login Successful",
+        data: user
+      };
     } catch (error) {
       return {
         status: 500,

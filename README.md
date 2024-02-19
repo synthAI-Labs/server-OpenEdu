@@ -1,3 +1,7 @@
+<!-- TODO make homepage dynamic -->
+<!-- TODO implement admin roles -->
+<!-- TODO complete quiz -->
+
 # OPEN-EDU Server
 
 Welcome to the OPEN-EDU Server repository. This server powers the OPEN-EDU platform, a programming learning platform with a unique feature of a personal AI tutor.

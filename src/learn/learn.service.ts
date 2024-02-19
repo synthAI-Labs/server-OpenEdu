@@ -38,9 +38,17 @@ export class LearnService {
    */
   async getLearn() {
     try {
-      return await this.prisma.course.findMany();
+      return {
+        status: 200,
+        message: 'success',
+        data:  await this.prisma.course.findMany()
+      }
     } catch (error) {
-      throw error;
+      console.log(error)
+      return {
+        status: 500,
+        message: 'Internal Server Error'
+      }
     }
   }
 
@@ -50,9 +58,18 @@ export class LearnService {
    * @returns A promise that resolves to the course.
    * @throws ForbiddenException if the course is not found.
    */
-  async getCourseById(courseId: string) {
+  async getCourseById(courseId: string, userId?: string) {
     try {
-      const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+      let parsedUserId 
+      let parsedCourseId
+      try {
+        parsedCourseId = this.validateIdFormat(courseId, 'course ID');
+      } catch {
+        return {
+          status: 403, 
+          message: 'Wrong Course Id Sent. Please report it to team'
+        }
+      }
 
       const course = await this.prisma.course.findUnique({
         where: { id: parsedCourseId },
@@ -60,7 +77,6 @@ export class LearnService {
           modules: true,
         },
       });
-
       if (!course) {
         return {
           status: 404,
@@ -69,7 +85,29 @@ export class LearnService {
         // throw new ForbiddenException('Course not found');
       }
 
-      return course;
+      let coursesCompleted
+
+      if (userId != null || userId != undefined ) {
+        console.log("entering...")
+        parsedUserId = this.validateIdFormat(userId, 'user ID')
+        coursesCompleted = await this.prisma.courseEnrollment.findMany({
+          where: {
+            userId: parsedUserId,
+            courseId: parsedCourseId
+          },
+          select: {
+            completedModulesId: true
+          }
+        })
+        console.log(coursesCompleted)
+      }
+
+      return {
+        status: 200,
+        message: 'Success',
+        data: course,
+       coursesCompleted
+      };
     } catch (error) {
       return {
         status: 500,
@@ -258,7 +296,6 @@ export class LearnService {
         };
       }
 
-      // Update the completed modules list in the enrollment
       await this.prisma.courseEnrollment.update({
         where: {
           id: enrollment.id,
@@ -269,6 +306,11 @@ export class LearnService {
           },
           progress: enrollment.progress + 1, // Increment the progress
         },
+        select: {
+          completedModulesId: true,
+          courseId: true,
+          userId: true
+        }
       });
 
       return {

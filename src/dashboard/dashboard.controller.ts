@@ -32,7 +32,7 @@ export class DashboardController {
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Post('dashboard/profile')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   getProfile(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

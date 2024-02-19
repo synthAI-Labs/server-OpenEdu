@@ -26,8 +26,8 @@ export class LearnController {
 
   // return course by id, with topics covered
   @Get('/:id')
-  async getLearnById(@Param('id') courseId: string) {
-    return this.learnService.getCourseById(courseId);
+  async getLearnById(@Param('id') courseId: string, @Headers('userId') userId?: string) {
+    return this.learnService.getCourseById(courseId, userId);
   }
 
   // enroll in a course

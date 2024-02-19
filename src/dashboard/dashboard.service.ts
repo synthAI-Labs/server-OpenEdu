@@ -100,7 +100,9 @@ export class DashboardService {
       });
 
       if (!userSettings.settings.publicProfile) {
-        return 'Profile is private';
+        return {
+          status: 403,
+          message: 'Profile is private'};
       }
 
       const profile = {
@@ -118,7 +120,11 @@ export class DashboardService {
         CourseEnrollment: userSettings.CourseEnrollment,
       };
 
-      return profile;
+      return {
+        status: 200,
+        message: 'success',
+        data: profile,
+      };
     } catch (error) {
       return {
         status: 500,
@@ -173,7 +179,11 @@ export class DashboardService {
       }
 
       delete user.password;
-      return user;
+      return {
+        status: 200,
+        message: 'success',
+        data: user,
+      };
     } catch (error) {
       return {
         status: 500,
