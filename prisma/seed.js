@@ -851,7 +851,8 @@ async function main() {
       "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
       "description": "Description for Project 1",
       "Githublink": "https://gihtub.com/project1",
-      "content": "Hello World!"
+      "content": "Hello World!",
+      "tags": ["tag1", "tag2"]
     },
     {
       "id": 2,
@@ -859,7 +860,8 @@ async function main() {
       "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
       "description": "Description for Project 2",
       "Githublink": "https://gihtub.com/project2",
-      "content": "Hello World!"
+      "content": "Hello World!",
+      "tags": ["tag1", "tag2"]
     },
     {
       "id": 3,
@@ -867,7 +869,8 @@ async function main() {
       "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
       "description": "Description for Project 3",
       "Githublink": "https://gihtub.com/project3",
-      "content": "Hello World!"
+      "content": "Hello World!",
+      "tags": ["tag1", "tag2"]
     },
     {
       "id": 4,
@@ -875,7 +878,8 @@ async function main() {
       "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
       "description": "Description for Project 4",
       "Githublink": "https://gihtub.com/project4",
-      "content": "Hello World!"
+      "content": "Hello World!",
+      "tags": ["tag1", "tag2"]
     },
     {
       "id": 5,
@@ -883,7 +887,8 @@ async function main() {
       "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
       "description": "Description for Project 5",
       "Githublink": "https://gihtub.com/project5",
-      "content": "Hello World!"
+      "content": "Hello World!",
+      "tags": ["tag1", "tag2"]
     }
   ]
 

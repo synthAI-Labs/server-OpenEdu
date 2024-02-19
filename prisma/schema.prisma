@@ -200,4 +200,5 @@ model Projects {
   Githublink  String?
   isLink      Boolean  @default(true)
   content     String
+  tags        String[]
 }
