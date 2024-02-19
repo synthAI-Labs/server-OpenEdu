@@ -844,6 +844,52 @@ async function main() {
     }
   ];
 
+  const Projects = [
+    {
+      "id": 1,
+      "name": "Project 1",
+      "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
+      "description": "Description for Project 1",
+      "Githublink": "https://gihtub.com/project1",
+      "content": "Hello World!"
+    },
+    {
+      "id": 2,
+      "name": "Project 2",
+      "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
+      "description": "Description for Project 2",
+      "Githublink": "https://gihtub.com/project2",
+      "content": "Hello World!"
+    },
+    {
+      "id": 3,
+      "name": "Project 3",
+      "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
+      "description": "Description for Project 3",
+      "Githublink": "https://gihtub.com/project3",
+      "content": "Hello World!"
+    },
+    {
+      "id": 4,
+      "name": "Project 4",
+      "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
+      "description": "Description for Project 4",
+      "Githublink": "https://gihtub.com/project4",
+      "content": "Hello World!"
+    },
+    {
+      "id": 5,
+      "name": "Project 5",
+      "image": "https://www.liquidplanner.com/wp-content/uploads/2019/04/HiRes-17.jpg",
+      "description": "Description for Project 5",
+      "Githublink": "https://gihtub.com/project5",
+      "content": "Hello World!"
+    }
+  ]
+
+  for (const p of Projects) {
+    await prisma.projects.create({ data: p });
+  }
 
   for (const q of Question) {
     await prisma.question.create({ data: q });

@@ -30,7 +30,7 @@ model User {
   educationId                Int?
   Experience                 Experience[]
   experienceId               Int?
-  Projects                   Projects[]
+  Projects                   UserProjects[]
   projectsId                 Int?
   Skills                     Skills[]
   skillsId                   Int?
@@ -45,7 +45,7 @@ model Skills {
   updatedAt DateTime @updatedAt
 }
 
-model Projects {
+model UserProjects {
   id           Int      @id @default(autoincrement())
   userId       Int
   name         String
@@ -189,4 +189,15 @@ model CourseEnrollment {
   totalModules       Int
   User               User      @relation(fields: [userId], references: [id])
   completedModulesId Int[] // all the modules in that course
+}
+
+model Projects {
+  id          Int      @id @default(autoincrement())
+  name        String
+  image       String
+  description String
+  createdDate DateTime @default(now())
+  Githublink  String?
+  isLink      Boolean  @default(true)
+  content     String
 }
