@@ -136,6 +136,7 @@ model Module {
   numbering     Int
   content       String?
   video         String?
+  youtubeEmbed  Boolean?
   image         String
   courseId      Int      @map("courseId")
   Course        Course?  @relation(fields: [courseId], references: [id])

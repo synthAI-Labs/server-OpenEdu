@@ -224,7 +224,11 @@ export class LearnService {
         };
       }
 
-      return module;
+      return {
+        status: 200,
+        message: 'Success',
+        data: module
+      };
     } catch (error) {
       return {
         status: 500,
