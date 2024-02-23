@@ -102,7 +102,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 01_Day_Introduction",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/01_Day_Introduction/01_day_introduction.mdx",
-            "image": "image1.jpg"
+            "image": "image1.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 2,
@@ -118,7 +138,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 02_Day_Data_types",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/02_Day_Data_types/02_day_data_types.mdx",
-            "image": "image2.jpg"
+            "image": "image2.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 3,
@@ -134,7 +174,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 03_Day_Booleans_operators_date",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/03_Day_Booleans_operators_date/03_day_booleans_operators_date.mdx",
-            "image": "image3.jpg"
+            "image": "image3.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 4,
@@ -150,7 +210,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 04_Day_Conditionals",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/04_Day_Conditionals/04_day_conditionals.mdx",
-            "image": "image4.jpg"
+            "image": "image4.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 5,
@@ -166,7 +246,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 05_Day_Arrays",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/05_Day_Arrays/05_day_arrays.mdx",
-            "image": "image5.jpg"
+            "image": "image5.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 6,
@@ -182,7 +282,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 06_Day_Loops",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/06_Day_Loops/06_day_loops.mdx",
-            "image": "image6.jpg"
+            "image": "image6.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 7,
@@ -198,7 +318,27 @@ async function main() {
             "youtubeEmbed": true,
             "description": "Description for 07_Day_Functions",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/07_Day_Functions/07_day_functions.mdx",
-            "image": "image7.jpg"
+            "image": "image7.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 8,
@@ -214,7 +354,27 @@ async function main() {
             "youtubeEmbed": true,
             "description": "Description for 08_Day_Objects",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/08_Day_Objects/08_day_objects.mdx",
-            "image": "image8.jpg"
+            "image": "image8.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 9,
@@ -230,7 +390,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 09_Day_Higher_order_functions",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/09_Day_Higher_order_functions/09_day_higher_order_functions.mdx",
-            "image": "image9.jpg"
+            "image": "image9.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 10,
@@ -246,7 +426,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 10_Day_Sets_and_Maps",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/10_Day_Sets_and_Maps/10_day_sets_and_maps.mdx",
-            "image": "image10.jpg"
+            "image": "image10.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 11,
@@ -262,7 +462,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 11_Day_Destructuring_and_spreading",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/11_Day_Destructuring_and_spreading/11_day_destructuring_and_spreading.mdx",
-            "image": "image11.jpg"
+            "image": "image11.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 12,
@@ -278,7 +498,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 12_Day_Regular_expressions",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/12_Day_Regular_expressions/12_day_regular_expressions.mdx",
-            "image": "image12.jpg"
+            "image": "image12.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 13,
@@ -294,7 +534,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 13_Day_Console_object_methods",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/13_Day_Console_object_methods/13_day_console_object_methods.mdx",
-            "image": "image13.jpg"
+            "image": "image13.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 14,
@@ -310,7 +570,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 14_Day_Error_handling",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/14_Day_Error_handling/14_day_error_handling.mdx",
-            "image": "image14.jpg"
+            "image": "image14.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 15,
@@ -326,7 +606,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 15_Day_Classes",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/15_Day_Classes/15_day_classes.mdx",
-            "image": "image15.jpg"
+            "image": "image15.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 16,
@@ -342,7 +642,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 16_Day_JSON",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/16_Day_JSON/16_day_json.mdx",
-            "image": "image16.jpg"
+            "image": "image16.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 17,
@@ -358,7 +678,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 17_Day_Web_storages",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/17_Day_Web_storages/17_day_web_storages.mdx",
-            "image": "image17.jpg"
+            "image": "image17.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 18,
@@ -374,7 +714,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 18_Day_Promises",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/18_Day_Promises/18_day_promises.mdx",
-            "image": "image18.jpg"
+            "image": "image18.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 19,
@@ -390,7 +750,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 19_Day_Closures",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/19_Day_Closures/19_day_closures.mdx",
-            "image": "image19.jpg"
+            "image": "image19.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 20,
@@ -406,7 +786,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 20_Day_Writing_clean_codes",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/20_Day_Writing_clean_codes/20_day_writing_clean_codes.mdx",
-            "image": "image20.jpg"
+            "image": "image20.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 21,
@@ -422,7 +822,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 21_Day_DOM",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/21_Day_DOM/21_day_dom.mdx",
-            "image": "image21.jpg"
+            "image": "image21.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           },
           {
             "numbering": 22,
@@ -437,7 +857,27 @@ async function main() {
             "video": '<iframe width="560" height="315" src="https://www.youtube.com/embed/PkZNo7MFNFg?si=_uByhGJVpADFYwdn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
             "description": "Description for 22_Day_Manipulating_DOM_object",
             "content": "https://raw.githubusercontent.com/synthAI-Labs/OpenEdu-material/main/JavaScript/22_Day_Manipulating_DOM_object/22_day_manipulating_dom_object.mdx",
-            "image": "image22.jpg"
+            "image": "image22.jpg",
+            "quiz": {
+              "create": [
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                },
+                {
+                  title: "What does CSS stand for?",
+                  options: ["A. Cascading Style Sheets", "B. Computer Style Sheets", "C. Creative Style Sheets", "D. Colorful Style Sheets"],
+                  answer: "A",
+                  topics: ["Frontend Development", "Web Development"],
+                  tags: ["CSS", "HTML"],
+                  level: "Easy"
+                }
+              ]
+            }
           }
         ]
       }

@@ -215,6 +215,9 @@ export class LearnService {
 
       const module = await this.prisma.module.findUnique({
         where: { id: parsedModuleId },
+        include: {
+          quiz: true
+        }
       });
 
       if (!module) {

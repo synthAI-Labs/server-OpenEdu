@@ -126,7 +126,7 @@ model Course {
 }
 
 model Module {
-  id            Int      @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   name          String
   type          String
   description   String
@@ -137,9 +137,10 @@ model Module {
   content       String?
   video         String?
   youtubeEmbed  Boolean?
+  quiz          Question[]
   image         String
-  courseId      Int      @map("courseId")
-  Course        Course?  @relation(fields: [courseId], references: [id])
+  courseId      Int        @map("courseId")
+  Course        Course?    @relation(fields: [courseId], references: [id])
 }
 
 model Question {
@@ -154,6 +155,8 @@ model Question {
   level        String
   Assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   assignmentId Int?
+  Module       Module?     @relation(fields: [moduleId], references: [id])
+  moduleId     Int?
 }
 
 model Assignment {

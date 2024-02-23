@@ -24,6 +24,7 @@ export class ProjectService {
                     Githublink: true,
                     isLink: false,
                     content: false,
+                    tags: true,
                 }
             }
         );
