@@ -26,14 +26,11 @@ export class DashboardService {
       return false;
     }
 
-    let id: number;
-
     try {
-      id = parseInt(userId);
     } catch (error) {
       return false;
     } finally {
-      const verifiedUser = await this.verifyUser(id);
+      const verifiedUser = await this.verifyUser(userId);
 
       if (!verifiedUser) {
         return false;
@@ -47,7 +44,7 @@ export class DashboardService {
    * @param userId - The ID of the user to verify.
    * @returns ForbiddenException if the user is not verified.
    */
-  async verifyUser(userId: number): Promise<boolean> {
+  async verifyUser(userId: string): Promise<boolean> {
     try {
       const userVerified = await this.prisma.user.findUnique({
         where: {
@@ -102,7 +99,8 @@ export class DashboardService {
       if (!userSettings.settings.publicProfile) {
         return {
           status: 403,
-          message: 'Profile is private'};
+          message: 'Profile is private',
+        };
       }
 
       const profile = {
@@ -162,7 +160,7 @@ export class DashboardService {
       const user = await this.prisma.user.findUnique({
         where: {
           token: token,
-          id: parseInt(userId),
+          id: userId,
         },
         include: {
           achievements: true,
@@ -214,7 +212,7 @@ export class DashboardService {
 
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -276,7 +274,7 @@ export class DashboardService {
 
       const updatedSettings = await this.prisma.userSettings.update({
         where: {
-          id: parseInt(userId),
+          id: userId,
         },
         data: {
           publicProfile: dto.publicProfile,
@@ -372,7 +370,7 @@ export class DashboardService {
 
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -399,7 +397,7 @@ export class DashboardService {
 
       const alreadyClaimed = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
         },
         select: {
           achievements: true,
@@ -419,7 +417,7 @@ export class DashboardService {
 
       const updatedUser = await this.prisma.user.update({
         where: {
-          id: parseInt(userId),
+          id: userId,
         },
         data: {
           achievements: {

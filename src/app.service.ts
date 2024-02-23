@@ -3,7 +3,6 @@ import { HttpHealthIndicator, HealthCheck } from '@nestjs/terminus';
 import { ContactDto } from './contact.dto';
 import sendEmail from './email/email';
 import { PrismaService } from './prisma/prisma.service';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
  * Service class for the application.
@@ -112,14 +111,14 @@ export class AppService {
       const newsletterSubscriptionMade =
         await this.prisma.newsletterSubscription.findFirst({
           where: {
-            id: 1,
+            id: '1',
           },
         });
 
       if (!newsletterSubscriptionMade) {
         await this.prisma.newsletterSubscription.create({
           data: {
-            id: 1,
+            id: '1',
             Email: [Email],
           },
         });
@@ -138,7 +137,7 @@ export class AppService {
         } else {
           await this.prisma.newsletterSubscription.update({
             where: {
-              id: 1,
+              id: '1',
             },
             data: {
               Email: {
@@ -166,7 +165,7 @@ export class AppService {
       const existingSubscription =
         await this.prisma.newsletterSubscription.findUnique({
           where: {
-            id: 1,
+            id: '1',
           },
         });
 
@@ -177,7 +176,7 @@ export class AppService {
 
         await this.prisma.newsletterSubscription.update({
           where: {
-            id: 1,
+            id: '1',
           },
           data: {
             Email: updatedEmails,
@@ -208,7 +207,7 @@ export class AppService {
       try {
         const subscriber = await this.prisma.newsletterSubscription.findUnique({
           where: {
-            id: 1,
+            id: '1',
           },
         });
 

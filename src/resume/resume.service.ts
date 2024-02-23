@@ -46,7 +46,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -60,7 +60,7 @@ export class ResumeService {
 
       const education = await this.prisma.education.create({
         data: {
-          userId: parseInt(userId),
+          userId: userId,
           school: dto.school,
           description: dto.description,
           degree: dto.degree,
@@ -101,7 +101,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -117,7 +117,7 @@ export class ResumeService {
       try {
         UpdateEducation = await this.prisma.education.update({
           where: {
-            userId: parseInt(userId),
+            userId: userId,
             id: parseInt(educationId),
           },
           data: {
@@ -161,7 +161,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -222,7 +222,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -236,7 +236,7 @@ export class ResumeService {
 
       await this.prisma.experience.create({
         data: {
-          userId: parseInt(userId),
+          userId: userId,
           company: dto.company,
           description: dto.description,
           position: dto.position,
@@ -274,7 +274,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -290,7 +290,7 @@ export class ResumeService {
       try {
         UpdateExperience = await this.prisma.experience.update({
           where: {
-            userId: parseInt(userId),
+            userId: userId,
             id: parseInt(experienceId),
           },
           data: {
@@ -333,7 +333,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -394,7 +394,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -408,7 +408,7 @@ export class ResumeService {
 
       await this.prisma.userProjects.create({
         data: {
-          userId: parseInt(userId),
+          userId: userId,
           name: dto.name,
           description: dto.description,
           DeployedLink: dto.DeployedLink,
@@ -447,7 +447,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -463,7 +463,7 @@ export class ResumeService {
       try {
         UpdateProject = await this.prisma.userProjects.update({
           where: {
-            userId: parseInt(userId),
+            userId: userId,
             id: parseInt(projectId),
           },
           data: {
@@ -507,7 +507,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -568,7 +568,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -582,7 +582,7 @@ export class ResumeService {
 
       await this.prisma.skills.create({
         data: {
-          userId: parseInt(userId),
+          userId: userId,
           name: dto.name,
           level: dto.level,
         },
@@ -618,7 +618,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });
@@ -637,7 +637,7 @@ export class ResumeService {
             id: parseInt(skillId),
           },
           data: {
-            userId: parseInt(userId),
+            userId: userId,
             name: dto.name,
             level: dto.level,
           },
@@ -674,7 +674,7 @@ export class ResumeService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
       });

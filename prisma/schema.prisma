@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id                         Int                      @id @default(autoincrement())
+  id                         String                   @id @default(uuid())
   username                   String                   @unique
   photo                      String
   name                       String
@@ -22,10 +22,10 @@ model User {
   token                      String                   @default("demo")
   interests                  String[]
   achievements               Achievement[]
-  userSettingsId             Int
+  userSettingsId             String
   CourseEnrollment           CourseEnrollment[]
   EmailServiceSubscription   EmailServiceSubscription @relation(fields: [emailServiceSubscriptionId], references: [id])
-  emailServiceSubscriptionId Int
+  emailServiceSubscriptionId String
   Education                  Education[]
   educationId                Int?
   Experience                 Experience[]
@@ -38,7 +38,7 @@ model User {
 
 model Skills {
   id        Int      @id @default(autoincrement())
-  userId    Int
+  userId    String
   name      String
   level     String
   User      User     @relation(fields: [userId], references: [id])
@@ -47,7 +47,7 @@ model Skills {
 
 model UserProjects {
   id           Int      @id @default(autoincrement())
-  userId       Int
+  userId       String
   name         String
   description  String
   startDate    DateTime
@@ -59,7 +59,7 @@ model UserProjects {
 
 model Experience {
   id          Int      @id @default(autoincrement())
-  userId      Int
+  userId      String
   company     String
   position    String
   startDate   DateTime
@@ -70,7 +70,7 @@ model Experience {
 
 model Education {
   id          Int      @id @default(autoincrement())
-  userId      Int
+  userId      String
   school      String
   degree      String
   field       String
@@ -81,8 +81,8 @@ model Education {
 }
 
 model EmailServiceSubscription {
-  id            Int      @id @default(autoincrement())
-  userId        Int
+  id            String   @id @default(uuid())
+  userId        String
   CourseUpdates Boolean  @default(true)
   montlyUpdates Boolean  @default(true)
   security      Boolean  @default(true)
@@ -92,15 +92,15 @@ model EmailServiceSubscription {
 }
 
 model NewsletterSubscription {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   Email      String[]
   newsletter Boolean  @default(true)
   updatedAt  DateTime @updatedAt
 }
 
 model UserSettings {
-  id              Int     @id @default(autoincrement())
-  userId          Int
+  id              String  @id @default(uuid())
+  userId          String
   publicProfile   Boolean @default(true)
   publicEmail     Boolean @default(true)
   publicBio       Boolean @default(true)
@@ -173,14 +173,14 @@ model Achievement {
   icon        String
   description String
   courseId    Int
-  userId      Int
+  userId      String
   course      Course @relation(fields: [courseId], references: [id])
   user        User   @relation(fields: [userId], references: [id])
 }
 
 model CourseEnrollment {
-  id                 Int       @id @default(autoincrement())
-  userId             Int
+  id                 String    @id @default(uuid())
+  userId             String
   courseId           Int
   enrolledAt         DateTime  @default(now())
   completedAt        DateTime?

@@ -29,7 +29,7 @@ export class InterviewService {
       try {
         const user = await this.prisma.user.findUnique({
           where: {
-            id: parseInt(userId),
+            id: userId,
             token: token,
           },
         });
@@ -67,7 +67,7 @@ export class InterviewService {
       try {
         const user = await this.prisma.user.findUnique({
           where: {
-            id: parseInt(userId),
+            id: userId,
             token: token,
           },
         });

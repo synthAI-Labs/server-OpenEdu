@@ -17,13 +17,13 @@ async function main() {
         create: {
           publicProfile: true,
           publicEmail: false,
-          userId: 1,
+          userId: '1',
         },
       },
       EmailServiceSubscription: {
         create: {
           emailService: true,
-          userId: 1
+          userId: '1'
         }
       }
     },
@@ -41,13 +41,13 @@ async function main() {
         create: {
           publicProfile: true,
           publicEmail: false,
-          userId: 2,
+          userId: '2',
         },
       },
       EmailServiceSubscription: {
         create: {
           emailService: true,
-          userId: 2
+          userId: '2'
         }
       }
     },
@@ -65,13 +65,13 @@ async function main() {
         create: {
           publicProfile: false,
           publicEmail: false,
-          userId: 3,
+          userId: '3',
         },
       },
       EmailServiceSubscription: {
         create: {
           emailService: true,
-          userId: 3
+          userId: '3'
         }
       }
     },
@@ -1518,7 +1518,7 @@ async function main() {
       icon: 'icon1.jpg',
       description: 'Description for Achievement 1',
       courseId: 1,
-      userId: 1,
+      userId: user1.id,
     },
   });
 

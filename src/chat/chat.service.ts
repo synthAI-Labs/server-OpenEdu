@@ -29,7 +29,7 @@ export class ChatService {
       try {
         const user = await this.prisma.user.findUnique({
           where: {
-            id: parseInt(userId),
+            id: userId,
             token: token,
           },
         });

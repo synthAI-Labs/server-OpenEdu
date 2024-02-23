@@ -25,6 +25,7 @@ import { ResumeService } from './resume/resume.service';
 import { QuizController } from './quiz/quiz.controller';
 import { QuizService } from './quiz/quiz.service';
 import { ProjectModule } from './project/project.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ProjectModule } from './project/project.module';
       signOptions: { expiresIn: process.env.EXPIRES_IN },
     }),
     ProjectModule,
+    AdminModule,
   ],
   controllers: [
     AppController,

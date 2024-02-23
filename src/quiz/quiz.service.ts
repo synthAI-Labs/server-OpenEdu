@@ -3,7 +3,7 @@
 import { Injectable } from '@nestjs/common';
 // import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Question, QuizDto } from './dto/quiz.dto';
+import { QuizDto } from './dto/quiz.dto';
 
 /**
  * Service responsible for handling learn-related operations.

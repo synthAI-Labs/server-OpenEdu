@@ -41,14 +41,14 @@ export class LearnService {
       return {
         status: 200,
         message: 'success',
-        data:  await this.prisma.course.findMany()
-      }
+        data: await this.prisma.course.findMany(),
+      };
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return {
         status: 500,
-        message: 'Internal Server Error'
-      }
+        message: 'Internal Server Error',
+      };
     }
   }
 
@@ -60,15 +60,14 @@ export class LearnService {
    */
   async getCourseById(courseId: string, userId?: string) {
     try {
-      let parsedUserId 
-      let parsedCourseId
+      let parsedCourseId;
       try {
         parsedCourseId = this.validateIdFormat(courseId, 'course ID');
       } catch {
         return {
-          status: 403, 
-          message: 'Wrong Course Id Sent. Please report it to team'
-        }
+          status: 403,
+          message: 'Wrong Course Id Sent. Please report it to team',
+        };
       }
 
       const course = await this.prisma.course.findUnique({
@@ -85,28 +84,27 @@ export class LearnService {
         // throw new ForbiddenException('Course not found');
       }
 
-      let coursesCompleted
+      let coursesCompleted;
 
-      if (userId != null || userId != undefined ) {
-        console.log("entering...")
-        parsedUserId = this.validateIdFormat(userId, 'user ID')
+      if (userId != null || userId != undefined) {
+        console.log('entering...');
         coursesCompleted = await this.prisma.courseEnrollment.findMany({
           where: {
-            userId: parsedUserId,
-            courseId: parsedCourseId
+            userId: userId,
+            courseId: parsedCourseId,
           },
           select: {
-            completedModulesId: true
-          }
-        })
-        console.log(coursesCompleted)
+            completedModulesId: true,
+          },
+        });
+        console.log(coursesCompleted);
       }
 
       return {
         status: 200,
         message: 'Success',
         data: course,
-       coursesCompleted
+        coursesCompleted,
       };
     } catch (error) {
       return {
@@ -128,7 +126,6 @@ export class LearnService {
     try {
       console.log(userId);
       const parsedCourseId = this.validateIdFormat(courseId, 'course ID');
-      const parsedUserId = this.validateIdFormat(userId, 'user ID');
 
       // Check if the course exists
       const course = await this.prisma.course.findUnique({
@@ -148,7 +145,7 @@ export class LearnService {
       // Check if the user exists and the token is valid
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parsedUserId,
+          id: userId,
           token: token,
         },
       });
@@ -181,7 +178,7 @@ export class LearnService {
       // Create a new course enrollment
       await this.prisma.courseEnrollment.create({
         data: {
-          userId: parseInt(userId),
+          userId: userId,
           courseId: parseInt(courseId),
           name: course.name,
           description: course.description,
@@ -216,8 +213,8 @@ export class LearnService {
       const module = await this.prisma.module.findUnique({
         where: { id: parsedModuleId },
         include: {
-          quiz: true
-        }
+          quiz: true,
+        },
       });
 
       if (!module) {
@@ -230,7 +227,7 @@ export class LearnService {
       return {
         status: 200,
         message: 'Success',
-        data: module
+        data: module,
       };
     } catch (error) {
       return {
@@ -252,11 +249,10 @@ export class LearnService {
   async completeModule(moduleId: string, userId: string, token: string) {
     try {
       const parsedModuleId = this.validateIdFormat(moduleId, 'module ID');
-      const parsedUserId = this.validateIdFormat(userId, 'user ID');
 
       const user = await this.prisma.user.findUnique({
         where: {
-          id: parsedUserId,
+          id: userId,
           token: token,
         },
       });
@@ -316,8 +312,8 @@ export class LearnService {
         select: {
           completedModulesId: true,
           courseId: true,
-          userId: true
-        }
+          userId: true,
+        },
       });
 
       return {

@@ -164,12 +164,12 @@ export class AuthService {
           role: 'user',
           settings: {
             create: {
-              userId: 1,
+              userId: '1',
             },
           },
           EmailServiceSubscription: {
             create: {
-              userId: 1,
+              userId: '1',
             },
           },
         },
@@ -204,7 +204,7 @@ export class AuthService {
       } catch (error) {
         return {
           status: 500,
-          message: `Error with Reddis. ${error}`
+          message: `Error with Reddis. ${error}`,
         };
       }
 
@@ -223,9 +223,9 @@ export class AuthService {
       delete user.password;
 
       return {
-        status : 200,
-        message: "Sign In Successfull",
-        data: user
+        status: 200,
+        message: 'Sign In Successfull',
+        data: user,
       };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -313,7 +313,7 @@ export class AuthService {
     try {
       const userAvailable = await this.prisma.user.findUnique({
         where: {
-          id: parseInt(userId),
+          id: userId,
           token: token,
         },
         select: {
@@ -333,7 +333,7 @@ export class AuthService {
 
       await this.prisma.user.update({
         where: {
-          id: parseInt(userId),
+          id: userId,
         },
         data: {
           token: newToken,
@@ -477,11 +477,7 @@ export class AuthService {
         message: 'Password must be valid',
       };
     }
-
-    let parsedUserId: number;
-
     try {
-      parsedUserId = parseInt(userId);
     } catch {
       return {
         status: 403,
@@ -492,7 +488,7 @@ export class AuthService {
 
     const userAvailable = await this.prisma.user.findUnique({
       where: {
-        id: parsedUserId,
+        id: userId,
         token: token,
       },
     });
@@ -506,7 +502,7 @@ export class AuthService {
 
     await this.prisma.user.update({
       where: {
-        id: parsedUserId,
+        id: userId,
       },
       data: {
         password: password,
@@ -572,8 +568,8 @@ export class AuthService {
 
       return {
         status: 200,
-        message: "Login Successful",
-        data: user
+        message: 'Login Successful',
+        data: user,
       };
     } catch (error) {
       return {
