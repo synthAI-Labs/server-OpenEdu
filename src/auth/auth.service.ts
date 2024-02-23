@@ -66,11 +66,11 @@ export class AuthService {
   }
 
   /**
-   * Signs up a new user with the provided authentication data.
+   * Registers a new user with the provided authentication data.
+   *
    * @param dto - The authentication data for the new user.
-   * @returns The created user object.
-   * @throws ForbiddenException if the username is already taken, password is less than 8 characters,
-   * name or username is less than 1 character, or if the email already exists.
+   * @param response - The HTTP response object.
+   * @returns An object containing the status, message, and user data if successful, or an error message if unsuccessful.
    */
   async signup(dto: AuthDto, response) {
     try {
@@ -245,11 +245,15 @@ export class AuthService {
   }
 
   /**
-   * Confirms the email of a user by comparing the verification code.
-   * @param userEmail - The email of the user.
+   * Confirms the email of a user by comparing the provided verification code with the one stored in Redis.
+   * If the verification code matches, the user's email is marked as verified in the database.
+   * @param userEmail - The email of the user to confirm.
    * @param userGivenCode - The verification code provided by the user.
-   * @returns The updated user object if the verification code is valid.
-   * @throws ForbiddenException if no verification code is found, or if the verification code is invalid.
+   * @returns If the email is confirmed successfully, returns the updated user object.
+   *          If no user with the provided email is found, returns an object with status 404 and a message.
+   *          If no verification code is found for the user, returns an object with status 404 and a message.
+   *          If the provided verification code is invalid, returns an object with status 403 and a message.
+   *          If an error occurs during the confirmation process, returns an object with status 500 and a message.
    */
   async confirmEmail(userEmail: string, userGivenCode: number) {
     try {
@@ -309,6 +313,12 @@ export class AuthService {
     }
   }
 
+  /**
+   * Signs out a user by updating their token in the database.
+   * @param token - The token of the user to sign out.
+   * @param userId - The ID of the user to sign out.
+   * @returns An object containing the status and message of the sign out operation.
+   */
   async signOut(token: string, userId: string) {
     try {
       const userAvailable = await this.prisma.user.findUnique({
@@ -465,6 +475,13 @@ export class AuthService {
     }
   }
 
+  /**
+   * Changes the password for a user.
+   * @param token - The token associated with the user.
+   * @param userId - The ID of the user.
+   * @param password - The new password to set for the user.
+   * @returns An object containing the status and message indicating the result of the password change operation.
+   */
   async changePassword(token: string, userId: string, password: string) {
     if (
       !password ||
@@ -516,13 +533,14 @@ export class AuthService {
   }
 
   /**
-   * Signs in a user with the provided authentication data.
-   * @param dto - The authentication data for the user.
-   * @returns The signed-in user object.
-   * @throws ForbiddenException if no user with the provided email is found or if the password is invalid.
+   * Authenticates a user by checking their login credentials and generating an access token.
+   * @param dto - The login credentials provided by the user.
+   * @param response - The HTTP response object used to set the access token as a cookie.
+   * @returns An object containing the status, message, and user data if the login is successful.
+   *          If the user is not found, returns a 404 status with a corresponding message.
+   *          If the password is invalid, returns a 403 status with a corresponding message.
+   *          If an internal server error occurs, returns a 500 status with a corresponding message.
    */
-  // ...
-
   async signin(dto: LoginDto, response) {
     try {
       const user = await this.prisma.user.findUnique({

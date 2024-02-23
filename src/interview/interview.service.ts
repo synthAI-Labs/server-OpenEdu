@@ -62,6 +62,13 @@ export class InterviewService {
     }
   }
 
+  /**
+   * Retrieves the analysis for a question and answer.
+   * @param token - The user's authentication token.
+   * @param userId - The ID of the user.
+   * @param dto - The data transfer object containing the question, answer, and category.
+   * @returns An object containing the status code and message.
+   */
   async getAnalysis(token: string, userId: string, dto: QuestionAnalysisDto) {
     try {
       try {
@@ -102,6 +109,14 @@ export class InterviewService {
     }
   }
 
+  /**
+   * Retrieves the analysis of the response answer.
+   *
+   * @param question - The question asked.
+   * @param answer - The answer provided.
+   * @param category - The category of the question.
+   * @returns A Promise that resolves to the analysis of the response answer.
+   */
   getResponseAnswerAnalysis(
     question: string,
     answer: string,

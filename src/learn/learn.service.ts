@@ -55,8 +55,8 @@ export class LearnService {
   /**
    * Retrieves a course by its ID.
    * @param courseId - The ID of the course to retrieve.
-   * @returns A promise that resolves to the course.
-   * @throws ForbiddenException if the course is not found.
+   * @param userId - (Optional) The ID of the user.
+   * @returns An object containing the status, message, data, and coursesCompleted (if userId is provided).
    */
   async getCourseById(courseId: string, userId?: string) {
     try {
@@ -118,9 +118,8 @@ export class LearnService {
    * Enrolls a user in a course.
    * @param courseId - The ID of the course to enroll in.
    * @param userId - The ID of the user to enroll.
-   * @param token - The token for user authentication.
-   * @returns {NotFoundException} If the user or course is not found.
-   * @returns A Promise that resolves to void.
+   * @param token - The authentication token of the user.
+   * @returns An object containing the status and message of the enrollment process.
    */
   async enroll(courseId: string, userId: string, token: string) {
     try {
@@ -201,10 +200,11 @@ export class LearnService {
   }
 
   /**
-   * Retrieves a module of a course.
-   * @param moduleId - The ID of the module.
-   * @returns A promise that resolves to the module.
-   * @throws ForbiddenException if the module is not found.
+   * Retrieves a module by its ID.
+   * @param moduleId - The ID of the module to retrieve.
+   * @returns An object containing the status, message, and data of the retrieved module.
+   *          If the module is not found, the status will be 404 and the message will be 'Course not found'.
+   *          If an error occurs, the status will be 500 and the message will be 'Internal Server Error'.
    */
   async getModule(moduleId: string) {
     try {
@@ -238,13 +238,11 @@ export class LearnService {
   }
 
   /**
-   * Completes a module of a course for a user.
-   * @param moduleId - The ID of the module to complete.
-   * @param userId - The ID of the user completing the module.
-   * @param token - The token for user authentication.
-   * @returns {NotFoundException} If the user or module is not found.
-   * @returns {ForbiddenException} If the user is not enrolled in the course or the module is already completed.
-   * @returns A Promise that resolves to a success message.
+   * Completes a module for a user.
+   * @param moduleId - The ID of the module to be completed.
+   * @param userId - The ID of the user.
+   * @param token - The authentication token of the user.
+   * @returns An object containing the status and message indicating the result of the operation.
    */
   async completeModule(moduleId: string, userId: string, token: string) {
     try {

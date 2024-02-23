@@ -7,6 +7,14 @@ export class DashboardService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * Retrieves the status of the authentication service.
+   * @returns A string indicating the status of the authentication service.
+   */
+  getStatus() {
+    return 'Auth service is up';
+  }
+
+  /**
    * Validates the token and user ID.
    * @param token - The token to validate.
    * @param userId - The user ID to validate.
@@ -65,9 +73,12 @@ export class DashboardService {
 
   /**
    * Retrieves the public profile of a user.
-   * @param profileId - The ID of the user's profile.
-   * @returns The public profile of the user, including their ID, name, email, bio, photo, interests, username, and settings.
-   * @returns NotFoundException if the user is not found.
+   * @param profileName - The username of the user whose public profile is to be retrieved.
+   * @returns An object containing the status, message, and data of the profile.
+   * - If the user is not found, the status will be 404 and the message will be 'User Not Found'.
+   * - If the user's profile is private, the status will be 403 and the message will be 'Profile is private'.
+   * - If there is an internal server error, the status will be 500 and the message will be 'Internal Server Error'.
+   * - If the profile is successfully retrieved, the status will be 200, the message will be 'success', and the data will contain the profile information.
    */
   async getPublicProfile(profileName: string) {
     const username: string = profileName;
@@ -132,19 +143,15 @@ export class DashboardService {
   }
 
   /**
-   * Retrieves the status of the authentication service.
-   * @returns A string indicating the status of the authentication service.
-   */
-  getStatus() {
-    return 'Auth service is up';
-  }
-
-  /**
-   * Retrieves the user profile.
-   * @param token - The user token.
-   * @param userId - The user ID.
-   * @returns The user profile.
-   * @returns NotFoundException if the user is not found.
+   * Retrieves the profile of a user based on the provided token and user ID.
+   * @param token - The authentication token of the user.
+   * @param userId - The ID of the user.
+   * @returns An object containing the status, message, and data of the user profile.
+   *          - If the token or user ID is invalid, the status will be 403 and the message will be 'Invalid token or user ID'.
+   *          - If the user is not found, the status will be 404 and the message will be 'User Not Found'.
+   *          - If there is an internal server error, the status will be 500 and the message will be 'Internal Server Error'.
+   *          - If the profile is successfully retrieved, the status will be 200, the message will be 'success',
+   *            and the data will contain the user profile (with the password field removed).
    */
   async getProfile(token: string, userId: string) {
     try {
@@ -191,12 +198,11 @@ export class DashboardService {
   }
 
   /**
-   * Updates the user profile.
-   * @param token - The user token.
-   * @param userId - The user ID.
-   * @param dto - The dashboard DTO containing the updated profile information.
-   * @returns The updated user profile.
-   * @returns NotFoundException if the user is not found.
+   * Updates the profile of a user.
+   * @param token - The authentication token of the user.
+   * @param userId - The ID of the user.
+   * @param dto - The data transfer object containing the updated profile information.
+   * @returns The updated user profile or an error response object.
    */
   async updateProfile(token: string, userId: string, dto: DashboardDto) {
     try {

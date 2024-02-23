@@ -12,21 +12,11 @@ import { QuizDto } from './dto/quiz.dto';
 export class QuizService {
   constructor(private prisma: PrismaService) {}
 
-  /**
-   * Retrieves the status of the authentication service.
-   * @returns A string indicating the status of the authentication service.
-   */
   getStatus() {
     return 'Auth service is up';
   }
 
   async getQuiz(dto: QuizDto) {
-    // if (dto.numberOfQuestions.length == 0 || dto.difficulty.length == 0 || dto.topics.length == 0) {
-    //   return {
-    //     status: 404,
-    //     message: `Error in req.`
-    //   }
-    // }
     try {
       console.log(dto);
       const totalQuestionsCount = parseInt(dto.numberOfQuestions);

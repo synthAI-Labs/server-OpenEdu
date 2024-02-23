@@ -23,8 +23,8 @@ export class AppService {
   }
 
   /**
-   * Performs a health check on the specified services.
-   * @returns A promise that resolves to an object containing the status and details of the services.
+   * Checks the health status of various services.
+   * @returns A promise that resolves to an object containing the overall status and the status of each service.
    */
   @HealthCheck()
   async checkHealth(): Promise<{
@@ -55,6 +55,12 @@ export class AppService {
     return { status: 'success', services: results };
   }
 
+  /**
+   * Handles the contact request.
+   *
+   * @param body - The contact information provided by the user.
+   * @returns An object containing the status and message of the contact request.
+   */
   async contact(body: ContactDto) {
     if (
       body.name === undefined ||
@@ -65,7 +71,6 @@ export class AppService {
         status: 403,
         message: 'Please fill out all fields',
       };
-      // throw new BadRequestException('Please fill out all fields');
     }
 
     const status = {
@@ -106,6 +111,12 @@ export class AppService {
     return status;
   }
 
+  /**
+   * Subscribes a user to the newsletter.
+   *
+   * @param Email - The email address of the user.
+   * @returns An object containing the status and message of the subscription.
+   */
   async subscribe(Email: string) {
     try {
       const newsletterSubscriptionMade =
@@ -160,6 +171,11 @@ export class AppService {
     }
   }
 
+  /**
+   * Unsubscribes an email from the newsletter subscription.
+   * @param emailToRemove - The email to be removed from the subscription.
+   * @returns An object containing the status and message of the unsubscribe operation.
+   */
   async unsubscribe(emailToRemove: string) {
     try {
       const existingSubscription =
@@ -202,6 +218,12 @@ export class AppService {
     }
   }
 
+  /**
+   * Sends a newsletter to all subscribers.
+   * @param secretCode - The secret code to authenticate the request.
+   * @param message - The content of the newsletter.
+   * @returns An object containing the status and message of the operation.
+   */
   async sendNewsLetter(secretCode: string, message: string) {
     if (secretCode == process.env.SECRET_CODE) {
       try {

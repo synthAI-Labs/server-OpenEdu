@@ -31,6 +31,13 @@ export class ResumeService {
 
   */
 
+  /**
+   * Adds education details for a user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param dto - The education data transfer object.
+   * @returns The created education object if successful, or an error object if unsuccessful.
+   */
   async addEducation(token: string, userId: string, dto: EducationDto) {
     if (
       parseInt(userId) < 0 ||
@@ -79,6 +86,14 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Updates the education details of a user.
+   * @param {string} token - The authentication token.
+   * @param {string} userId - The ID of the user.
+   * @param {string} educationId - The ID of the education to be updated.
+   * @param {EducationDto} dto - The data transfer object containing the updated education details.
+   * @returns {Promise<object>} - The updated education details or an error object.
+   */
   async UpdateEducation(
     token: string,
     userId: string,
@@ -145,6 +160,13 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Deletes an education record for a user.
+   * @param {string} token - The authentication token.
+   * @param {string} userId - The ID of the user.
+   * @param {string} educationId - The ID of the education record to delete.
+   * @returns {Promise<{ status: number, message: string }>} - The status and message indicating the result of the operation.
+   */
   async DeleteEducation(token: string, userId: string, educationId: string) {
     if (
       parseInt(userId) < 0 ||
@@ -207,6 +229,13 @@ export class ResumeService {
 
   */
 
+  /**
+   * Adds experience for a user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param dto - The experience data to be added.
+   * @returns An object containing the status and message.
+   */
   async addExperience(token: string, userId: string, dto: ExperienceDto) {
     if (
       parseInt(userId) < 0 ||
@@ -252,6 +281,14 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Updates the experience of a user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param experienceId - The ID of the experience.
+   * @param dto - The data transfer object containing the updated experience details.
+   * @returns The updated experience object if successful, or an error object if unsuccessful.
+   */
   async UpdateExperience(
     token: string,
     userId: string,
@@ -317,6 +354,13 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Deletes an experience for a user.
+   * @param {string} token - The user's authentication token.
+   * @param {string} userId - The ID of the user.
+   * @param {string} experienceId - The ID of the experience to delete.
+   * @returns {Promise<{ status: number, message: string }>} - The status and message indicating the result of the operation.
+   */
   async DeleteExperience(token: string, userId: string, experienceId: string) {
     if (
       parseInt(userId) < 0 ||
@@ -379,6 +423,13 @@ export class ResumeService {
   
   */
 
+  /**
+   * Adds a project to a user's resume.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param dto - The project details.
+   * @returns An object with the status and message.
+   */
   async addProject(token: string, userId: string, dto: ProjectsDto) {
     if (
       parseInt(userId) < 0 ||
@@ -425,6 +476,14 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Updates a project for a user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param projectId - The ID of the project to update.
+   * @param dto - The data transfer object containing the updated project details.
+   * @returns The updated project if successful, or an error object if unsuccessful.
+   */
   async UpdateProject(
     token: string,
     userId: string,
@@ -491,6 +550,13 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Deletes a project for a given user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param projectId - The ID of the project to be deleted.
+   * @returns An object containing the status and message of the operation.
+   */
   async DeleteProject(token: string, userId: string, projectId: string) {
     if (
       parseInt(userId) < 0 ||
@@ -553,6 +619,13 @@ export class ResumeService {
   
   */
 
+  /**
+   * Adds a skill for a user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param dto - The data transfer object containing the skill details.
+   * @returns An object with the status and message indicating the result of the operation.
+   */
   async addSkill(token: string, userId: string, dto: SkillsDto) {
     if (
       parseInt(userId) < 0 ||
@@ -595,6 +668,14 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Updates a skill for a user.
+   * @param token - The authentication token.
+   * @param userId - The ID of the user.
+   * @param skillId - The ID of the skill to update.
+   * @param dto - The data transfer object containing the updated skill information.
+   * @returns The updated skill if successful, or an error object if there was an issue.
+   */
   async UpdateSkill(
     token: string,
     userId: string,
@@ -658,6 +739,13 @@ export class ResumeService {
     }
   }
 
+  /**
+   * Deletes a skill from a user's resume.
+   * @param {string} token - The authentication token.
+   * @param {string} userId - The ID of the user.
+   * @param {string} skillId - The ID of the skill to be deleted.
+   * @returns {Promise<{ status: number, message: string }>} - The status and message indicating the result of the operation.
+   */
   async DeleteSkill(token: string, userId: string, skillId: string) {
     if (
       parseInt(userId) < 0 ||
