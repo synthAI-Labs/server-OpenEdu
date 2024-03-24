@@ -13,8 +13,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   const config = new DocumentBuilder()
-    .setTitle('Your API Title')
-    .setDescription('API documentation for Your API')
+    .setTitle('OpenEdu')
+    .setDescription('V1 OpenEdu documentation')
     .setVersion('1.0.0')
     .addBearerAuth()
     .build();
@@ -22,6 +22,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 4000);
 }
 bootstrap();

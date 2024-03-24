@@ -32,7 +32,7 @@ export class DashboardController {
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Post('dashboard/profile')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   getProfile(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,
@@ -42,7 +42,7 @@ export class DashboardController {
 
   // @UseGuards(JwtAuthGuard) // Protect the route with JWT authentication
   @Put('dashboard/profile')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBody({ type: DashboardDto })
   updateProfile(
     @Headers('authorization') token: string,
@@ -53,7 +53,7 @@ export class DashboardController {
   }
 
   @Put('dashboard/profile/settings')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBody({ type: UserSettingsDto })
   updateSettings(
     @Headers('authorization') token: string,
@@ -75,7 +75,7 @@ export class DashboardController {
   // }
 
   @Post('dashboard/achievements/:achievementId/claim')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   claimAchievement(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

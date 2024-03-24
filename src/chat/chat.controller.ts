@@ -20,7 +20,7 @@ export class ChatController {
   }
 
   @Post('')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   getChat(
     @Headers('authorization') token: string,
     @Headers('user_id') userId: string,

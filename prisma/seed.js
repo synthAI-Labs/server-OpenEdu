@@ -6,6 +6,7 @@ async function main() {
 
   const user1 = await prisma.user.create({
     data: {
+      id: "1",
       username: 'user1',
       name: 'User One',
       photo: 'boy1.png',
@@ -31,6 +32,7 @@ async function main() {
 
   const user2 = await prisma.user.create({
     data: {
+      id: "2",
       username: 'user2',
       name: 'User Two',
       photo: 'girl1.png',

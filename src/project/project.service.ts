@@ -77,7 +77,7 @@ export class ProjectService {
         status: 200,
         message: 'Success',
         data: project,
-      }
+      };
     } catch (e) {
       return {
         status: 500,

@@ -44,6 +44,7 @@ export class ChatService {
         return {
           status: 401,
           message: 'invalid request',
+          error: error,
         };
       }
 
